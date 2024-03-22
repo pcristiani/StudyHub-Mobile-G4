@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textview_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:breakStrategy="high_quality"
+            android:clickable="false"
+            android:focusable="auto"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="@string/txt_title_main"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="142dp"
+            android:layout_height="142dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="120dp"
+            android:layout_marginEnd="14dp"
+            android:inputType="textPersonName"
+            android:scaleType="fitStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_first"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/logo"
+            tools:ignore="MissingConstraints"
+            tools:layout_conversion_absoluteHeight="25dp"
+            tools:layout_conversion_absoluteWidth="11dp" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="57dp"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:hint="Usuario"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName2"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal">
+
+            <Button
+
+                android:id="@+id/btn_login"
+                style="@style/ShapeAppearanceOverlay.Material3.Button"
+                android:layout_width="145dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/registrar_fragment_label"
+                android:focusableInTouchMode="true"
+                app:backgroundTint="@color/dark_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/button_registrar"
+                style="@style/ShapeAppearanceOverlay.Material3.Button"
+                android:layout_width="145dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="10dp"
+                app:backgroundTint="@color/dark_btn"
+                android:focusableInTouchMode="true"
+                android:text="@string/txt_title_main"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

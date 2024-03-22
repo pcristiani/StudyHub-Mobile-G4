@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">StudyHub</string>
+    <string name="action_settings">Configuración</string>
+    <string name="action_Ayuda">Ayuda</string>
+
+    <!-- Strings fragments for navigation -->
+    <string name="login_fragment_label">StudyHub</string>
+    <string name="registrar_fragment_label">Registrarte</string>
+    <string name="txt_btn_login">Siguiente</string>
+    <string name="previous">Atrás</string>
+
+    <string name="txt_title_login">Login</string>
+    <string name="txt_title_main">Iniciar sesión</string>
+
+    <string name="hint_1">Ingrese su cédula de identidad</string>
+    <string name="hint_2">Ingrese su fecha de nacimiento</string>
+</resources>
