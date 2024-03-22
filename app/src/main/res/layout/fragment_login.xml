@@ -9,21 +9,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="18dp">
 
         <TextView
             android:id="@+id/textview_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:breakStrategy="high_quality"
-            android:clickable="false"
-            android:focusable="auto"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="@string/txt_title_main"
+            android:fontFamily="serif"
+            android:text="Inicia sesión"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="32sp"
-            android:textStyle="bold"
+            android:textSize="34sp"
+            android:layout_marginTop="45dp"
+            android:typeface="sans"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +30,7 @@
             android:layout_width="142dp"
             android:layout_height="142dp"
             android:layout_marginStart="14dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="130dp"
             android:layout_marginEnd="14dp"
             android:inputType="textPersonName"
             android:scaleType="fitStart"
@@ -46,70 +43,88 @@
             tools:layout_conversion_absoluteHeight="25dp"
             tools:layout_conversion_absoluteWidth="11dp" />
 
-        <EditText
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="57dp"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
-            android:hint="Usuario"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView"
-            tools:ignore="TouchTargetSizeCheck" />
 
-        <EditText
-            android:id="@+id/editTextTextPersonName2"
+        <!-- Usuario-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editUsuario"
+            android:hint="Usuario"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="2dp"
+            app:errorEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:id="@+id/edUser"
+                android:ems="10"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Contraseña-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editContrasena"
+            android:hint="Contraseña"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"
+            app:endIconMode="password_toggle"
+            app:layout_constraintTop_toBottomOf="@id/editUsuario">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pass"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName2"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toBottomOf="@id/editContrasena"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <Button
-
                 android:id="@+id/btn_login"
                 style="@style/ShapeAppearanceOverlay.Material3.Button"
-                android:layout_width="145dp"
-                android:layout_height="43dp"
-                android:layout_marginStart="10dp"
-                android:text="@string/registrar_fragment_label"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="Crear cuenta"
                 android:focusableInTouchMode="true"
                 app:backgroundTint="@color/dark_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:textSize="15sp" />
+                android:textSize="17sp" />
 
             <Button
                 android:id="@+id/button_registrar"
                 style="@style/ShapeAppearanceOverlay.Material3.Button"
-                android:layout_width="145dp"
-                android:layout_height="43dp"
-                android:layout_marginStart="10dp"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 app:backgroundTint="@color/dark_btn"
                 android:focusableInTouchMode="true"
-                android:text="@string/txt_title_main"
-                android:textSize="15sp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Siguiente"
+                android:textSize="17sp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/RegistrarFragment"
         android:name="com.example.studyhub_mobile_g4.RegistrarFragment"
-        android:label="@string/registrar_fragment_label"
+        android:label="Atrás"
         tools:layout="@layout/fragment_registrar">
 
         <action

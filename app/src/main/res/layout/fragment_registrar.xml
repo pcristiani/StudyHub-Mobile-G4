@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistrarFragment">
+    tools:context=".RegistrarFragment"
+    android:gravity="center"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,92 +22,129 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textSize="34sp"
             android:typeface="sans"
-            app:layout_constraintBottom_toBottomOf="@id/editTextCedula"
+            app:layout_constraintBottom_toBottomOf="@id/editCedula"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <EditText
-            android:id="@+id/editTextCedula"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
+        <!-- Cedula-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editCedula"
             android:hint="Cedula"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_registrar"
-            tools:ignore="TouchTargetSizeCheck" />
-
-
-        <EditText
-            android:id="@+id/editTextName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="2dp"
+            app:errorEnabled="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_registrar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:id="@+id/edCi"
+                android:ems="10"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Nombre-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editName"
             android:hint="Nombre"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextCedula"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <EditText
-            android:id="@+id/editTxtEmail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"
+            app:errorEnabled="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/editCedula">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:id="@+id/edName"
+                android:ems="10"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Email-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editEmail"
             android:hint="Email"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextName"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <EditText
-            android:id="@+id/editTextUsuario"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"
+            app:errorEnabled="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/editName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:id="@+id/edMail"
+                android:ems="10"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Usuario-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editUsuario"
             android:hint="Usuario"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTxtEmail"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <EditText
-            android:id="@+id/editPasswors"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"
+            app:errorEnabled="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/editEmail">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:id="@+id/edUser"
+                android:ems="10"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Contraseña-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editContrasena"
             android:hint="Contraseña"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextUsuario"
-            tools:ignore="TouchTargetSizeCheck" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"
+            app:endIconMode="password_toggle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/editUsuario">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pass"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Button
             android:id="@+id/button_registrar"
@@ -118,7 +157,7 @@
             android:text="Confirmar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editPasswors" />
+            app:layout_constraintTop_toBottomOf="@id/editContrasena" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
