@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2022 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ **/
 
 plugins {
     alias(libs.plugins.android.application)
@@ -20,11 +20,11 @@ plugins {
 }
 
 android {
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    namespace = "com.example.compose.StudyHub"
+    compileSdk = 34
+    namespace = "com.example.compose.studyhub"
 
     defaultConfig {
-        applicationId = "com.example.compose.StudyHub"
+        applicationId = "com.example.compose.studyhub"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
@@ -44,6 +44,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("customDebugType") {
+            isDebuggable = true
+        }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -70,6 +74,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.lifecycle.viewModelCompose)
@@ -79,14 +84,15 @@ dependencies {
     implementation(libs.google.android.material)
 
     implementation(libs.androidx.compose.foundation.layout)
+
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.iconsExtended)
+
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.runtime)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     implementation(libs.accompanist.permissions)
-
     implementation(libs.coil.kt.compose)
 
     testImplementation(libs.junit)

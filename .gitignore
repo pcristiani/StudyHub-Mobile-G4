@@ -1,9 +1,14 @@
 *.iml
+.google
 .gradle
 /local.properties
 /.idea
 .DS_Store
 /build
+/buildscripts
 /captures
 .externalNativeBuild
 /projectFilesBackup
+/.vscode
+notas.md
+/docs

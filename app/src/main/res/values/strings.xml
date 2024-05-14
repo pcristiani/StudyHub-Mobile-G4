@@ -1,35 +1,35 @@
 <resources>
     <string name="app_name">StudyHub</string>
-    <string name="app_tagline">StudyHub</string>
+    <string name="app_title">StudyHub</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="sign_in">Iniciar sesión</string>
-    <string name="sign_in_guest">Iniciar sesión como invitado</string>
-    <string name="sign_in_create_account">Inicia sesión o crea una cuenta</string>
+    <string name="txt_btn_invitado">Iniciar sesión como invitado</string>
+    <string name="sign_in_create_account">Inicia sesión o crea cuenta</string>
     <string name="or">o</string>
     <string name="forgot_password">¿Has olvidado tu contraseña?</string>
-    <string name="user_continue">Continuar</string>
-    <string name="create_account">Crear una cuenta</string>
+    <string name="txt_continue">Continuar</string>
+    <string name="create_account">Crear cuenta</string>
     <string name="terms_and_conditions">Al continuar, usted acepta nuestros Términos de servicio y Política de privacidad.</string>
     <string name="feature_not_available">Característica no disponible</string>
-    <string name="dismiss">Despedir</string>
+    <string name="txt_close">Cerrar</string>
     <string name="next">Siguiente</string>
     <string name="previous">Anterior</string>
-    <string name="done">Hecho</string>
+    <string name="done">Finalizar</string>
     <string name="back">Atrás</string>
     <string name="close">Salir</string>
     <string name="show_password">Mostrar contraseña</string>
     <string name="hide_password">Contraseña oculta</string>
 
     <!-- questionLogin -->
-    <string name="question_count">\u00A0of %d</string>
+    <string name="question_count">\u00A0de %d</string>
     <string name="select_one">Seleccione un avatar.</string>
-    <string name="select_rol">Selecciona varias opciones si corresponde.</string>
+    <string name="select_rol">Los demas perfiles se gestionan por la Web.</string>
     <string name="select_fecha">Seleccione una fecha.</string>
 
     <!-- Roles -->
-    <string name="txt_question">Selecciona tu rol o perfil de usuario</string>
+    <string name="txt_question">Seleccione perfil de usuario</string>
     <string name="txt_admin">Administrador</string>
     <string name="txt_estudiante">Estudiante</string>
     <string name="txt_funcionario">Funcionario</string>
@@ -52,17 +52,20 @@
     <string name="txt_question3">Seleccione fecha de nacimiento</string>
 
     <!-- Pregunta 4-->
-    <!--    <string name="txt_question4">Pregunta 4</string>-->
+    <!-- <string name="txt_question4">Pregunta 4</string> -->
 
     <!-- Pregunta 5-->
     <string name="txt_question4">Foto de perfil</string>
-    <string name="add_photo">Agregar Foto</string>
+    <string name="add_photo">Agregar foto</string>
     <string name="retake_photo">Sacar otra foto</string>
 
-    <string name="txt_pruebaqa">Pruebas QA</string>
-    <string name="survey_result_subtitle">Acceso Correcto</string>
-    <string name="survey_result_description">Usuario invalido</string>
+    <string name="txt_pruebaqa">Prueba</string>
+    <string name="result_login">Acceso correcto</string>
+    <string name="survey_result_description">Usuario:</string>
     <string name="strongly_dislike">Izquierda\nPreg4</string>
     <string name="strongly_like">Derecha\nPreg4</string>
     <string name="neutral">Neutral</string>
+    <string name="login_test">Login test</string>
+    <string name="logout">Cerrar sesion</string>
+
 </resources>
