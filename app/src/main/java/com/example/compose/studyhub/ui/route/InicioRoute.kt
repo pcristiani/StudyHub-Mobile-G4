@@ -14,7 +14,6 @@ fun InicioRoute(
    onLoginInvitado: () -> Unit,
 ) {
    val inicioViewModel: InicioViewModel = viewModel(factory = InicioViewModelFactory())
-
    InicioScreen(
       onLoginRegister = { email ->
          inicioViewModel.handleContinue(

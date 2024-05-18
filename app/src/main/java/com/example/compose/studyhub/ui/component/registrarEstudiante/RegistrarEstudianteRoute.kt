@@ -1,4 +1,4 @@
-package com.example.compose.studyhub.ui.component.questionLogin
+package com.example.compose.studyhub.ui.component.registrarEstudiante
 
 import android.content.Context
 import android.content.ContextWrapper
@@ -67,18 +67,18 @@ fun QuestionRoute(
                )
             }
 
-            usrQuestion.AVATAR_USER -> SuperheroQuestion(
-               selectedAnswer = viewModel.superheroResponse,
-               onOptionSelected = viewModel::onSuperheroResponse,
+            usrQuestion.AVATAR_USER -> AvatarQuestion(
+               selectedAnswer = viewModel.avatarResponse,
+               onOptionSelected = viewModel::onAvatarResponse,
                modifier = modifier,
             )
 
             usrQuestion.BIRTH_DATE -> {
                val supportFragmentManager = LocalContext.current.findActivity().supportFragmentManager
-               TakeawayQuestion(
-                  dateInMillis = viewModel.takeawayResponse,
+               SeleccionarFecha(
+                  dateInMillis = viewModel.fechaResponse,
                   onClick = {
-                     showTakeawayDatePicker(date = viewModel.takeawayResponse, supportFragmentManager = supportFragmentManager, onDateSelected = viewModel::onTakeawayResponse)
+                     selectDate(date = viewModel.fechaResponse, supportFragmentManager = supportFragmentManager, onDateSelected = viewModel::onFechaResponse)
                   },
                   modifier = modifier,
                )
@@ -98,7 +98,7 @@ private fun getTransitionDirection(initialIndex: Int, targetIndex: Int): Animate
 }
 
 ///
-private fun showTakeawayDatePicker(
+private fun selectDate(
    date: Long?,
    supportFragmentManager: FragmentManager,
    onDateSelected: (date: Long) -> Unit,
@@ -113,14 +113,7 @@ private tailrec fun Context.findActivity(): AppCompatActivity = when (this) {
    is AppCompatActivity -> this
    is ContextWrapper -> this.baseContext.findActivity()
    else -> throw IllegalArgumentException("Could not find activity!")
-} // usrQuestion.PREGUNTA_4 -> //         FeelingAboutSelfiesQuestion(
-//                 imageUri = viewModel.selfieUri,
-//                 getNewImageUri = viewModel::getNewSelfieUri,
-//                 onPhotoTaken = viewModel::onSelfieResponse,
-//                 modifier = modifier,
-//                 value = viewModel.feelingAboutSelfiesResponse,
-//                 onValueChange = viewModel::onFeelingAboutSelfiesResponse,
-//                 modifier = modifier,
+} // usrQuestion.PREGUNTA_4 -> //         FeelingAboutSelfiesQuestion( //                 imageUri = viewModel.selfieUri, //                 getNewImageUri = viewModel::getNewSelfieUri, //                 onPhotoTaken = viewModel::onSelfieResponse, //                 modifier = modifier, //                 value = viewModel.feelingAboutSelfiesResponse, //                 onValueChange = viewModel::onFeelingAboutSelfiesResponse, //                 modifier = modifier,
 //         )
 // usrQuestion.TAKE_SELFIE ->
 //         TakeSelfieQuestion(

@@ -51,15 +51,18 @@ import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 ///
 // LoginRegisterScreen muestra la pantalla de inicio de sesión y registro
 @Composable
-fun LoginRegisterScreen(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier, contentPadding: PaddingValues = PaddingValues(), content: @Composable () -> Unit) {
+fun LoginRegisterScreen(
+      onLoginInvitado: () -> Unit,
+      modifier: Modifier = Modifier,
+      contentPadding: PaddingValues = PaddingValues(),
+      content: @Composable () -> Unit
+) {
    println("---> LoginRegisterScreen --- Login/Register")
 
    LazyColumn(modifier = modifier, contentPadding = contentPadding) {
       item {
          Spacer(modifier = Modifier.height(44.dp))
-         Box(modifier = Modifier
-             .fillMaxWidth()
-             .padding(horizontal = 20.dp)) { content() }
+         Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) { content() }
          Spacer(modifier = Modifier.height(16.dp))
       }
    }
@@ -71,77 +74,128 @@ fun LoginRegisterScreen(onLoginInvitado: () -> Unit, modifier: Modifier = Modifi
 @Composable
 fun LoginRegisterTopAppBar(topAppBarText: String, onNavUp: () -> Unit) {
    CenterAlignedTopAppBar(
-      title = {
-         Text(text = topAppBarText, modifier = Modifier
-             .fillMaxSize()
-             .wrapContentSize(Alignment.Center))
-      },
-      navigationIcon = {
-         IconButton(onClick = onNavUp) {
-            Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.back), tint = MaterialTheme.colorScheme.primary)
-         }
-      },
-      actions = { Spacer(modifier = Modifier.width(68.dp)) },
+         title = {
+            Text(
+                  text = topAppBarText,
+                  modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+            )
+         },
+         navigationIcon = {
+            IconButton(onClick = onNavUp) {
+               Icon(
+                     imageVector = Icons.Filled.ChevronLeft,
+                     contentDescription = stringResource(id = R.string.back),
+                     tint = MaterialTheme.colorScheme.primary
+               )
+            }
+         },
+         actions = { Spacer(modifier = Modifier.width(68.dp)) },
    )
 }
 
 ///
 // Email muestra un campo de texto para el correo electrónico
 @Composable
-fun Email(emailState: TextFieldState = remember { EmailState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
-   OutlinedTextField(value = emailState.text, onValueChange = { emailState.text = it }, label = {
-      Text(
-         text = stringResource(id = R.string.email),
-         style = MaterialTheme.typography.bodyMedium,
-      )
-   }, modifier = Modifier
-       .fillMaxWidth()
-       .onFocusChanged { focusState ->
-           emailState.onFocusChange(focusState.isFocused)
-           if (!focusState.isFocused) {
-               emailState.enableShowErrors()
-           }
-       }, textStyle = MaterialTheme.typography.bodyMedium, isError = emailState.showErrors(), keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Email), keyboardActions = KeyboardActions(onDone = { onImeAction() }), singleLine = true)
+fun Email(
+      emailState: TextFieldState = remember { EmailState() },
+      imeAction: ImeAction = ImeAction.Next,
+      onImeAction: () -> Unit = {}
+) {
+   OutlinedTextField(
+         value = emailState.text,
+         onValueChange = { emailState.text = it },
+         label = {
+            Text(
+                  text = stringResource(id = R.string.email),
+                  style = MaterialTheme.typography.bodyMedium,
+            )
+         },
+         modifier =
+               Modifier.fillMaxWidth().onFocusChanged { focusState ->
+                  emailState.onFocusChange(focusState.isFocused)
+                  if (!focusState.isFocused) {
+                     emailState.enableShowErrors()
+                  }
+               },
+         textStyle = MaterialTheme.typography.bodyMedium,
+         isError = emailState.showErrors(),
+         keyboardOptions =
+               KeyboardOptions.Default.copy(
+                     imeAction = imeAction,
+                     keyboardType = KeyboardType.Email
+               ),
+         keyboardActions = KeyboardActions(onDone = { onImeAction() }),
+         singleLine = true
+   )
    emailState.getError()?.let { error -> TextFieldError(textError = error) }
 }
 
 ///
 // Password muestra un campo de texto para la contraseña
 @Composable
-fun Password(label: String, passwordState: TextFieldState, modifier: Modifier = Modifier, imeAction: ImeAction = ImeAction.Done, onImeAction: () -> Unit = {}) {
+fun Password(
+      label: String,
+      passwordState: TextFieldState,
+      modifier: Modifier = Modifier,
+      imeAction: ImeAction = ImeAction.Done,
+      onImeAction: () -> Unit = {}
+) {
    val showPassword = rememberSaveable { mutableStateOf(false) }
-   OutlinedTextField(value = passwordState.text, onValueChange = {
-      passwordState.text = it
-      passwordState.enableShowErrors()
-   }, modifier = modifier
-       .fillMaxWidth()
-       .onFocusChanged { focusState ->
-           passwordState.onFocusChange(focusState.isFocused)
-           if (!focusState.isFocused) {
-               passwordState.enableShowErrors()
-           }
-       }, textStyle = MaterialTheme.typography.bodyMedium, label = {
-      Text(
-         text = label,
-         style = MaterialTheme.typography.bodyMedium,
-      )
-   }, trailingIcon = {
-      if (showPassword.value) {
-         IconButton(onClick = { showPassword.value = false }) {
-            Icon(imageVector = Icons.Filled.Visibility, contentDescription = stringResource(id = R.string.hide_password))
-         }
-      } else {
-         IconButton(onClick = { showPassword.value = true }) {
-            Icon(imageVector = Icons.Filled.VisibilityOff, contentDescription = stringResource(id = R.string.show_password))
-         }
-      }
-   }, visualTransformation = if (showPassword.value) {
-      VisualTransformation.None
-   } else {
-      PasswordVisualTransformation()
-   }, isError = passwordState.showErrors(), supportingText = {
-      passwordState.getError()?.let { error -> TextFieldError(textError = error) }
-   }, keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Password), keyboardActions = KeyboardActions(onDone = { onImeAction() }), singleLine = true)
+   OutlinedTextField(
+         value = passwordState.text,
+         onValueChange = {
+            passwordState.text = it
+            passwordState.enableShowErrors()
+         },
+         modifier =
+               modifier.fillMaxWidth().onFocusChanged { focusState ->
+                  passwordState.onFocusChange(focusState.isFocused)
+                  if (!focusState.isFocused) {
+                     passwordState.enableShowErrors()
+                  }
+               },
+         textStyle = MaterialTheme.typography.bodyMedium,
+         label = {
+            Text(
+                  text = label,
+                  style = MaterialTheme.typography.bodyMedium,
+            )
+         },
+         trailingIcon = {
+            if (showPassword.value) {
+               IconButton(onClick = { showPassword.value = false }) {
+                  Icon(
+                        imageVector = Icons.Filled.Visibility,
+                        contentDescription = stringResource(id = R.string.hide_password)
+                  )
+               }
+            } else {
+               IconButton(onClick = { showPassword.value = true }) {
+                  Icon(
+                        imageVector = Icons.Filled.VisibilityOff,
+                        contentDescription = stringResource(id = R.string.show_password)
+                  )
+               }
+            }
+         },
+         visualTransformation =
+               if (showPassword.value) {
+                  VisualTransformation.None
+               } else {
+                  PasswordVisualTransformation()
+               },
+         isError = passwordState.showErrors(),
+         supportingText = {
+            passwordState.getError()?.let { error -> TextFieldError(textError = error) }
+         },
+         keyboardOptions =
+               KeyboardOptions.Default.copy(
+                     imeAction = imeAction,
+                     keyboardType = KeyboardType.Password
+               ),
+         keyboardActions = KeyboardActions(onDone = { onImeAction() }),
+         singleLine = true
+   )
 }
 
 ///
@@ -150,7 +204,11 @@ fun Password(label: String, passwordState: TextFieldState, modifier: Modifier = 
 fun TextFieldError(textError: String) {
    Row(modifier = Modifier.fillMaxWidth()) {
       Spacer(modifier = Modifier.width(16.dp))
-      Text(text = textError, modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.error)
+      Text(
+            text = textError,
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.error
+      )
    }
 }
 
@@ -159,12 +217,15 @@ fun TextFieldError(textError: String) {
 @Composable
 fun OrLoginInvitado(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier) {
    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-      Text(text = stringResource(id = R.string.or), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), modifier = Modifier.paddingFromBaseline(top = 20.dp))
+      Text(
+            text = stringResource(id = R.string.or),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha),
+            modifier = Modifier.paddingFromBaseline(top = 20.dp)
+      )
       OutlinedButton(
-         onClick = onLoginInvitado,
-         modifier = Modifier
-             .fillMaxWidth()
-             .padding(top = 10.dp, bottom = 20.dp),
+            onClick = onLoginInvitado,
+            modifier = Modifier.fillMaxWidth().padding(top = 10.dp, bottom = 20.dp),
       ) { Text(text = stringResource(id = R.string.txt_btn_invitado)) }
    }
 }
@@ -176,12 +237,19 @@ fun OrLoginInvitado(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier) 
 fun LoginRegisterScreenPreview() {
    ThemeStudyHub {
       Surface {
-         LoginRegisterScreen(onLoginInvitado = {}, modifier = Modifier.fillMaxSize(), content = {
-            Column {
-               Email(emailState = remember { EmailState() })
-               Password(label = stringResource(id = R.string.password), passwordState = remember { EmailState() })
-            }
-         })
+         LoginRegisterScreen(
+               onLoginInvitado = {},
+               modifier = Modifier.fillMaxSize(),
+               content = {
+                  Column {
+                     Email(emailState = remember { EmailState() })
+                     Password(
+                           label = stringResource(id = R.string.password),
+                           passwordState = remember { EmailState() }
+                     )
+                  }
+               }
+         )
          LoginRegisterTopAppBar(topAppBarText = stringResource(id = R.string.sign_in), onNavUp = {})
       }
    }

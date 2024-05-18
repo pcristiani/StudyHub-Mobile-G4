@@ -1,9 +1,9 @@
-package com.example.compose.studyhub.ui.component.questionLogin
+package com.example.compose.studyhub.ui.component.registrarEstudiante
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.compose.studyhub.ui.component.register.Superhero
+import com.example.compose.studyhub.ui.component.registrationScreens.Avatar
 
 const val simpleDateFormatPattern = "EEE, MMM d"
 
@@ -12,8 +12,7 @@ class QuestionViewModel() : ViewModel() {
    private val questionOrder: List<usrQuestion> = listOf(
       usrQuestion.USER_ROLE,
       usrQuestion.AVATAR_USER,
-      usrQuestion.BIRTH_DATE,
-       // usrQuestion.PREGUNTA_4,
+      usrQuestion.BIRTH_DATE, // usrQuestion.PREGUNTA_4,
       //    usrQuestion.TAKE_SELFIE,
    )
    private var questionIndex = 0
@@ -22,16 +21,16 @@ class QuestionViewModel() : ViewModel() {
    private val _freeTimeResponse = mutableStateListOf<Int>()
    val freeTimeResponse: List<Int>
       get() = _freeTimeResponse
-   private val _superheroResponse = mutableStateOf<Superhero?>(null)
-   val superheroResponse: Superhero?
-      get() = _superheroResponse.value
-   private val _takeawayResponse = mutableStateOf<Long?>(null)
-   val takeawayResponse: Long?
-      get() = _takeawayResponse.value
+   private val _avatarResponse = mutableStateOf<Avatar?>(null)
+   val avatarResponse: Avatar?
+      get() = _avatarResponse.value
+   private val _fechaResponse = mutableStateOf<Long?>(null)
+   val fechaResponse: Long?
+      get() = _fechaResponse.value
    private val _feelingAboutSelfiesResponse = mutableStateOf<Float?>(null)
    val feelingAboutSelfiesResponse: Float?
-      get() = _feelingAboutSelfiesResponse.value // private val _selfieUri = mutableStateOf<Uri?>(null)
-   // val selfieUri
+      get() = _feelingAboutSelfiesResponse.value // private val _selfieUri = mutableStateOf<Uri?>(null) // val selfieUri
+
    //     get() = _selfieUri.value
    // ----- Expuesto como State -----
    private val _surveyScreenData = mutableStateOf(createQuestionScreenData())
@@ -67,7 +66,7 @@ class QuestionViewModel() : ViewModel() {
       _surveyScreenData.value = createQuestionScreenData()
    }
 
-   fun onDonePressed(onQuestionComplete: () -> Unit) { 
+   fun onDonePressed(onQuestionComplete: () -> Unit) {
       onQuestionComplete()
    }
 
@@ -80,13 +79,13 @@ class QuestionViewModel() : ViewModel() {
       _isNextEnabled.value = getIsNextEnabled()
    }
 
-   fun onSuperheroResponse(superhero: Superhero) {
-      _superheroResponse.value = superhero
+   fun onAvatarResponse(avatar: Avatar) {
+      _avatarResponse.value = avatar
       _isNextEnabled.value = getIsNextEnabled()
    }
 
-   fun onTakeawayResponse(timestamp: Long) {
-      _takeawayResponse.value = timestamp
+   fun onFechaResponse(timestamp: Long) {
+      _fechaResponse.value = timestamp
       _isNextEnabled.value = getIsNextEnabled()
    }
 
@@ -94,6 +93,7 @@ class QuestionViewModel() : ViewModel() {
       _feelingAboutSelfiesResponse.value = feeling
       _isNextEnabled.value = getIsNextEnabled()
    } // fun onSelfieResponse(uri: Uri) {
+
    //     _selfieUri.value = uri
    //     _isNextEnabled.value = getIsNextEnabled()
    // }
@@ -101,8 +101,8 @@ class QuestionViewModel() : ViewModel() {
    private fun getIsNextEnabled(): Boolean {
       return when (questionOrder[questionIndex]) {
          usrQuestion.USER_ROLE -> _freeTimeResponse.isNotEmpty()
-         usrQuestion.AVATAR_USER -> _superheroResponse.value != null
-         usrQuestion.BIRTH_DATE -> _takeawayResponse.value != null // usrQuestion.PREGUNTA_4 -> _feelingAboutSelfiesResponse.value != null
+         usrQuestion.AVATAR_USER -> _avatarResponse.value != null
+         usrQuestion.BIRTH_DATE -> _fechaResponse.value != null // usrQuestion.PREGUNTA_4 -> _feelingAboutSelfiesResponse.value != null
          //  usrQuestion.TAKE_SELFIE -> _selfieUri.value != null
       }
    }
@@ -130,7 +130,8 @@ data class QuestionScreenData(
    val shouldShowPreviousButton: Boolean,
    val shouldShowDoneButton: Boolean,
    val surveyQuestion: usrQuestion,
-) ///
+) /// // // //
+// /
 /*class QuestionViewModelFactory(private val photoUriManager: PhotoUriManager) :
         ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")

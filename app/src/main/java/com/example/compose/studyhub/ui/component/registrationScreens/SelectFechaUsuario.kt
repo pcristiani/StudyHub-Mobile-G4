@@ -1,4 +1,4 @@
-package com.example.compose.studyhub.ui.component.register
+package com.example.compose.studyhub.ui.component.registrationScreens
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
-import com.example.compose.studyhub.ui.component.questionLogin.QuestionWrapper
-import com.example.compose.studyhub.ui.component.questionLogin.simpleDateFormatPattern
+import com.example.compose.studyhub.ui.component.registrarEstudiante.QuestionWrapper
+import com.example.compose.studyhub.ui.component.registrarEstudiante.simpleDateFormatPattern
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.slightlyDeemphasizedAlpha
 import com.example.compose.studyhub.util.getDefaultDateInMillis

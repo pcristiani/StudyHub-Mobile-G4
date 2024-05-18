@@ -1,4 +1,4 @@
-package com.example.compose.studyhub.ui.component.register
+package com.example.compose.studyhub.ui.component.registrationScreens
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
-import com.example.compose.studyhub.ui.component.questionLogin.QuestionWrapper
+import com.example.compose.studyhub.ui.component.registrarEstudiante.QuestionWrapper
 
 @Composable
 fun SelectPerfilUsuario(

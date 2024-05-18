@@ -78,7 +78,8 @@ fun ThemeStudyHub(
     val colors = if (!useDarkTheme) {
         LightColors
     } else {
-        DarkColors
+        LightColors
+        // DarkColors
     }
 
     MaterialTheme(

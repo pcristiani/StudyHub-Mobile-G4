@@ -29,19 +29,25 @@
     <string name="select_fecha">Seleccione una fecha.</string>
 
     <!-- Roles -->
-    <string name="txt_question">Seleccione perfil de usuario</string>
+    <string name="txt_question">Perfil de usuario</string>
     <string name="txt_admin">Administrador</string>
     <string name="txt_estudiante">Estudiante</string>
     <string name="txt_funcionario">Funcionario</string>
     <string name="txt_coordinador">Coordinador</string>
 
     <!-- Pregunta 2 -->
-    <string name="txt_question2">Avatar para tu perfil</string>
+    <string name="txt_question2">Avatar de perfil</string>
     <string name="txt_steve">Steve</string>
     <string name="txt_camila">Camila</string>
+    <string name="txt_seba">Sebastián</string>
     <string name="txt_lucas">Lucas</string>
-    <string name="txt_studente">Estudiante</string>
     <string name="txt_harry">Harry Potter</string>
+    <string name="txt_robot">Robot</string>
+    <string name="txt_genia">Genia académica</string>
+    <string name="txt_genio">Genio académico</string>
+    <string name="txt_experto_soft">Experto en software</string>
+    <string name="txt_experta_soft">Experta en software</string>
+    <string name="txt_studente">Estudiante</string>
     <string name="txt_estudia">Estudiando</string>
     <string name="txt_cat">Gato</string>
     <string name="txt_perro">Perro</string>
@@ -49,7 +55,7 @@
     <string name="txt_alien">Alien</string>
 
     <!-- Pregunta 3  -->
-    <string name="txt_question3">Seleccione fecha de nacimiento</string>
+    <string name="txt_question3">Fecha de nacimiento</string>
 
     <!-- Pregunta 4-->
     <!-- <string name="txt_question4">Pregunta 4</string> -->

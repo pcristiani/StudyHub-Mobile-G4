@@ -1,6 +1,5 @@
-package com.example.compose.studyhub.ui.component.questionLogin
+package com.example.compose.studyhub.ui.component.registrarEstudiante
 
-import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,7 +24,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.ProgressIndicatorDefaults
@@ -78,7 +76,7 @@ fun QuestionResultScreen(onDonePressed: () -> Unit) {
    Surface(modifier = Modifier.supportWideScreen()) {
       Scaffold(content = { innerPadding ->
          val modifier = Modifier.padding(innerPadding)
-         QuestionResult(title = stringResource(R.string.result_login), subtitle = strEmail, description = stringResource(R.string.survey_result_description), modifier = modifier)
+         QuestionResult(title = stringResource(R.string.result_login), subtitle = strEmail, modifier = modifier)
       }, bottomBar = {
          OutlinedButton(onClick = onDonePressed, modifier = Modifier
             .fillMaxWidth()
@@ -88,7 +86,7 @@ fun QuestionResultScreen(onDonePressed: () -> Unit) {
 } ///
 
 @Composable
-private fun QuestionResult(title: String, subtitle: String, description: String, modifier: Modifier = Modifier) {
+private fun QuestionResult(title: String, subtitle: String, modifier: Modifier = Modifier) {
    LazyColumn(modifier = modifier.fillMaxSize()) {
       item {
          Spacer(modifier = Modifier.height(44.dp))
@@ -122,14 +120,7 @@ fun QuestionTopAppBar(questionIndex: Int, totalQuestionsCount: Int, onClosePress
             Icon(Icons.Filled.Close, contentDescription = stringResource(id = R.string.close), tint = MaterialTheme.colorScheme.onSurface.copy(stronglyDeemphasizedAlpha))
          }
       })
-      val animatedProgress by animateFloatAsState(targetValue = (questionIndex + 1) / totalQuestionsCount.toFloat(), animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec)
-      LinearProgressIndicator(
-         progress = animatedProgress,
-         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-         trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
-      )
+      val animatedProgress by animateFloatAsState(targetValue = (questionIndex + 1) / totalQuestionsCount.toFloat(), animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec, label = "progress");
    }
 }
 
@@ -138,7 +129,7 @@ fun QuestionTopAppBar(questionIndex: Int, totalQuestionsCount: Int, onClosePress
 fun QuestionBottomBar(shouldShowPreviousButton: Boolean, shouldShowDoneButton: Boolean, isNextButtonEnabled: Boolean, onPreviousPressed: () -> Unit, onNextPressed: () -> Unit, onDonePressed: () -> Unit) {
    Surface(shadowElevation = 7.dp) {
       Row(modifier = Modifier
-         .fillMaxWidth() // implementar componentes de Material3
+         .fillMaxWidth() // implementer components de Material3
          .windowInsetsPadding(WindowInsets.systemBars.only(Horizontal + Bottom))
          .padding(horizontal = 16.dp, vertical = 20.dp)) {
          if (shouldShowPreviousButton) {
@@ -168,8 +159,7 @@ fun QuestionBottomBar(shouldShowPreviousButton: Boolean, shouldShowDoneButton: B
    }
 }
 
-/*@Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_YES)*/
-@Preview(name = "Sign in light theme", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview
 @Composable
 fun LoginPreview() {
    ThemeStudyHub { QuestionResultScreen(onDonePressed = {}) }

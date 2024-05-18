@@ -64,5 +64,5 @@ val listEmailRegistrados = listOf(
    "6232" to "user6@gmail.com",
    "7231" to "grupo4.proyecto2024@gmail.com",
    "123" to "sgonzalez@gmail.com",
-   "911" to "admin@gmail.com",
+   "123" to "admin",
 ) // return !email.contains("signup") // println("UserRepository --> existeUserEmail")

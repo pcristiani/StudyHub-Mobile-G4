@@ -1,4 +1,4 @@
-package com.example.compose.studyhub.ui.component.register
+package com.example.compose.studyhub.ui.component.registrationScreens
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -31,15 +31,15 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
-import com.example.compose.studyhub.ui.component.questionLogin.QuestionWrapper
+import com.example.compose.studyhub.ui.component.registrarEstudiante.QuestionWrapper
 
 @Composable
 fun SelectAvatarUsuario(
    @StringRes titleResourceId: Int,
    @StringRes directionsResourceId: Int,
-   possibleAnswers: List<Superhero>,
-   selectedAnswer: Superhero?,
-   onOptionSelected: (Superhero) -> Unit,
+   possibleAnswers: List<Avatar>,
+   selectedAnswer: Avatar?,
+   onOptionSelected: (Avatar) -> Unit,
    modifier: Modifier = Modifier,
 ) {
    QuestionWrapper(
@@ -92,11 +92,24 @@ fun RadioButtonWithImageRow(
 @Composable
 fun SelectAvatarUsuarioPreview() {
    val possibleAnswers = listOf(
-      Superhero(R.string.txt_steve, R.drawable.spark),
-      Superhero(R.string.txt_camila, R.drawable.lenz),
-      Superhero(R.string.txt_lucas, R.drawable.frag),
+      Avatar(R.string.txt_steve, R.drawable.spark),
+      Avatar(R.string.txt_camila, R.drawable.lenz),
+      Avatar(R.string.txt_seba, R.drawable.celebridad_512),
+      Avatar(R.string.txt_lucas, R.drawable.bug_of_chaos),
+      Avatar(R.string.txt_harry, R.drawable.a23_harrypotter_128),
+      Avatar(R.string.txt_robot, R.drawable.a16_robot_128),
+      Avatar(R.string.txt_experta_soft, R.drawable.a33_developer),
+      Avatar(R.string.txt_experto_soft, R.drawable.a34_developer1_128),
+      Avatar(R.string.txt_genio, R.drawable.a1_boy_128),
+      Avatar(R.string.txt_genia, R.drawable.a28_nerd_128),
+      Avatar(R.string.txt_estudiante, R.drawable.a6_student2),
+      Avatar(R.string.txt_studente, R.drawable.a5_student1_128),
+      Avatar(R.string.txt_cat, R.drawable.a17_rat_128),
+      Avatar(R.string.txt_perro, R.drawable.a30_dog_128),
+      Avatar(R.string.txt_payaso, R.drawable.a18_joker_128),
+      Avatar(R.string.txt_alien, R.drawable.a21_alien_128),
    )
-   var selectedAnswer by remember { mutableStateOf<Superhero?>(null) }
+   var selectedAnswer by remember { mutableStateOf<Avatar?>(null) }
 
    SelectAvatarUsuario(
       titleResourceId = R.string.txt_question4,
@@ -107,4 +120,4 @@ fun SelectAvatarUsuarioPreview() {
    )
 }
 
-data class Superhero(@StringRes val stringResourceId: Int, @DrawableRes val imageResourceId: Int)
+data class Avatar(@StringRes val stringResourceId: Int, @DrawableRes val imageResourceId: Int)

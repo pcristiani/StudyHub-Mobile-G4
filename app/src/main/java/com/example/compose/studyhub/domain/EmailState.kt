@@ -1,7 +1,5 @@
 package com.example.compose.studyhub.domain
 
-import java.util.regex.Pattern
-
 // "^(.+)@(.+).com\$"  - Formato email "nameuser@dominio.com"
 private const val EMAIL_VALIDATION = "^(.+)@(.+).com\$"
 
@@ -22,8 +20,8 @@ private fun emailValidationError(email: String): String {
 
 ///
 private fun isEmailValid(email: String): Boolean {
-   return Pattern.matches(EMAIL_VALIDATION, email)
-}
+   return true
+} //return Pattern.matches(EMAIL_VALIDATION, email)
 
 ///
 val EmailStateSaver = textFieldStateSaver(EmailState()) // // // // "grupo4.proyecto2024@gmail.com" // val nombre: String? = "Mensaje Sebastian"

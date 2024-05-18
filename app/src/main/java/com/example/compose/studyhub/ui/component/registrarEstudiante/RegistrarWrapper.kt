@@ -1,4 +1,4 @@
-package com.example.compose.studyhub.ui.component.questionLogin
+package com.example.compose.studyhub.ui.component.registrarEstudiante
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -27,8 +27,8 @@ fun QuestionWrapper(
    content: @Composable () -> Unit,
 ) {
    Column(modifier = modifier
-       .padding(horizontal = 16.dp)
-       .verticalScroll(rememberScrollState())) {
+      .padding(horizontal = 16.dp)
+      .verticalScroll(rememberScrollState())) {
       Spacer(Modifier.height(32.dp))
       QuestionTitle(titleResourceId)
       directionsResourceId?.let {
@@ -45,9 +45,9 @@ fun QuestionWrapper(
 @Composable
 private fun QuestionTitle(@StringRes title: Int, modifier: Modifier = Modifier) {
    Text(text = stringResource(id = title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = slightlyDeemphasizedAlpha), modifier = modifier
-       .fillMaxWidth()
-       .background(color = MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.small)
-       .padding(vertical = 24.dp, horizontal = 16.dp))
+      .fillMaxWidth()
+      .background(color = MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.small)
+      .padding(vertical = 24.dp, horizontal = 16.dp))
 }
 
 ///
@@ -56,6 +56,6 @@ private fun QuestionDirections(
    @StringRes directionsResourceId: Int, modifier: Modifier = Modifier,
 ) {
    Text(text = stringResource(id = directionsResourceId), color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), style = MaterialTheme.typography.bodySmall, modifier = modifier
-       .fillMaxWidth()
-       .padding(horizontal = 8.dp))
+      .fillMaxWidth()
+      .padding(horizontal = 8.dp))
 }

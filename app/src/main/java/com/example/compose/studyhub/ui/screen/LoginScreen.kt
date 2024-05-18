@@ -174,7 +174,7 @@ fun OrLoginInvitados(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier)
 }
 
 ///
-@Preview(name = "Sign in light theme", uiMode = UI_MODE_NIGHT_NO)
+@Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_NO)
 /*@Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_YES)*/
 @Composable
 fun LoginPreview() {
