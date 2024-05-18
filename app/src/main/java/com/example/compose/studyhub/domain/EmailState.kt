@@ -5,7 +5,6 @@ private const val EMAIL_VALIDATION = "^(.+)@(.+).com\$"
 
 ///
 class EmailState(val email: String? = null) : TextFieldState(validator = ::isEmailValid, errorFor = ::emailValidationError) {
-
    // Si email no es nulo, se asigna al campo de texto
    init {
       email?.let { text = it }

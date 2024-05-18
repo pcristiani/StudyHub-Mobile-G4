@@ -31,7 +31,6 @@ fun StudyHubNavHost(
 ) {
    NavHost(navController = navController, startDestination = INICIO_ROUTE) {
       composable(INICIO_ROUTE) {
-         println("------------------------------------ 0 NAVIGATION ")
          InicioRoute(
             onNavigateToLogin = { navController.navigate("login/$it") },
             onNavigateToRegister = { navController.navigate("signup/$it") },
@@ -41,7 +40,6 @@ fun StudyHubNavHost(
 
       composable(LOGIN_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
-         println("------------------------------------ 1 NAVIGATION " + startingEmail)
          LoginRoute(
             email = startingEmail,
             onLoginSubmitted = { navController.navigate(QUESTION_RESULTS_ROUTE) },
@@ -52,7 +50,6 @@ fun StudyHubNavHost(
 
       composable(REGISTER_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
-         println("------------------------------------ 2 NAVIGATION " + startingEmail)
          RegisterRoute(
             email = startingEmail,
             onRegisterSubmitted = { navController.navigate(QUESTION_ROUTE) },
@@ -63,7 +60,6 @@ fun StudyHubNavHost(
 
       composable(QUESTION_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
-         println("------------------------------------ 3 NAVIGATION " + startingEmail)
          QuestionRoute(
             email = startingEmail,
             onQuestionComplete = { navController.navigate(INICIO_ROUTE) },
@@ -73,10 +69,8 @@ fun StudyHubNavHost(
 
       composable(QUESTION_RESULTS_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
-         println("------------------------------------ 4 NAVIGATION " + startingEmail)
          val navController = rememberNavController()
          SetupNavGraph(navController = navController)
-       //  QuestionResultScreen2 { navController.navigate(INICIO_ROUTE) }
       }
    }
 } //QuestionResultScreen2 { navController.navigate(INICIO_ROUTE) }

@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuGestion
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuInscripcion
@@ -44,7 +43,7 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
 
    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
       ModalDrawerSheet { //  Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-         Column(modifier = Modifier.padding(start = 0.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)) {
+         Column(modifier = Modifier.padding(end = 5.dp, top = 5.dp, bottom = 5.dp)) {
             HeaderMenuLateral(topAppBarText = stringResource(id = R.string.app_name), onNavUp = {
                scope.launch {
                   drawerState.close()
@@ -90,7 +89,16 @@ fun HeaderMenuLateral(topAppBarText: String, onNavUp: () -> Unit) {
 @Composable
 fun MenuLateralPreview() {
    ThemeStudyHub {
-      //TopBarPreview()
-      MenuLateral(navController = rememberNavController(), drawerState = DrawerState(DrawerValue.Closed)) { }
+      val menuItems = listOf(ItemMenuNovedades, ItemMenuPlanEstudios, ItemMenuInscripcion, ItemMenuSolicitudes, ItemMenuGestion)
+      ModalNavigationDrawer(drawerState = DrawerState(DrawerValue.Open), drawerContent = {
+         ModalDrawerSheet {
+            Column(modifier = Modifier.fillMaxSize()) {
+               HeaderMenuLateral(topAppBarText = "StudyHub", onNavUp = {})
+               menuItems.forEach { item ->
+                  NavigationDrawerItem(icon = { Icon(item.icon, null) }, label = { Text(text = item.title) }, selected = false, onClick = {})
+               }
+            }
+         }
+      }) {}
    }
 }

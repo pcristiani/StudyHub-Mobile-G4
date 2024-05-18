@@ -36,10 +36,7 @@ object UserRepository {
    }
 
    fun existeUserEmail(email: String): Boolean {
-      for (e in listEmailRegistrados) {
-         println("second - " + e.second)
-         println("first - " + e.first)
-
+      for (e in listEmailRegistrados) { // println(" " + e.second + e.first)
          if (email == e.second) return true
       }
       return false
