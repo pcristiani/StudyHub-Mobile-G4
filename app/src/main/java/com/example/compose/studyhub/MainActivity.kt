@@ -34,12 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
 import com.example.compose.studyhub.ui.estudiante.inscripcionScreen
 import com.example.compose.studyhub.ui.navigation.MenuLateral
 import com.example.compose.studyhub.ui.navigation.TopBar
-import com.example.compose.studyhub.ui.theme.NavigationDemoTheme
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import kotlinx.coroutines.launch
 
@@ -53,13 +51,12 @@ class MainActivity : AppCompatActivity() {
       super.onCreate(savedInstanceState)
 
       setContent {
-         ThemeStudyHub { //     StudyHubNavHost()
-         }
-
-         NavigationDemoTheme {
+         ThemeStudyHub {
+            StudyHubNavHost()
+         }/*  NavigationDemoTheme {
             val navController = rememberNavController()
             SetupNavGraph(navController = navController)
-         }
+         }*/
       }
    }
 }
@@ -94,7 +91,6 @@ fun SetupNavGraph(navController: NavHostController) {
    }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenNovedades(navController: NavHostController, drawerState: DrawerState) {
@@ -103,9 +99,7 @@ fun ScreenNovedades(navController: NavHostController, drawerState: DrawerState) 
    }) {
       Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
          Image(painter = painterResource(id = R.drawable.logotext), modifier = Modifier.size(260.dp), contentDescription = "Logo")
-      }
-
-      Column(modifier = Modifier
+      }/* Column(modifier = Modifier
          .fillMaxSize()
          .padding(10.dp), verticalArrangement = Arrangement.Bottom) {
          Button(onClick = { navController.navigate("screenInscripciones") }, modifier = Modifier
@@ -113,7 +107,7 @@ fun ScreenNovedades(navController: NavHostController, drawerState: DrawerState) 
             .padding(bottom = 10.dp)) {
             Text("Ir a Inscripciones")
          }
-      }
+      }*/
    }
 }
 

@@ -11,7 +11,6 @@ import com.example.compose.studyhub.Destinations.QUESTION_RESULTS_ROUTE
 import com.example.compose.studyhub.Destinations.QUESTION_ROUTE
 import com.example.compose.studyhub.Destinations.REGISTER_ROUTE
 import com.example.compose.studyhub.ui.component.registrarEstudiante.QuestionRoute
-import com.example.compose.studyhub.ui.estudiante.QuestionResultScreen2
 import com.example.compose.studyhub.ui.route.InicioRoute
 import com.example.compose.studyhub.ui.route.LoginRoute
 import com.example.compose.studyhub.ui.route.RegisterRoute
@@ -74,9 +73,10 @@ fun StudyHubNavHost(
 
       composable(QUESTION_RESULTS_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
-         println("------------------------------------ 4 NAVIGATION " + startingEmail) // val navControllers = rememberNavController()
-         // SetupNavGraph(navController = navControllers)
-         QuestionResultScreen2 { navController.navigate(INICIO_ROUTE) }
+         println("------------------------------------ 4 NAVIGATION " + startingEmail)
+         val navController = rememberNavController()
+         SetupNavGraph(navController = navController)
+       //  QuestionResultScreen2 { navController.navigate(INICIO_ROUTE) }
       }
    }
 } //QuestionResultScreen2 { navController.navigate(INICIO_ROUTE) }

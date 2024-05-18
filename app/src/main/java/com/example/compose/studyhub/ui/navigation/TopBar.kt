@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,8 +36,8 @@ fun TopBar(drawerState: DrawerState) {
 @Preview
 @Composable
 fun TopBarPreview() {
-   ThemeStudyHub {/*  TopBar(inscripcionScreen())
-      TopBar(NovedadesScreen())*/
+   ThemeStudyHub {
+      TopBar(drawerState=DrawerState(DrawerValue.Closed))
    }
-
 }
+
