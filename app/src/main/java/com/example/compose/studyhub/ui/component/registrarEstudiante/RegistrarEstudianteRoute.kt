@@ -112,11 +112,5 @@ private tailrec fun Context.findActivity(): AppCompatActivity = when (this) {
    is AppCompatActivity -> this
    is ContextWrapper -> this.baseContext.findActivity()
    else -> throw IllegalArgumentException("Could not find activity!")
-} // usrQuestion.PREGUNTA_4 -> //         FeelingAboutSelfiesQuestion( //                 imageUri = viewModel.selfieUri, //                 getNewImageUri = viewModel::getNewSelfieUri, //                 onPhotoTaken = viewModel::onSelfieResponse, //                 modifier = modifier, //                 value = viewModel.feelingAboutSelfiesResponse, //                 onValueChange = viewModel::onFeelingAboutSelfiesResponse, //                 modifier = modifier, //         )
-// usrQuestion.TAKE_SELFIE ->
-//         TakeSelfieQuestion(
-//                 imageUri = viewModel.selfieUri,
-//                 getNewImageUri = viewModel::getNewSelfieUri,
-//                 onPhotoTaken = viewModel::onSelfieResponse,
-//                 modifier = modifier,
-//         )
+}
+

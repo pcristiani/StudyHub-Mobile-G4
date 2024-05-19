@@ -68,7 +68,6 @@ fun QuestionQuestionsScreen(
 
 @Composable
 fun QuestionResultScreen(onDonePressed: () -> Unit) {
-   println("---> QuestionResultScreen")
    val u = UserRepository.user.toString();
    val partes = u.split("=")
    val strEmail = partes[1].dropLast(1)

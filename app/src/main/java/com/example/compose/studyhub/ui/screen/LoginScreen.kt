@@ -48,31 +48,20 @@ fun LoginScreen(
    onLoginSubmitted: (email: String, password: String) -> Unit,
    onLoginInvitado: () -> Unit,
    onNavUp: () -> Unit,
-) {
+               ) {
    val snackbarHostState = remember { SnackbarHostState() }
    val scope = rememberCoroutineScope()
    val respuesta = stringResource(id = R.string.login_test)
    val snackbarActionLabel = stringResource(id = R.string.sign_in)
-
+   
    Scaffold(topBar = {
-      LoginRegisterTopAppBar(
-         topAppBarText = stringResource(id = R.string.sign_in),
-         onNavUp = onNavUp,
-      )
+      LoginRegisterTopAppBar(topAppBarText = stringResource(id = R.string.sign_in), onNavUp = onNavUp)
    }, content = { contentPadding ->
-      LoginRegisterScreen(
-         modifier = Modifier.supportWideScreen(),
-         contentPadding = contentPadding,
-         onLoginInvitado = onLoginInvitado,
-      ) {
+      LoginRegisterScreen(modifier = Modifier.supportWideScreen(), contentPadding = contentPadding, onLoginInvitado = onLoginInvitado) {
          Column(modifier = Modifier.fillMaxWidth()) {
-            LoginTest(
-               email = email,
-               onLoginSubmitted = onLoginSubmitted,
-               onLoginInvitado = onLoginInvitado,
-            )
+            LoginTest(email = email, onLoginSubmitted = onLoginSubmitted, onLoginInvitado = onLoginInvitado)
             Spacer(modifier = Modifier.height(5.dp))
-
+            
             TextButton(onClick = {
                scope.launch {
                   snackbarHostState.showSnackbar(message = respuesta, actionLabel = snackbarActionLabel)
@@ -81,11 +70,12 @@ fun LoginScreen(
          }
       }
    })
-
+   
    Box(modifier = Modifier.fillMaxSize()) {
       ErrorSnackbar(snackbarHostState = snackbarHostState, onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }, modifier = Modifier.align(Alignment.BottomCenter))
    }
 }
+
 
 ///
 @Composable
@@ -93,14 +83,14 @@ fun LoginTest(
    email: String?,
    onLoginSubmitted: (email: String, password: String) -> Unit,
    onLoginInvitado: () -> Unit,
-) {
+             ) {
    val snackbarHostState = remember { SnackbarHostState() }
    val scope = rememberCoroutineScope()
-
+   
    Column(modifier = Modifier.fillMaxWidth()) {
       val focusRequester = remember { FocusRequester() }
       val emailState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState(email)) }
-
+      
       Email(emailState = emailState, onImeAction = { focusRequester.requestFocus() })
       Spacer(modifier = Modifier.height(16.dp))
       val passwordState = remember { PasswordState() }
@@ -108,30 +98,29 @@ fun LoginTest(
          if (emailState.isValid && passwordState.isValid) {
             val validarResponde = getLoginTest(emailState.text, passwordState.text)
             if (validarResponde) {
-               print("VALIDADO - ")
-               println(emailState.text)
+               print("VALIDADO - " + emailState.text)
                onLoginSubmitted(emailState.text, passwordState.text)
             } else {
-               print("NO VALIDADO - ")
-               println(emailState.text) // onNavigateToRegister()
+               print("NO VALIDADO - " + emailState.text) // onNavigateToRegister()
             }
          }
       }
-
+      
       Password(label = stringResource(id = R.string.password), passwordState = passwordState, modifier = Modifier.focusRequester(focusRequester), onImeAction = { onSubmit() })
       Spacer(modifier = Modifier.height(16.dp))
-
+      
       Button(onClick = { onSubmit() }, modifier = Modifier
          .fillMaxWidth()
          .padding(vertical = 16.dp), enabled = emailState.isValid && passwordState.isValid) {
          Text(text = stringResource(id = R.string.sign_in))
       }
    }
-
+   
    Box(modifier = Modifier.fillMaxSize()) {
       ErrorSnackbar(snackbarHostState = snackbarHostState, onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }, modifier = Modifier.align(Alignment.BottomCenter))
    }
 }
+
 
 ///
 private fun getLoginTest(emailLogin: String, passwordLogin: String): Boolean {
@@ -139,14 +128,12 @@ private fun getLoginTest(emailLogin: String, passwordLogin: String): Boolean {
    return true
 }
 
+
 @Composable
 fun ErrorSnackbar(snackbarHostState: SnackbarHostState, modifier: Modifier = Modifier, onDismiss: () -> Unit = {}) {
    SnackbarHost(hostState = snackbarHostState, snackbar = { data ->
       Snackbar(modifier = Modifier.padding(16.dp), content = {
-         Text(
-            text = data.visuals.message,
-            style = MaterialTheme.typography.bodyMedium,
-         )
+         Text(text = data.visuals.message, style = MaterialTheme.typography.bodyMedium)
       }, action = {
          data.visuals.actionLabel?.let {
             TextButton(onClick = onDismiss) {
@@ -159,6 +146,7 @@ fun ErrorSnackbar(snackbarHostState: SnackbarHostState, modifier: Modifier = Mod
       .wrapContentHeight(Alignment.Bottom))
 }
 
+
 ///
 @Composable
 fun OrLoginInvitados(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier) {
@@ -169,9 +157,10 @@ fun OrLoginInvitados(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier)
          modifier = Modifier
             .fillMaxWidth()
             .padding(top = 10.dp, bottom = 20.dp),
-      ) { Text(text = stringResource(id = R.string.txt_btn_invitado)) }
+                    ) { Text(text = stringResource(id = R.string.txt_btn_invitado)) }
    }
 }
+
 
 ///
 @Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_NO)
@@ -179,11 +168,6 @@ fun OrLoginInvitados(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier)
 @Composable
 fun LoginPreview() {
    ThemeStudyHub {
-      LoginScreen(
-         email = null,
-         onLoginSubmitted = { _, _ -> },
-         onLoginInvitado = {},
-         onNavUp = {},
-      )
+      LoginScreen(email = null, onLoginSubmitted = { _, _ -> }, onLoginInvitado = {}, onNavUp = {})
    }
 }

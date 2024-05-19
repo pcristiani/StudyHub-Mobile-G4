@@ -1,7 +1,9 @@
 package com.example.compose.studyhub.ui.estudiante
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -13,16 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 
 @Composable
-fun NovedadesScreen(): DrawerState {
-   val navController = rememberNavController()
-   Column(horizontalAlignment = Alignment.CenterHorizontally) {
-      Image(painter = painterResource(id = R.drawable.logotext), modifier = Modifier.size(220.dp), contentDescription = "Logo")
-      Text("Novedades", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
+fun GestionScreen(): DrawerState {
+   Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+      Image(painter = painterResource(id = R.drawable.a19_dj_128), modifier = Modifier.size(120.dp), contentDescription = "Logo")
+      Text("Gestion", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
    }
    return DrawerState(DrawerValue.Closed)
 }
@@ -30,8 +30,6 @@ fun NovedadesScreen(): DrawerState {
 
 @Preview
 @Composable
-fun NovedadesScreenPreview() {
-   NovedadesScreen()
+fun GestionScreenPreview() {
+   GestionScreen()
 }
-
-

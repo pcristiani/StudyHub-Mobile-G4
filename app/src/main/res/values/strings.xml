@@ -13,7 +13,9 @@
     <string name="create_account">Crear cuenta</string>
     <string name="terms_and_conditions">Al continuar, usted acepta nuestros Términos de servicio y Política de privacidad.</string>
     <string name="feature_not_available">Característica no disponible</string>
+
     <string name="txt_close">Cerrar</string>
+    <string name="txt_editPerfil">Editar perfil</string>
     <string name="next">Siguiente</string>
     <string name="previous">Anterior</string>
     <string name="done">Finalizar</string>

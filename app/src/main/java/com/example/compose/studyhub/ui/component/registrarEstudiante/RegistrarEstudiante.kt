@@ -75,29 +75,5 @@ fun SeleccionarFecha(
       onClick = onClick,
       modifier = modifier,
    )
-} // @Composable // fun FeelingAboutSelfiesQuestion( //         value: Float?, //         onValueChange: (Float) -> Unit, //         modifier: Modifier = Modifier, // ) {
-//     SliderQuestion(
-//             titleResourceId = R.string.txt_question4,
-//             value = value,
-//             onValueChange = onValueChange,
-//             startTextResource = R.string.strongly_dislike,
-//             neutralTextResource = R.string.neutral,
-//             endTextResource = R.string.strongly_like,
-//             modifier = modifier,
-//     )
-// }
-// @Composable
-// fun TakeSelfieQuestion(
-//         imageUri: Uri?,
-//         getNewImageUri: () -> Uri,
-//         onPhotoTaken: (Uri) -> Unit,
-//         modifier: Modifier = Modifier,
-// ) {
-//     PhotoQuestion(
-//             titleResourceId = R.string.txt_question4,
-//             imageUri = imageUri,
-//             getNewImageUri = getNewImageUri,
-//             onPhotoTaken = onPhotoTaken,
-//             modifier = modifier,
-//     )
-// }
+}
+

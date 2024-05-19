@@ -12,16 +12,12 @@ fun InicioRoute(
    onNavigateToLogin: (email: String) -> Unit,
    onNavigateToRegister: (email: String) -> Unit,
    onLoginInvitado: () -> Unit,
-) {
+               ) {
    val inicioViewModel: InicioViewModel = viewModel(factory = InicioViewModelFactory())
    InicioScreen(
       onLoginRegister = { email ->
-         inicioViewModel.handleContinue(
-            email = email,
-            onNavigateToLogin = onNavigateToLogin,
-            onNavigateToRegister = onNavigateToRegister,
-         )
+         inicioViewModel.handleContinue(email = email, onNavigateToLogin = onNavigateToLogin, onNavigateToRegister = onNavigateToRegister)
       },
       onLoginInvitado = { inicioViewModel.handleInvitado(onLoginInvitado) },
-   )
+               )
 }

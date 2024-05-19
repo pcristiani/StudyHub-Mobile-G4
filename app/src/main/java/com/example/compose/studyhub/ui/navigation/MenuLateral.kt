@@ -56,7 +56,7 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                   }
                   try {
                      navController.navigate(item.ruta)
-                     println(item.ruta)
+                   //  println(item.ruta)
                   } catch (e: Exception) {
                      println("Error al navegar: ${e.message}")
                   }

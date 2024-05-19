@@ -17,6 +17,7 @@ import com.example.compose.studyhub.ui.route.RegisterRoute
 
 ///
 object Destinations {
+   
    const val INICIO_ROUTE = "inicio"
    const val REGISTER_ROUTE = "signup/{email}"
    const val LOGIN_ROUTE = "login/{email}"
@@ -24,20 +25,21 @@ object Destinations {
    const val QUESTION_RESULTS_ROUTE = "questionresults"
 }
 
+
 ///
 @Composable
 fun StudyHubNavHost(
    navController: NavHostController = rememberNavController(),
-) {
+                   ) {
    NavHost(navController = navController, startDestination = INICIO_ROUTE) {
       composable(INICIO_ROUTE) {
          InicioRoute(
             onNavigateToLogin = { navController.navigate("login/$it") },
             onNavigateToRegister = { navController.navigate("signup/$it") },
             onLoginInvitado = { navController.navigate(QUESTION_ROUTE) },
-         )
+                    )
       }
-
+      
       composable(LOGIN_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
          LoginRoute(
@@ -45,9 +47,9 @@ fun StudyHubNavHost(
             onLoginSubmitted = { navController.navigate(QUESTION_RESULTS_ROUTE) },
             onLoginInvitado = { navController.navigate(QUESTION_ROUTE) },
             onNavUp = navController::navigateUp,
-         )
+                   )
       }
-
+      
       composable(REGISTER_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
          RegisterRoute(
@@ -55,22 +57,23 @@ fun StudyHubNavHost(
             onRegisterSubmitted = { navController.navigate(QUESTION_ROUTE) },
             onLoginInvitado = { navController.navigate(QUESTION_ROUTE) },
             onNavUp = navController::navigateUp,
-         )
+                      )
       }
-
+      
       composable(QUESTION_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
          QuestionRoute(
             email = startingEmail,
             onQuestionComplete = { navController.navigate(INICIO_ROUTE) },
             onNavUp = navController::navigateUp,
-         )
+                      )
       }
-
+      
       composable(QUESTION_RESULTS_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
          val navController = rememberNavController()
          SetupNavGraph(navController = navController)
       }
    }
-} //QuestionResultScreen2 { navController.navigate(INICIO_ROUTE) }
+   
+} // QuestionResultScreen2 { navController.navigate(INICIO_ROUTE) }

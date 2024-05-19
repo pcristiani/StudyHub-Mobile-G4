@@ -9,10 +9,10 @@ class InicioViewModel(private val userRepository: UserRepository) : ViewModel() 
 
     fun handleContinue(email: String, onNavigateToLogin:(email: String) -> Unit, onNavigateToRegister: (email: String) -> Unit,) {
         if (userRepository.existeUserEmail(email)) {
-            println("> TRUE")
+          //  println("> TRUE")
             onNavigateToLogin(email)
         } else {
-            println("> FALSE")
+          //  println("> FALSE")
             onNavigateToRegister(email)
         }
     }
