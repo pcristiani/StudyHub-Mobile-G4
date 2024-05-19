@@ -92,4 +92,7 @@ dependencies {
    testImplementation(libs.androidx.test.ext.junit)
    testImplementation(libs.androidx.test.ext.truth)
    testImplementation(libs.robolectric)
+
+   implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+   implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 }
