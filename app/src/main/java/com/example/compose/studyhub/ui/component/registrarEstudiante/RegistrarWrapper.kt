@@ -1,7 +1,8 @@
 package com.example.compose.studyhub.ui.component.registrarEstudiante
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,11 +22,13 @@ import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 ///
 @Composable
 fun QuestionWrapper(
-   @StringRes titleResourceId: Int,
+   @StringRes
+   titleResourceId: Int,
    modifier: Modifier = Modifier,
-   @StringRes directionsResourceId: Int? = null,
+   @StringRes
+   directionsResourceId: Int? = null,
    content: @Composable () -> Unit,
-) {
+                   ) {
    Column(modifier = modifier
       .padding(horizontal = 16.dp)
       .verticalScroll(rememberScrollState())) {
@@ -36,26 +39,31 @@ fun QuestionWrapper(
          QuestionDirections(it)
       }
       Spacer(Modifier.height(18.dp))
-
+      
       content()
    }
 }
 
+
 ///
 @Composable
-private fun QuestionTitle(@StringRes title: Int, modifier: Modifier = Modifier) {
+private fun QuestionTitle(@StringRes
+title: Int, modifier: Modifier = Modifier) {
    Text(text = stringResource(id = title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = slightlyDeemphasizedAlpha), modifier = modifier
-      .fillMaxWidth()
-      .background(color = MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.small)
+      .fillMaxWidth()/* .background(color = MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.small) */
+      .border(BorderStroke(2.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)))
       .padding(vertical = 24.dp, horizontal = 16.dp))
 }
+
 
 ///
 @Composable
 private fun QuestionDirections(
-   @StringRes directionsResourceId: Int, modifier: Modifier = Modifier,
-) {
-   Text(text = stringResource(id = directionsResourceId), color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), style = MaterialTheme.typography.bodySmall, modifier = modifier
+   @StringRes
+   directionsResourceId: Int,
+   modifier: Modifier = Modifier,
+                              ) {
+   Text(text = stringResource(id = directionsResourceId), color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = stronglyDeemphasizedAlpha), style = MaterialTheme.typography.bodySmall, modifier = modifier
       .fillMaxWidth()
       .padding(horizontal = 8.dp))
 }

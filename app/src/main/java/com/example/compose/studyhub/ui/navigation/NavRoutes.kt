@@ -1,6 +1,6 @@
 package com.example.compose.studyhub.ui.navigation
 
-object NavScreen {
+object NavRoutes {
    val NovedadesScreen = "screenNovedades"
    val EstudiosScreen = "screenEstudios"
    val InscripcionScreen = "screenInscripciones"

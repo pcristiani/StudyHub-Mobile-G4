@@ -25,23 +25,26 @@ import com.example.compose.studyhub.ui.component.registrarEstudiante.QuestionWra
 
 @Composable
 fun SelectPerfilUsuario(
-   @StringRes titleResourceId: Int,
-   @StringRes directionsResourceId: Int,
+   @StringRes
+   titleResourceId: Int,
+   @StringRes
+   directionsResourceId: Int,
    possibleAnswers: List<Int>,
    selectedAnswers: List<Int>,
    onOptionSelected: (selected: Boolean, answer: Int) -> Unit,
    modifier: Modifier = Modifier,
-) {
+                       ) {
    QuestionWrapper(
       modifier = modifier, titleResourceId = titleResourceId,
       directionsResourceId = directionsResourceId,
-   ) {
+                  ) {
       possibleAnswers.forEach {
          val selected = selectedAnswers.contains(it)
          CheckboxRow(modifier = Modifier.padding(vertical = 8.dp), text = stringResource(id = it), selected = selected, onOptionSelected = { onOptionSelected(!selected, it) })
       }
    }
 }
+
 
 @Composable
 fun CheckboxRow(text: String, selected: Boolean, onOptionSelected: () -> Unit, modifier: Modifier = Modifier) {
@@ -64,6 +67,9 @@ fun CheckboxRow(text: String, selected: Boolean, onOptionSelected: () -> Unit, m
       }
    }
 }
+
+
+
 
 @Preview
 @Composable

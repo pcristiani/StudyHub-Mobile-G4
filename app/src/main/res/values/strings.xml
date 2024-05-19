@@ -75,5 +75,7 @@
     <string name="neutral">Neutral</string>
     <string name="login_test">Login test</string>
     <string name="logout">Cerrar sesion</string>
+    <string name="txt_inscripciones">Inscripciones</string>
+    <string name="txt_tipo_inscripcion">Seleccionar tipo de inscripción</string>
 
 </resources>

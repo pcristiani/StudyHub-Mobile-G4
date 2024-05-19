@@ -33,7 +33,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.md_theme_light_shadow
@@ -43,22 +42,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopBar(drawerState: DrawerState) {
    val scope = rememberCoroutineScope()
-   val navController = rememberNavController()
-   
    TasksTopAppBar(openDrawer = {
       scope.launch {
          drawerState.open()
       }
-   }, onFilterAllTasks = {}, onFilterActiveTasks = {}, onFilterCompletedTasks = {}, onClearCompletedTasks = {}, onRefresh = {})/*  CenterAlignedTopAppBar(title = { Text(text = "StudyHub") }, navigationIcon = {
-      IconButton(onClick = {
-         println("TopBar")
-         scope.launch {
-            drawerState.open()
-         }
-      }) {
-         Icon(Icons.Outlined.Menu, "Menu")
-      }
-   }) */
+   },  onClearCompletedTasks = {}, onRefresh = {})
 }
 
 
@@ -78,31 +66,14 @@ fun ReplyProfileImage(drawableResource: Int, description: String, modifier: Modi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TasksTopAppBar(openDrawer: () -> Unit, onFilterAllTasks: () -> Unit, onFilterActiveTasks: () -> Unit, onFilterCompletedTasks: () -> Unit, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
+fun TasksTopAppBar(openDrawer: () -> Unit,  onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
    TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) }, navigationIcon = {
       IconButton(onClick = openDrawer) {
          Icon(Icons.Filled.Menu, stringResource(id = R.string.txt_admin))
       }
    }, actions = {
-      FilterTasksMenu(onFilterAllTasks, onFilterActiveTasks, onFilterCompletedTasks)
       MoreTasksMenu(onClearCompletedTasks, onRefresh)
    }, modifier = Modifier.fillMaxWidth())
-}
-
-
-@Composable
-private fun FilterTasksMenu(onFilterAllTasks: () -> Unit, onFilterActiveTasks: () -> Unit, onFilterCompletedTasks: () -> Unit) {
-   TopAppBarDropdownMenu(iconContent = {}) { closeMenu ->
-      DropdownMenuItem(onClick = { onFilterAllTasks(); closeMenu() }) {
-         Text(text = stringResource(id = R.string.txt_admin))
-      }
-      DropdownMenuItem(onClick = { onFilterActiveTasks(); closeMenu() }) {
-         Text(text = stringResource(id = R.string.txt_funcionario))
-      }
-      DropdownMenuItem(onClick = { onFilterCompletedTasks(); closeMenu() }) {
-         Text(text = stringResource(id = R.string.txt_continue))
-      }
-   }
 }
 
 
@@ -133,14 +104,45 @@ private fun TopAppBarDropdownMenu(iconContent: @Composable () -> Unit, content: 
          content { expanded = !expanded }
       }
    }
+}/*
+@Composable
+private fun FilterTasksMenu(onFilterAllTasks: () -> Unit, onFilterActiveTasks: () -> Unit, onFilterCompletedTasks: () -> Unit) {
+   TopAppBarDropdownMenu(iconContent = {}) { closeMenu ->
+      DropdownMenuItem(onClick = { onFilterAllTasks(); closeMenu() }) {
+         Text(text = stringResource(id = R.string.txt_admin))
+      }
+      DropdownMenuItem(onClick = { onFilterActiveTasks(); closeMenu() }) {
+         Text(text = stringResource(id = R.string.txt_funcionario))
+      }
+      DropdownMenuItem(onClick = { onFilterCompletedTasks(); closeMenu() }) {
+         Text(text = stringResource(id = R.string.txt_continue))
+      }
+   }
 }
+*//*
+@Composable
+fun MessageCard() { // Add padding around our message
+   Row(modifier = Modifier.padding(all = 8.dp)) {
+      Image(painter = painterResource(R.drawable.ic_selfie_dark), contentDescription = "Contact profile picture", modifier = Modifier // Set image size to 40 dp
+         .size(40.dp) // Clip image to be shaped as a circle
+         .clip(CircleShape)) // Add a horizontal space between the image and the column
+      Spacer(modifier = Modifier.width(8.dp))
+      
+      Column {
+         Text(text = "msg.author") // Add a vertical space between the author and message texts
+         Spacer(modifier = Modifier.height(4.dp))
+         Text(text = "msg.body")
+      }
+   }
+}
+*/
 
 
 @Preview
 @Composable
 fun TopBarPreview() {
    ThemeStudyHub {
-      TopBar(drawerState = DrawerState(DrawerValue.Closed))
+      TopBar(drawerState = DrawerState(DrawerValue.Closed)) //   MessageCard()
    }
 }
 

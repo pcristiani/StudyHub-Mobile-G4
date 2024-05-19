@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuGestion
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuInscripcion
@@ -40,7 +41,7 @@ import kotlinx.coroutines.launch
 fun MenuLateral(navController: NavHostController, drawerState: DrawerState, contenido: @Composable () -> Unit) {
    val scope = rememberCoroutineScope()
    val menuItems = listOf(ItemMenuNovedades, ItemMenuPlanEstudios, ItemMenuInscripcion, ItemMenuSolicitudes, ItemMenuGestion)
-
+   
    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
       ModalDrawerSheet { //  Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
          Column(modifier = Modifier.padding(end = 5.dp, top = 5.dp, bottom = 5.dp)) {
@@ -55,8 +56,7 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                      drawerState.close()
                   }
                   try {
-                     navController.navigate(item.ruta)
-                   //  println(item.ruta)
+                     navController.navigate(item.ruta) //  println(item.ruta)
                   } catch (e: Exception) {
                      println("Error al navegar: ${e.message}")
                   }
@@ -66,6 +66,7 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
       }
    }) { contenido() }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,24 +82,15 @@ fun HeaderMenuLateral(topAppBarText: String, onNavUp: () -> Unit) {
             Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.back), tint = MaterialTheme.colorScheme.secondary)
          }
       },
-      actions = { Spacer(modifier = Modifier.width(68.dp)) },
-   )
+      actions = { Spacer(modifier = Modifier.width(68.dp)) }, )
 }
+
 
 @Preview
 @Composable
 fun MenuLateralPreview() {
    ThemeStudyHub {
-      val menuItems = listOf(ItemMenuNovedades, ItemMenuPlanEstudios, ItemMenuInscripcion, ItemMenuSolicitudes, ItemMenuGestion)
-      ModalNavigationDrawer(drawerState = DrawerState(DrawerValue.Open), drawerContent = {
-         ModalDrawerSheet {
-            Column(modifier = Modifier.fillMaxSize()) {
-               HeaderMenuLateral(topAppBarText = "StudyHub", onNavUp = {})
-               menuItems.forEach { item ->
-                  NavigationDrawerItem(icon = { Icon(item.icon, null) }, label = { Text(text = item.title) }, selected = false, onClick = {})
-               }
-            }
-         }
-      }) {}
+      val navController = rememberNavController()
+      MenuLateral(navController, drawerState = DrawerState(DrawerValue.Open)) {}
    }
 }

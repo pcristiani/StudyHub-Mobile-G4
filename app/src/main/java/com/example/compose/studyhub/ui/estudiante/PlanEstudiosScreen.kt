@@ -23,7 +23,6 @@ fun PlanEstudiosScreen(): DrawerState {
    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
       Image(painter = painterResource(id = R.drawable.celebridad_512), modifier = Modifier.size(120.dp), contentDescription = "Logo")
       Text("Plan de estudios", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
-      
    }
    return DrawerState(DrawerValue.Closed)
 }

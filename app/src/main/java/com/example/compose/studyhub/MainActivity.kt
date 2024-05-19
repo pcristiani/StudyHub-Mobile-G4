@@ -1,22 +1,16 @@
 package com.example.compose.studyhub
 
+import LoginRequest
+import LoginResponse
+import RetrofitClient
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,12 +21,17 @@ import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
 import com.example.compose.studyhub.ui.estudiante.PlanEstudiosScreen
 import com.example.compose.studyhub.ui.estudiante.SolicitudesScreen
 import com.example.compose.studyhub.ui.navigation.MenuLateral
+import com.example.compose.studyhub.ui.navigation.NavRoutes
 import com.example.compose.studyhub.ui.navigation.TopBar
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 ///
 // * MainActivity --> Clase principal de la aplicación.
 // * AppCompatActivity --> Clase base para actividades.
+/*
 class MainActivity: AppCompatActivity() {
    
    override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,12 +39,36 @@ class MainActivity: AppCompatActivity() {
       super.onCreate(savedInstanceState)
       
       setContent {
-         ThemeStudyHub {
-            StudyHubNavHost() //
-            //  val navController = rememberNavController()
-            // SetupNavGraph(navController = navController)
+         ThemeStudyHub { // StudyHubNavHost() //
+            val navController = rememberNavController()
+            SetupNavGraph(navController = navController)
          }
       }
+   }
+}
+*/
+
+
+class MainActivity: AppCompatActivity() {
+   
+   override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)/*   setContentView(R.layout.activity_main) */
+      val loginRequest = LoginRequest("111", "XdMiq4cRVtSl")
+      
+      RetrofitClient.api.login(loginRequest).enqueue(object: Callback<LoginResponse> {
+         override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+            if (response.isSuccessful) {
+               val loginResponse = response.body() // Procesar la respuesta del login
+               Toast.makeText(this@MainActivity, "Token: ${loginResponse?.token}", Toast.LENGTH_SHORT).show()
+            } else {
+               Toast.makeText(this@MainActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+            }
+         }
+         
+         override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+            Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+         }
+      })
    }
 }
 
@@ -55,29 +78,29 @@ fun SetupNavGraph(navController: NavHostController) {
    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
    
    NavHost(navController = navController, startDestination = "screenNovedades") {
-      composable("screenNovedades") {
+      composable(NavRoutes.NovedadesScreen) {
          MenuLateral(navController, drawerState, contenido = {
-            ScreenNovedades(navController, drawerState)
+            ScreenNovedades(drawerState)
          })
       }
-      composable("screenEstudios") {
+      composable(NavRoutes.EstudiosScreen) {
          MenuLateral(navController, drawerState, contenido = {
-            ScreenEstudios(navController, drawerState)
+            ScreenEstudios(drawerState)
          })
       }
-      composable("screenInscripciones") {
+      composable(NavRoutes.InscripcionScreen) {
          MenuLateral(navController, drawerState, contenido = {
-            ScreenInscripciones(navController, drawerState)
+            ScreenInscripciones(drawerState)
          })
       }
-      composable("screenSolicitudes") {
+      composable(NavRoutes.SolicitudesScreen) {
          MenuLateral(navController, drawerState, contenido = {
-            ScreenSolicitudes(navController, drawerState)
+            ScreenSolicitudes(drawerState)
          })
       }
-      composable("screenGestion") {
+      composable(NavRoutes.GestionScreen) {
          MenuLateral(navController, drawerState, contenido = {
-            ScreenGestion(navController, drawerState)
+            ScreenGestion(drawerState)
          })
       }
    }
@@ -86,78 +109,85 @@ fun SetupNavGraph(navController: NavHostController) {
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenNovedades(navController: NavHostController, drawerState: DrawerState) {
-   Scaffold(topBar = {
-      TopBar(drawerState)
-   }) {
-      Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-         NovedadesScreen()
-      }
-   }
+fun ScreenNovedades(drawerState: DrawerState) {
+   TopBar(drawerState)
+   NovedadesScreen()
 }
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenEstudios(navController: NavHostController, drawerState: DrawerState) {
-   val scope = rememberCoroutineScope()
-   Scaffold(topBar = {
-      TopBar(drawerState)
-   }) {
-      Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-         Text("PLAN DE ESTUDIOS")
-         PlanEstudiosScreen()
-      }
-   }
+fun ScreenEstudios(drawerState: DrawerState) {
+   TopBar(drawerState)
+   PlanEstudiosScreen()
 }
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenInscripciones(navController: NavHostController, drawerState: DrawerState) {
-   Scaffold(topBar = {
-      TopBar(drawerState)
-   }) {
-      Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-         Text("INSCRIPCIONES")
-         InscripcionScreen()
-      }
-   }
+fun ScreenInscripciones(drawerState: DrawerState) {
+   TopBar(drawerState)
+   InscripcionScreen()
 }
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenSolicitudes(navController: NavHostController, drawerState: DrawerState) {
-   Scaffold(topBar = {
-      TopBar(drawerState)
-   }) {
-      Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-         Text("SOLICITUDES")
-         SolicitudesScreen()
-      }
-   }
+fun ScreenSolicitudes(drawerState: DrawerState) {
+   TopBar(drawerState)
+   SolicitudesScreen()
 }
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenGestion(navController: NavHostController, drawerState: DrawerState) {
-   Scaffold(topBar = {
-      TopBar(drawerState)
-   }) {
-      Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-         Text("GESTIÓN")
-         GestionScreen()
-      }
+fun ScreenGestion(drawerState: DrawerState) {
+   TopBar(drawerState)
+   GestionScreen()
+}
+
+
+@Preview
+@Composable
+fun NovedadesScreenPreview() {
+   ThemeStudyHub {
+      TopBar(NovedadesScreen())
    }
 }
 
 
 @Preview
 @Composable
-fun TopBarPreview() {
+fun PlanEstudiosScreenPreview() {
    ThemeStudyHub {
-      TopBar(NovedadesScreen())
+      TopBar(PlanEstudiosScreen())
    }
 }
+
+
+@Preview
+@Composable
+fun InscripcionScreenPreview() {
+   ThemeStudyHub {
+      TopBar(InscripcionScreen())
+   }
+}
+
+
+@Preview
+@Composable
+fun SolicitudesScreenPreview() {
+   ThemeStudyHub {
+      TopBar(SolicitudesScreen())
+   }
+}
+
+
+@Preview
+@Composable
+fun GestionScreenPreview() {
+   ThemeStudyHub {
+      TopBar(GestionScreen())
+   }
+}
+
