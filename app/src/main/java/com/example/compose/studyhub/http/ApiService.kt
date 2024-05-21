@@ -14,17 +14,9 @@ interface ApiService {
    fun login(
       @Body
       loginRequest: LoginRequest
-            ): Call<LoginResponse>
-
-
-   @POST("cerrarSesion")
-   fun logout(
-       @Body
-       loginResponse: LoginResponse
-   )
+            ): Call<String>
 }
 
-data class LoginResponse(val token: String)
 
 data class LoginRequest(val cedula: String, val password: String)
 

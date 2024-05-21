@@ -1,7 +1,6 @@
 package com.example.compose.studyhub
 
 import LoginRequest
-import LoginResponse
 import RetrofitClient
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -56,21 +55,24 @@ class MainActivity: AppCompatActivity() {
       super.onCreate(savedInstanceState)/*   setContentView(R.layout.activity_main) */
       val loginRequest = LoginRequest("52275944", "GCBBp79Kz3Mr")
       
-      RetrofitClient.api.login(loginRequest).enqueue(object: Callback<LoginResponse> {
-         override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+      RetrofitClient.api.login(loginRequest).enqueue(object: Callback<String> {
+         override fun onResponse(call: Call<String>, response: Response<String>) {
             if (response.isSuccessful) {
-               val loginResponse = response.body() // Procesar la respuesta del login
+               val token = response.body() // Procesar la respuesta del login
 
-               val decodedResponse = decodeJWT(loginResponse!!.token)
+
+               if(token!=null){
+                  val decodedResponse = decodeJWT(token)
+               }
 
                //println("$decodedResponse")
-               Toast.makeText(this@MainActivity, "Token: ${loginResponse?.token}", Toast.LENGTH_SHORT).show()
+               Toast.makeText(this@MainActivity, "Token: $token", Toast.LENGTH_SHORT).show()
             } else {
                Toast.makeText(this@MainActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
             }
          }
          
-         override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+         override fun onFailure(call: Call<String>, t: Throwable) {
             Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             println("Error: ${t.message}")
          }
