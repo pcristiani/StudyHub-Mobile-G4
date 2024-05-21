@@ -27,6 +27,7 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.example.compose.studyhub.auth.decodeJWT
 
 ///
 // * MainActivity --> Clase principal de la aplicación.
@@ -53,12 +54,16 @@ class MainActivity: AppCompatActivity() {
    
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)/*   setContentView(R.layout.activity_main) */
-      val loginRequest = LoginRequest("111", "XdMiq4cRVtSl")
+      val loginRequest = LoginRequest("52275944", "GCBBp79Kz3Mr")
       
       RetrofitClient.api.login(loginRequest).enqueue(object: Callback<LoginResponse> {
          override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
             if (response.isSuccessful) {
                val loginResponse = response.body() // Procesar la respuesta del login
+
+               val decodedResponse = decodeJWT(loginResponse!!.token)
+
+               //println("$decodedResponse")
                Toast.makeText(this@MainActivity, "Token: ${loginResponse?.token}", Toast.LENGTH_SHORT).show()
             } else {
                Toast.makeText(this@MainActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
@@ -67,6 +72,7 @@ class MainActivity: AppCompatActivity() {
          
          override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
             Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            println("Error: ${t.message}")
          }
       })
    }

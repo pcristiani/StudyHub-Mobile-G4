@@ -8,11 +8,20 @@ interface ApiService {
    @Headers(
       "Accept: */*", "Content-Type: application/json"
            )
+
+
    @POST("iniciarSesion")
    fun login(
       @Body
       loginRequest: LoginRequest
             ): Call<LoginResponse>
+
+
+   @POST("cerrarSesion")
+   fun logout(
+       @Body
+       loginResponse: LoginResponse
+   )
 }
 
 data class LoginResponse(val token: String)
