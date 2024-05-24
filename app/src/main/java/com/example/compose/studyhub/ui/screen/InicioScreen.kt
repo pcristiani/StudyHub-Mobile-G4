@@ -103,7 +103,7 @@ private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onLogin
       }
       onFocusChange(ciState.isFocused)
 
-      Email(ciState = ciState, imeAction = ImeAction.Done, onImeAction = onSubmit)
+      CI(ciState = ciState, imeAction = ImeAction.Done, onImeAction = onSubmit)
       Button(onClick = onSubmit, modifier = Modifier
          .fillMaxWidth()
          .padding(top = 24.dp, bottom = 8.dp)) {

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">StudyHub</string>
     <string name="app_title">StudyHub</string>
+    <string name="name">Nombre</string>
+    <string name="surName">Apellido</string>
     <string name="email">Email</string>
     <string name="CI">Cédula de Identidad</string>
     <string name="password">Contraseña</string>

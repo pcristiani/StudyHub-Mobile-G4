@@ -85,6 +85,40 @@ fun LoginRegisterTopAppBar(topAppBarText: String, onNavUp: () -> Unit) {
                          )
 }
 
+@Composable
+fun Name(textState: TextFieldState = remember { TextFieldState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
+   OutlinedTextField(value = textState.text, onValueChange = { textState.text = it }, label = {
+      Text(text = stringResource(id = R.string.name), style = MaterialTheme.typography.bodyMedium)
+   }, modifier = Modifier
+      .fillMaxWidth()
+      .onFocusChanged { focusState ->
+         textState.onFocusChange(focusState.isFocused)
+
+         if (!focusState.isFocused) {
+            textState.enableShowErrors()
+         }
+      }, textStyle = MaterialTheme.typography.bodyMedium, isError = textState.showErrors(), keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Email), keyboardActions = KeyboardActions(onDone = { onImeAction() }), singleLine = true)
+   textState.getError()
+      ?.let { error -> TextFieldError(textError = error) }
+}
+
+@Composable
+fun SurName(textState: TextFieldState = remember { TextFieldState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
+   OutlinedTextField(value = textState.text, onValueChange = { textState.text = it }, label = {
+      Text(text = stringResource(id = R.string.surName), style = MaterialTheme.typography.bodyMedium)
+   }, modifier = Modifier
+      .fillMaxWidth()
+      .onFocusChanged { focusState ->
+         textState.onFocusChange(focusState.isFocused)
+
+         if (!focusState.isFocused) {
+            textState.enableShowErrors()
+         }
+      }, textStyle = MaterialTheme.typography.bodyMedium, isError = textState.showErrors(), keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Email), keyboardActions = KeyboardActions(onDone = { onImeAction() }), singleLine = true)
+   textState.getError()
+      ?.let { error -> TextFieldError(textError = error) }
+}
+
 
 ///
 // Email muestra un campo de texto para el correo electrónico
@@ -108,7 +142,7 @@ fun CI(ciState: TextFieldState = remember { CIState() }, imeAction: ImeAction = 
 @Composable
 fun Email(emailState: TextFieldState = remember { EmailState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
    OutlinedTextField(value = emailState.text, onValueChange = { emailState.text = it }, label = {
-      Text(text = stringResource(id = R.string.CI), style = MaterialTheme.typography.bodyMedium)
+      Text(text = stringResource(id = R.string.email), style = MaterialTheme.typography.bodyMedium)
    }, modifier = Modifier
       .fillMaxWidth()
       .onFocusChanged { focusState ->

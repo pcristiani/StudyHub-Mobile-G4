@@ -91,7 +91,7 @@ fun LoginTest(
       val focusRequester = remember { FocusRequester() }
       val ciState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState(ci)) }
       
-      Email(ciState = ciState, onImeAction = { focusRequester.requestFocus() })
+      CI(ciState = ciState, onImeAction = { focusRequester.requestFocus() })
       Spacer(modifier = Modifier.height(16.dp))
       val passwordState = remember { PasswordState() }
       val onSubmit = {

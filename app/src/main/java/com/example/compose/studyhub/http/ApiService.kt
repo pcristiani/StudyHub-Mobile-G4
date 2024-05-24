@@ -26,4 +26,4 @@ interface ApiService {
 
 data class LoginRequest(val cedula: String, val password: String)
 
-data class RegisterRequest(val nombre: String, val apellido: String, val email: String, val fechaNacimiento: String, val ci: String, val password: String, val rol: String="E")
+data class RegisterRequest(val nombre: String, val apellido: String, val email: String, val fechaNacimiento: String, val cedula: String, val password: String, val rol: String="E")

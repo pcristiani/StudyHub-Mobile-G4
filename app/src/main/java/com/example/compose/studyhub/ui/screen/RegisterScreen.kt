@@ -66,11 +66,11 @@ fun RegisterContent(
 
 
       val nameState = remember { TextFieldState() }
-      Email(nameState, onImeAction = { passwordFocusRequest.requestFocus() })
+      Name(nameState, onImeAction = { passwordFocusRequest.requestFocus() })
 
       Spacer(modifier = Modifier.height(16.dp))
       val surNameState = remember { TextFieldState() }
-      Email(surNameState, onImeAction = { passwordFocusRequest.requestFocus() })
+      SurName(surNameState, onImeAction = { passwordFocusRequest.requestFocus() })
 
       Spacer(modifier = Modifier.height(16.dp))
       val ciState = remember { CIState(ci) }
@@ -88,7 +88,7 @@ fun RegisterContent(
 
       Spacer(modifier = Modifier.height(1.dp))
       val confirmPasswordState = remember { ConfirmPasswordState(passwordState = passwordState) }
-      Password(label = stringResource(id = R.string.confirm_password), passwordState = confirmPasswordState, onImeAction = { onRegisterSubmitted(nameState.text, surNameState.text, ciState.text, emailState.text,"", passwordState.text) }, modifier = Modifier.focusRequester(confirmationPasswordFocusRequest))
+      Password(label = stringResource(id = R.string.confirm_password), passwordState = confirmPasswordState, onImeAction = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text,"2000-12-05", ciState.text, passwordState.text) }, modifier = Modifier.focusRequester(confirmationPasswordFocusRequest))
 
       Spacer(modifier = Modifier.height(15.dp))
 
@@ -96,7 +96,7 @@ fun RegisterContent(
 
       Spacer(modifier = Modifier.height(15.dp))
 
-      Button(onClick = { onRegisterSubmitted(nameState.text, surNameState.text, ciState.text, emailState.text,"", passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
+      Button(onClick = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text,"2000-12-05", ciState.text, passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
 
       OrLoginInvitados(onLoginInvitado = onLoginInvitado, modifier = Modifier.fillMaxWidth())
    }

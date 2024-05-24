@@ -34,7 +34,7 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     val responseText = response.body() // Procesar la respuesta del login
 
-
+                    println(registerRequest)
 
                     if (responseText != null) {
                         println(responseText)
@@ -43,6 +43,7 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
                     if (response.isSuccessful) {
 
                         onRegisterSubmitted()
+                        println(responseText)
                     }
                 }
 
