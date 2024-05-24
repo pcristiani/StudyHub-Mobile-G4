@@ -18,7 +18,8 @@ fun RegisterRoute(
     RegisterScreen(
         ci = ci,
         onRegisterSubmitted = { nombre, apellido, email, fechaNacimiento, ci, password ->
-            signUpViewModel.signUp(nombre, apellido, email, fechaNacimiento, ci, password)
+            signUpViewModel.signUp(nombre, apellido, email, fechaNacimiento, ci, password,onRegisterSubmitted)
+
         },
         onLoginInvitado = { signUpViewModel.loginInvitado(onLoginInvitado) },
         onNavUp = onNavUp,

@@ -21,6 +21,7 @@ import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.ConfirmPasswordState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.PasswordState
+import com.example.compose.studyhub.domain.TextFieldState
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
@@ -61,9 +62,24 @@ fun RegisterContent(
    Column(modifier = Modifier.fillMaxWidth()) {
       val passwordFocusRequest = remember { FocusRequester() }
       val confirmationPasswordFocusRequest = remember { FocusRequester() }
-      val ciState = remember { EmailState(ci) }
 
+
+      val nameState = remember { TextFieldState() }
+      Email(nameState, onImeAction = { passwordFocusRequest.requestFocus() })
+
+      Spacer(modifier = Modifier.height(16.dp))
+      val surNameState = remember { TextFieldState() }
+      Email(surNameState, onImeAction = { passwordFocusRequest.requestFocus() })
+
+      Spacer(modifier = Modifier.height(16.dp))
+      val ciState = remember { TextFieldState(ci) }
       Email(ciState, onImeAction = { passwordFocusRequest.requestFocus() })
+
+      Spacer(modifier = Modifier.height(16.dp))
+      val emailState = remember{EmailState()}
+      Email(emailState, onImeAction = { passwordFocusRequest.requestFocus() })
+
+
 
       Spacer(modifier = Modifier.height(16.dp))
       val passwordState = remember { PasswordState() }
@@ -71,7 +87,7 @@ fun RegisterContent(
 
       Spacer(modifier = Modifier.height(1.dp))
       val confirmPasswordState = remember { ConfirmPasswordState(passwordState = passwordState) }
-      Password(label = stringResource(id = R.string.confirm_password), passwordState = confirmPasswordState, onImeAction = { onRegisterSubmitted(ciState.text, passwordState.text) }, modifier = Modifier.focusRequester(confirmationPasswordFocusRequest))
+      Password(label = stringResource(id = R.string.confirm_password), passwordState = confirmPasswordState, onImeAction = { onRegisterSubmitted(nameState.text, surNameState.text, ciState.text, emailState.text,"", passwordState.text) }, modifier = Modifier.focusRequester(confirmationPasswordFocusRequest))
 
       Spacer(modifier = Modifier.height(15.dp))
 
@@ -79,11 +95,13 @@ fun RegisterContent(
 
       Spacer(modifier = Modifier.height(15.dp))
 
-      Button(onClick = { onRegisterSubmitted(ciState.text, passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
+      Button(onClick = { onRegisterSubmitted(nameState.text, surNameState.text, ciState.text, emailState.text,"", passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
 
       OrLoginInvitados(onLoginInvitado = onLoginInvitado, modifier = Modifier.fillMaxWidth())
    }
 }
+
+
 
 ///
 /*@Preview(widthDp = 1024)*/
@@ -93,7 +111,7 @@ fun RegisterPreview() {
    ThemeStudyHub {
       RegisterScreen(
          ci = null,
-         onRegisterSubmitted = { _, _ -> },
+         onRegisterSubmitted = { _, _, _, _, _, _ -> },
          onLoginInvitado = {},
          onNavUp = {},
       )
