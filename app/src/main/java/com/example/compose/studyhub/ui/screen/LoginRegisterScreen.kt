@@ -43,6 +43,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.domain.CIState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.TextFieldState
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
@@ -88,7 +89,7 @@ fun LoginRegisterTopAppBar(topAppBarText: String, onNavUp: () -> Unit) {
 ///
 // Email muestra un campo de texto para el correo electrónico
 @Composable
-fun Email(ciState: TextFieldState = remember { EmailState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
+fun CI(ciState: TextFieldState = remember { CIState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
    OutlinedTextField(value = ciState.text, onValueChange = { ciState.text = it }, label = {
       Text(text = stringResource(id = R.string.CI), style = MaterialTheme.typography.bodyMedium)
    }, modifier = Modifier
@@ -104,6 +105,22 @@ fun Email(ciState: TextFieldState = remember { EmailState() }, imeAction: ImeAct
       ?.let { error -> TextFieldError(textError = error) }
 }
 
+@Composable
+fun Email(emailState: TextFieldState = remember { EmailState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
+   OutlinedTextField(value = emailState.text, onValueChange = { emailState.text = it }, label = {
+      Text(text = stringResource(id = R.string.CI), style = MaterialTheme.typography.bodyMedium)
+   }, modifier = Modifier
+      .fillMaxWidth()
+      .onFocusChanged { focusState ->
+         emailState.onFocusChange(focusState.isFocused)
+
+         if (!focusState.isFocused) {
+            emailState.enableShowErrors()
+         }
+      }, textStyle = MaterialTheme.typography.bodyMedium, isError = emailState.showErrors(), keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Email), keyboardActions = KeyboardActions(onDone = { onImeAction() }), singleLine = true)
+   emailState.getError()
+      ?.let { error -> TextFieldError(textError = error) }
+}
 
 ///
 // Password muestra un campo de texto para la contraseña
@@ -181,7 +198,7 @@ fun LoginRegisterScreenPreview() {
       Surface {
          LoginRegisterScreen(onLoginInvitado = {}, modifier = Modifier.fillMaxSize(), content = {
             Column {
-               Email(ciState = remember { EmailState() })
+               CI(ciState = remember { CIState() })
                Password(label = stringResource(id = R.string.password), passwordState = remember { EmailState() })
             }
          })

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.domain.CIState
 import com.example.compose.studyhub.domain.ConfirmPasswordState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.PasswordState
@@ -72,8 +73,8 @@ fun RegisterContent(
       Email(surNameState, onImeAction = { passwordFocusRequest.requestFocus() })
 
       Spacer(modifier = Modifier.height(16.dp))
-      val ciState = remember { TextFieldState(ci) }
-      Email(ciState, onImeAction = { passwordFocusRequest.requestFocus() })
+      val ciState = remember { CIState(ci) }
+      CI(ciState, onImeAction = { passwordFocusRequest.requestFocus() })
 
       Spacer(modifier = Modifier.height(16.dp))
       val emailState = remember{EmailState()}
