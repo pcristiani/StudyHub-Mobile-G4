@@ -43,7 +43,7 @@ fun StudyHubNavHost(
       composable(LOGIN_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
          LoginRoute(
-            email = startingEmail,
+            ci = startingEmail,
             onLoginSubmitted = { navController.navigate(QUESTION_RESULTS_ROUTE) },
             onLoginInvitado = { navController.navigate(QUESTION_ROUTE) },
             onNavUp = navController::navigateUp,
@@ -53,7 +53,7 @@ fun StudyHubNavHost(
       composable(REGISTER_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
          RegisterRoute(
-            email = startingEmail,
+            ci = startingEmail,
             onRegisterSubmitted = { navController.navigate(QUESTION_ROUTE) },
             onLoginInvitado = { navController.navigate(QUESTION_ROUTE) },
             onNavUp = navController::navigateUp,

@@ -44,8 +44,8 @@ import kotlinx.coroutines.launch
 ///
 @Composable
 fun LoginScreen(
-   email: String?,
-   onLoginSubmitted: (email: String, password: String) -> Unit,
+   ci: String?,
+   onLoginSubmitted: (ci: String, password: String) -> Unit,
    onLoginInvitado: () -> Unit,
    onNavUp: () -> Unit,
                ) {
@@ -59,7 +59,7 @@ fun LoginScreen(
    }, content = { contentPadding ->
       LoginRegisterScreen(modifier = Modifier.supportWideScreen(), contentPadding = contentPadding, onLoginInvitado = onLoginInvitado) {
          Column(modifier = Modifier.fillMaxWidth()) {
-            LoginTest(email = email, onLoginSubmitted = onLoginSubmitted, onLoginInvitado = onLoginInvitado)
+            LoginTest(ci = ci, onLoginSubmitted = onLoginSubmitted, onLoginInvitado = onLoginInvitado)
             Spacer(modifier = Modifier.height(5.dp))
             
             TextButton(onClick = {
@@ -80,7 +80,7 @@ fun LoginScreen(
 ///
 @Composable
 fun LoginTest(
-   email: String?,
+   ci: String?,
    onLoginSubmitted: (email: String, password: String) -> Unit,
    onLoginInvitado: () -> Unit,
              ) {
@@ -89,19 +89,19 @@ fun LoginTest(
    
    Column(modifier = Modifier.fillMaxWidth()) {
       val focusRequester = remember { FocusRequester() }
-      val emailState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState(email)) }
+      val ciState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState(ci)) }
       
-      Email(emailState = emailState, onImeAction = { focusRequester.requestFocus() })
+      Email(ciState = ciState, onImeAction = { focusRequester.requestFocus() })
       Spacer(modifier = Modifier.height(16.dp))
       val passwordState = remember { PasswordState() }
       val onSubmit = {
-         if (emailState.isValid && passwordState.isValid) {
-            val validarResponde = getLoginTest(emailState.text, passwordState.text)
+         if (ciState.isValid && passwordState.isValid) {
+            val validarResponde = getLoginTest(ciState.text, passwordState.text)
             if (validarResponde) {
-               print("VALIDADO - " + emailState.text)
-               onLoginSubmitted(emailState.text, passwordState.text)
+               print("VALIDADO - " + ciState.text)
+               onLoginSubmitted(ciState.text, passwordState.text)
             } else {
-               print("NO VALIDADO - " + emailState.text) // onNavigateToRegister()
+               print("NO VALIDADO - " + ciState.text) // onNavigateToRegister()
             }
          }
       }
@@ -111,7 +111,7 @@ fun LoginTest(
       
       Button(onClick = { onSubmit() }, modifier = Modifier
          .fillMaxWidth()
-         .padding(vertical = 16.dp), enabled = emailState.isValid && passwordState.isValid) {
+         .padding(vertical = 16.dp), enabled = ciState.isValid && passwordState.isValid) {
          Text(text = stringResource(id = R.string.sign_in))
       }
    }
@@ -168,6 +168,6 @@ fun OrLoginInvitados(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier)
 @Composable
 fun LoginPreview() {
    ThemeStudyHub {
-      LoginScreen(email = null, onLoginSubmitted = { _, _ -> }, onLoginInvitado = {}, onNavUp = {})
+      LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onLoginInvitado = {}, onNavUp = {})
    }
 }

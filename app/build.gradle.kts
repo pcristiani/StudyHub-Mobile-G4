@@ -97,4 +97,5 @@ dependencies {
    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
    implementation ("com.auth0.android:jwtdecode:2.0.2")
+   implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
 }

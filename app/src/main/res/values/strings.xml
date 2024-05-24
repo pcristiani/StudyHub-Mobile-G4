@@ -2,6 +2,7 @@
     <string name="app_name">StudyHub</string>
     <string name="app_title">StudyHub</string>
     <string name="email">Email</string>
+    <string name="CI">Cédula de Identidad</string>
     <string name="password">Contraseña</string>
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="sign_in">Iniciar sesión</string>

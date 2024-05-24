@@ -88,19 +88,19 @@ fun LoginRegisterTopAppBar(topAppBarText: String, onNavUp: () -> Unit) {
 ///
 // Email muestra un campo de texto para el correo electrónico
 @Composable
-fun Email(emailState: TextFieldState = remember { EmailState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
-   OutlinedTextField(value = emailState.text, onValueChange = { emailState.text = it }, label = {
-      Text(text = stringResource(id = R.string.email), style = MaterialTheme.typography.bodyMedium)
+fun Email(ciState: TextFieldState = remember { EmailState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
+   OutlinedTextField(value = ciState.text, onValueChange = { ciState.text = it }, label = {
+      Text(text = stringResource(id = R.string.CI), style = MaterialTheme.typography.bodyMedium)
    }, modifier = Modifier
       .fillMaxWidth()
       .onFocusChanged { focusState ->
-         emailState.onFocusChange(focusState.isFocused)
+         ciState.onFocusChange(focusState.isFocused)
          
          if (!focusState.isFocused) {
-            emailState.enableShowErrors()
+            ciState.enableShowErrors()
          }
-      }, textStyle = MaterialTheme.typography.bodyMedium, isError = emailState.showErrors(), keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Email), keyboardActions = KeyboardActions(onDone = { onImeAction() }), singleLine = true)
-   emailState.getError()
+      }, textStyle = MaterialTheme.typography.bodyMedium, isError = ciState.showErrors(), keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Email), keyboardActions = KeyboardActions(onDone = { onImeAction() }), singleLine = true)
+   ciState.getError()
       ?.let { error -> TextFieldError(textError = error) }
 }
 
@@ -181,7 +181,7 @@ fun LoginRegisterScreenPreview() {
       Surface {
          LoginRegisterScreen(onLoginInvitado = {}, modifier = Modifier.fillMaxSize(), content = {
             Column {
-               Email(emailState = remember { EmailState() })
+               Email(ciState = remember { EmailState() })
                Password(label = stringResource(id = R.string.password), passwordState = remember { EmailState() })
             }
          })

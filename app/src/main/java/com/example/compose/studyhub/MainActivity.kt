@@ -3,17 +3,28 @@ package com.example.compose.studyhub
 import LoginRequest
 import RetrofitClient
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.compose.studyhub.auth.decodeJWT
 import com.example.compose.studyhub.ui.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
 import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
@@ -22,70 +33,151 @@ import com.example.compose.studyhub.ui.estudiante.SolicitudesScreen
 import com.example.compose.studyhub.ui.navigation.MenuLateral
 import com.example.compose.studyhub.ui.navigation.NavRoutes
 import com.example.compose.studyhub.ui.navigation.TopBar
+import com.example.compose.studyhub.ui.route.InicioRoute
+import com.example.compose.studyhub.ui.route.LoginRoute
+import com.example.compose.studyhub.ui.route.RegisterRoute
+import com.example.compose.studyhub.ui.screen.LoginRegisterScreen
+import com.example.compose.studyhub.ui.screen.LoginScreen
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.example.compose.studyhub.auth.decodeJWT
 
 ///
 // * MainActivity --> Clase principal de la aplicación.
 // * AppCompatActivity --> Clase base para actividades.
-/*
+
 class MainActivity: AppCompatActivity() {
-   
+
+
+
+
    override fun onCreate(savedInstanceState: Bundle?) {
+
+
+
       enableEdgeToEdge()
       super.onCreate(savedInstanceState)
-      
-      setContent {
-         ThemeStudyHub { // StudyHubNavHost() //
+
+
+      setContent{
+         ThemeStudyHub {
             val navController = rememberNavController()
             SetupNavGraph(navController = navController)
          }
       }
    }
 }
-*/
 
+
+/*
 
 class MainActivity: AppCompatActivity() {
-   
-   override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)/*   setContentView(R.layout.activity_main) */
-      val loginRequest = LoginRequest("52275944", "GCBBp79Kz3Mr")
-      
-      RetrofitClient.api.login(loginRequest).enqueue(object: Callback<String> {
-         override fun onResponse(call: Call<String>, response: Response<String>) {
-            if (response.isSuccessful) {
-               val token = response.body() // Procesar la respuesta del login
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+     super.onCreate(savedInstanceState)/*   setContentView(R.layout.activity_main) */
 
 
-               if(token!=null){
-                  val decodedResponse = decodeJWT(token)
-               }
+     setContent{
+        ThemeStudyHub {
+           InicioScreen(
+              onLoginRegister = {navController.navigate("loginRegister") },
+              onLoginInvitado = { /* Handle login as guest */ }
+           )
+        }
+     }
 
-               //println("$decodedResponse")
-               Toast.makeText(this@MainActivity, "Token: $token", Toast.LENGTH_SHORT).show()
-            } else {
-               Toast.makeText(this@MainActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
-            }
-         }
-         
-         override fun onFailure(call: Call<String>, t: Throwable) {
-            Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-            println("Error: ${t.message}")
-         }
-      })
+
+
+
+
+    val loginRequest = LoginRequest("52275944", "GCBBp79Kz3Mr")
+
+     RetrofitClient.api.login(loginRequest).enqueue(object: Callback<String> {
+        override fun onResponse(call: Call<String>, response: Response<String>) {
+           if (response.isSuccessful) {
+              val token = response.body() // Procesar la respuesta del login
+
+
+              if(token!=null){
+                 val decodedResponse = decodeJWT(token)
+              }
+
+              //println("$decodedResponse")
+              Toast.makeText(this@MainActivity, "Token: $token", Toast.LENGTH_SHORT).show()
+           } else {
+              Toast.makeText(this@MainActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+           }
+        }
+
+        override fun onFailure(call: Call<String>, t: Throwable) {
+           Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+           println("Error: ${t.message}")
+        }
+     })
    }
-}
+}*/
 
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
+   val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
    
-   NavHost(navController = navController, startDestination = "screenNovedades") {
+   NavHost(navController = navController, startDestination = "inicioScreen") {
+
+      composable("inicioScreen") {
+         /*InicioScreen(
+            onLoginRegister = { navController.navigate("loginRegister") },
+            onLoginInvitado = { /* Handle login as guest */ }
+         )*/
+         InicioRoute(onNavigateToLogin = { ci ->
+            navController.navigate("loginScreen/$ci")
+         },
+            onNavigateToRegister = { ci ->
+               navController.navigate("registerScreen/$ci")
+                                   },
+            onLoginInvitado = {
+               navController.navigate("homeScreen")
+            })
+      }
+
+
+      composable(NavRoutes.LoginScreen) {
+         val ci = it.arguments?.getString("ci")
+
+         LoginRoute(
+            ci = ci,
+            onLoginSubmitted = {
+               // Handle login submitted action
+            },
+            onLoginInvitado = {
+               // Handle login as guest
+            },
+            onNavUp = {
+               navController.popBackStack()
+            }
+         )
+      }
+
+      composable(NavRoutes.RegisterScreen) {
+         val ci = it.arguments?.getString("ci")
+
+         RegisterRoute(
+            ci = ci,
+            onRegisterSubmitted = {
+               // Handle login submitted action
+            },
+            onLoginInvitado = {
+               // Handle login as guest
+            },
+            onNavUp = {
+               navController.popBackStack()
+            }
+         )
+      }
+
+
       composable(NavRoutes.NovedadesScreen) {
          MenuLateral(navController, drawerState, contenido = {
             ScreenNovedades(drawerState)
@@ -113,7 +205,6 @@ fun SetupNavGraph(navController: NavHostController) {
       }
    }
 }
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

@@ -90,20 +90,20 @@ private fun Logo(
 // ? Crear cuenta
 @Composable
 private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onLoginInvitado: () -> Unit, onFocusChange: (Boolean) -> Unit, modifier: Modifier = Modifier) { // ! Guardar y resturar un estado
-   val emailState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState()) }
+   val ciState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState()) }
 
    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
       Text(text = stringResource(id = R.string.sign_in_create_account), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), textAlign = TextAlign.Center, modifier = Modifier.padding(top = 150.dp, bottom = 6.dp))
       val onSubmit = { // * Verifica si el email es valido
-         if (emailState.isValid) {
-            onLoginRegister(emailState.text)
+         if (ciState.isValid) {
+            onLoginRegister(ciState.text)
          } else {
-            emailState.enableShowErrors()
+            ciState.enableShowErrors()
          }
       }
-      onFocusChange(emailState.isFocused)
+      onFocusChange(ciState.isFocused)
 
-      Email(emailState = emailState, imeAction = ImeAction.Done, onImeAction = onSubmit)
+      Email(ciState = ciState, imeAction = ImeAction.Done, onImeAction = onSubmit)
       Button(onClick = onSubmit, modifier = Modifier
          .fillMaxWidth()
          .padding(top = 24.dp, bottom = 8.dp)) {

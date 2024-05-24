@@ -6,4 +6,6 @@ object NavRoutes {
    val InscripcionScreen = "screenInscripciones"
    val SolicitudesScreen = "screenSolicitudes"
    val GestionScreen = "screenGestion"
+   val LoginScreen = "loginScreen/{ci}"
+   val RegisterScreen = "registerScreen/{ci}"
 }

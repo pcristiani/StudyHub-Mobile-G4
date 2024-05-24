@@ -9,16 +9,16 @@ import com.example.compose.studyhub.viewModel.RegisterViewModelFactory
 ///
 @Composable
 fun RegisterRoute(
-    email: String?,
+    ci: String?,
     onRegisterSubmitted: () -> Unit,
     onLoginInvitado: () -> Unit,
     onNavUp: () -> Unit,
 ) {
     val signUpViewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory())
     RegisterScreen(
-        email = email,
-        onRegisterSubmitted = { email, password ->
-            signUpViewModel.signUp(email, password, onRegisterSubmitted)
+        ci = ci,
+        onRegisterSubmitted = { nombre, apellido, email, fechaNacimiento, ci, password ->
+            signUpViewModel.signUp(nombre, apellido, email, fechaNacimiento, ci, password)
         },
         onLoginInvitado = { signUpViewModel.loginInvitado(onLoginInvitado) },
         onNavUp = onNavUp,
