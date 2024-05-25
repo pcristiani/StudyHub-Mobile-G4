@@ -1,6 +1,11 @@
 package com.example.compose.studyhub.data
 
 import androidx.compose.runtime.Immutable
+import com.example.compose.studyhub.auth.decodeJWT
+import com.example.compose.studyhub.auth.decodeUser
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 ///
 sealed class User {
@@ -36,9 +41,34 @@ object UserRepository {
    }
 
    fun existeUserEmail(email: String): Boolean {
+      /*
       for (e in listEmailRegistrados) { // println(" " + e.second + e.first)
          if (email == e.second) return true
       }
+       */
+
+      RetrofitClient.api.getUsers().enqueue(object : Callback<String> {
+
+         override fun onResponse(call: Call<String>, response: Response<String>) {
+            if (response.isSuccessful) {
+               val token = response.body() // Procesar la respuesta del login
+
+               if (token != null) {
+                  val usersList = decodeUser(token)
+                  println(usersList)
+               }
+
+            } else {
+               println("Incorrect credentials")
+            }
+         }
+
+         override fun onFailure(call: Call<String>, t: Throwable) {
+            println("Error: ${t.message}")
+         }
+
+      })
+
       return false
    }
 

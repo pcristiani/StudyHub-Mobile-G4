@@ -135,7 +135,7 @@ fun SetupNavGraph(navController: NavHostController) {
             navController.navigate("loginScreen/$ci")
          },
             onNavigateToRegister = { ci ->
-               navController.navigate("registerScreen/$ci")
+               navController.navigate("loginScreen/$ci")
                                    },
             onLoginInvitado = {
                navController.navigate("homeScreen")
@@ -149,7 +149,7 @@ fun SetupNavGraph(navController: NavHostController) {
          LoginRoute(
             ci = ci,
             onLoginSubmitted = {
-               // Handle login submitted action
+               navController.navigate("screenNovedades")
             },
             onLoginInvitado = {
                // Handle login as guest

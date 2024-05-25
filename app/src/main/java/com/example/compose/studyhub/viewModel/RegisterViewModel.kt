@@ -28,13 +28,13 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
 
             val registerRequest = RegisterRequest(nombre, apellido, email, fechaNacimiento, ci, password)
 
-
+            println(registerRequest)
 
             RetrofitClient.api.signUp(registerRequest).enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     val responseText = response.body() // Procesar la respuesta del login
 
-                    println(registerRequest)
+                    println(response)
 
                     if (responseText != null) {
                         println(responseText)

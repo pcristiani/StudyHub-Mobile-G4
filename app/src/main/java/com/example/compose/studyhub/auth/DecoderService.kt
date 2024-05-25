@@ -1,6 +1,8 @@
 package com.example.compose.studyhub.auth
 
 import com.auth0.android.jwt.JWT
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 fun decodeJWT(token: String) {
     try {
@@ -8,14 +10,40 @@ fun decodeJWT(token: String) {
 
         // Acceder a los claims
         val id = jwt.getClaim("id").asInt()
-        val ci = jwt.getClaim("ci").asString()
+        val cedula = jwt.getClaim("cedula").asString()
         val rol = jwt.getClaim("rol").asString()
 
         println("ID: $id")
-        println("CI: $ci")
+        println("CI: $cedula")
         println("Rol: $rol")
 
     } catch (e: Exception) {
         e.printStackTrace()
     }
 }
+
+
+fun decodeUser(token: String): List<UserRequest>? {
+    return try {
+        val jwt = JWT(token)
+
+        // Acceder a los claims
+        val usersJson = jwt.getClaim("users").asString() ?: throw IllegalArgumentException("Users claim is missing or invalid")
+
+
+        val gson = Gson()
+        val userType = object : TypeToken<List<UserRequest>>() {}.type
+        gson.fromJson<List<UserRequest>>(usersJson, userType)
+
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    } catch (e: IllegalArgumentException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+
+data class UserRequest(val idUsuario: Int, val nombre: String, val apellido: String, val email: String, val fechaNacimiento: String, val rol: String, val cedula: String, val activo: Boolean, val validado: Boolean)
