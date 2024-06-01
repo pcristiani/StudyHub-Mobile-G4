@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.CIState
 import com.example.compose.studyhub.domain.ConfirmPasswordState
+import com.example.compose.studyhub.domain.DateTimeState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.PasswordState
 import com.example.compose.studyhub.domain.TextFieldState
@@ -80,7 +81,9 @@ fun RegisterContent(
       val emailState = remember{EmailState()}
       Email(emailState, onImeAction = { passwordFocusRequest.requestFocus() })
 
-
+      Spacer(modifier = Modifier.height(16.dp))
+      val birthdayState = remember{ DateTimeState() }
+      Birthday(birthdayState, onImeAction = { passwordFocusRequest.requestFocus() })
 
       Spacer(modifier = Modifier.height(16.dp))
       val passwordState = remember { PasswordState() }
@@ -96,7 +99,8 @@ fun RegisterContent(
 
       Spacer(modifier = Modifier.height(15.dp))
 
-      Button(onClick = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text,"05/12/2000", ciState.text, passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
+
+      Button(onClick = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text,birthdayState.day + {"/"} + birthdayState.month + {"/"} + birthdayState.year, ciState.text, passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
 
       OrLoginInvitados(onLoginInvitado = onLoginInvitado, modifier = Modifier.fillMaxWidth())
    }

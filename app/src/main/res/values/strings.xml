@@ -5,6 +5,10 @@
     <string name="surName">Apellido</string>
     <string name="email">Email</string>
     <string name="CI">Cédula de Identidad</string>
+    <string name="birthday">Fecha de Nacimiento</string>
+    <string name="day">Día</string>
+    <string name="month">Mes</string>
+    <string name="year">Año</string>
     <string name="password">Contraseña</string>
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="sign_in">Iniciar sesión</string>
@@ -79,6 +83,8 @@
     <string name="login_test">Login test</string>
     <string name="logout">Cerrar sesion</string>
     <string name="txt_inscripciones">Inscripciones</string>
+    <string name="txt_solicitudes">Solicitudes de inscripción a Carrera</string>>
     <string name="txt_tipo_inscripcion">Seleccionar tipo de inscripción</string>
+    <string name="txt_tipo_solicitud">Seleccionar tipo de solicitud</string>
 
 </resources>

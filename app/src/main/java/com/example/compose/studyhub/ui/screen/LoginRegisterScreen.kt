@@ -1,5 +1,6 @@
 package com.example.compose.studyhub.ui.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -44,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.CIState
+import com.example.compose.studyhub.domain.DateTimeState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.TextFieldState
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
@@ -130,7 +132,7 @@ fun CI(ciState: TextFieldState = remember { CIState() }, imeAction: ImeAction = 
       .fillMaxWidth()
       .onFocusChanged { focusState ->
          ciState.onFocusChange(focusState.isFocused)
-         
+
          if (!focusState.isFocused) {
             ciState.enableShowErrors()
          }
@@ -154,6 +156,72 @@ fun Email(emailState: TextFieldState = remember { EmailState() }, imeAction: Ime
       }, textStyle = MaterialTheme.typography.bodyMedium, isError = emailState.showErrors(), keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Email), keyboardActions = KeyboardActions(onDone = { onImeAction() }), singleLine = true)
    emailState.getError()
       ?.let { error -> TextFieldError(textError = error) }
+}
+
+@Composable
+fun Birthday(birthdayState: DateTimeState = remember { DateTimeState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
+   Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
+      Text(
+         text= stringResource(id=R.string.birthday),
+         style = MaterialTheme.typography.bodyMedium
+      )
+      Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
+         modifier = Modifier.padding(vertical = 8.dp)
+      ){
+         //Día
+         OutlinedTextField(value = birthdayState.day, onValueChange = {birthdayState.day = it}, label = {Text(text = stringResource(id = R.string.day))}, modifier = Modifier.weight(1f).onFocusChanged { focusState -> birthdayState.onFocusChange(focusState.isFocused)
+            if(!focusState.isFocused){
+               birthdayState.enableShowErrors()
+            }
+
+         },
+            textStyle = MaterialTheme.typography.bodyMedium,
+            isError = birthdayState.showErrors(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+               imeAction = ImeAction.Next,
+               keyboardType = KeyboardType.Number
+            ),
+            keyboardActions = KeyboardActions(onNext = { onImeAction() }),
+            singleLine = true
+         )
+
+         //Mes
+         OutlinedTextField(value = birthdayState.month, onValueChange = {birthdayState.month = it}, label = {Text(text = stringResource(id = R.string.month))}, modifier = Modifier.weight(1f).onFocusChanged { focusState -> birthdayState.onFocusChange(focusState.isFocused)
+            if(!focusState.isFocused){
+               birthdayState.enableShowErrors()
+            }
+
+         },
+            textStyle = MaterialTheme.typography.bodyMedium,
+            isError = birthdayState.showErrors(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+               imeAction = ImeAction.Next,
+               keyboardType = KeyboardType.Number
+            ),
+            keyboardActions = KeyboardActions(onNext = { onImeAction() }),
+            singleLine = true
+         )
+
+         //Año
+         OutlinedTextField(value = birthdayState.year, onValueChange = {birthdayState.year = it}, label = {Text(text = stringResource(id = R.string.year))}, modifier = Modifier.weight(1f).onFocusChanged { focusState -> birthdayState.onFocusChange(focusState.isFocused)
+            if(!focusState.isFocused){
+               birthdayState.enableShowErrors()
+            }
+
+         },
+            textStyle = MaterialTheme.typography.bodyMedium,
+            isError = birthdayState.showErrors(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+               imeAction = ImeAction.Done,
+               keyboardType = KeyboardType.Number
+            ),
+            keyboardActions = KeyboardActions(onNext = { onImeAction() }),
+            singleLine = true
+         )
+      }
+      birthdayState.getError()
+         ?.let { error -> TextFieldError(textError = error) }
+   }
 }
 
 ///

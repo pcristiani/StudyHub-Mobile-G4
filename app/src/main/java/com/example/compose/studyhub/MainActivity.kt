@@ -1,11 +1,7 @@
 package com.example.compose.studyhub
 
-import LoginRequest
-import RetrofitClient
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,17 +10,12 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.compose.studyhub.auth.decodeJWT
 import com.example.compose.studyhub.ui.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
 import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
@@ -36,12 +27,7 @@ import com.example.compose.studyhub.ui.navigation.TopBar
 import com.example.compose.studyhub.ui.route.InicioRoute
 import com.example.compose.studyhub.ui.route.LoginRoute
 import com.example.compose.studyhub.ui.route.RegisterRoute
-import com.example.compose.studyhub.ui.screen.LoginRegisterScreen
-import com.example.compose.studyhub.ui.screen.LoginScreen
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 ///
 // * MainActivity --> Clase principal de la aplicación.

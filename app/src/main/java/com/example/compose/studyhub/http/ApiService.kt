@@ -25,6 +25,9 @@ interface ApiService {
    @GET("/api/usuario/getUsuarios")
    fun getUsers(
    ): Call<String>
+
+   @GET("/api/carrera/getCarrerasInscripcionesPendientes")
+   fun getInscPendientes(): Call<String>
 }
 
 

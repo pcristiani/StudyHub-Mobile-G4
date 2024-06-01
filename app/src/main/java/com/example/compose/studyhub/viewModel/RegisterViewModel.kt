@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.compose.studyhub.auth.decodeJWT
 import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.registerRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,34 +27,11 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
             }*/
 
 
-            val registerRequest = RegisterRequest(nombre, apellido, email, fechaNacimiento, ci, password)
-
-            println(registerRequest)
-
-            RetrofitClient.api.signUp(registerRequest).enqueue(object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    val responseText = response.body() // Procesar la respuesta del login
-
-                    println(response)
-
-                    if (responseText != null) {
-                        println(responseText)
-                    }
-
-                    if (response.isSuccessful) {
-
-                        onRegisterSubmitted()
-                        println(responseText)
-                    }
+            val registerRequest = registerRequest(nombre, apellido, email, fechaNacimiento, ci, password){success ->
+                if(success){
+                    onRegisterSubmitted()
                 }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-
-                    println("Error: ${t.message}")
-                }
-            })
-
-
+            }
 
     }
 

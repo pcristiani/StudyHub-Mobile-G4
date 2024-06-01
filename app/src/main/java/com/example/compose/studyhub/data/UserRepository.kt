@@ -40,7 +40,7 @@ object UserRepository {
       _user = User.NoUserLoggedIn
    }
 
-   fun existeUserEmail(email: String): Boolean {
+   fun existeUserCi(ci: String): Boolean {
       /*
       for (e in listEmailRegistrados) { // println(" " + e.second + e.first)
          if (email == e.second) return true
@@ -52,6 +52,8 @@ object UserRepository {
          override fun onResponse(call: Call<String>, response: Response<String>) {
             if (response.isSuccessful) {
                val token = response.body() // Procesar la respuesta del login
+
+               println(response)
 
                if (token != null) {
                   val usersList = decodeUser(token)

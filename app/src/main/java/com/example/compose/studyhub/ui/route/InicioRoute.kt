@@ -9,14 +9,14 @@ import com.example.compose.studyhub.viewModel.InicioViewModelFactory
 ///
 @Composable
 fun InicioRoute(
-   onNavigateToLogin: (email: String) -> Unit,
-   onNavigateToRegister: (email: String) -> Unit,
+   onNavigateToLogin: (ci: String) -> Unit,
+   onNavigateToRegister: (ci: String) -> Unit,
    onLoginInvitado: () -> Unit,
                ) {
    val inicioViewModel: InicioViewModel = viewModel(factory = InicioViewModelFactory())
    InicioScreen(
-      onLoginRegister = { email ->
-         inicioViewModel.handleContinue(email = email, onNavigateToLogin = onNavigateToLogin, onNavigateToRegister = onNavigateToRegister)
+      onLoginRegister = { ci ->
+         inicioViewModel.handleContinue(ci = ci, onNavigateToLogin = onNavigateToLogin, onNavigateToRegister = onNavigateToRegister)
       },
       onLoginInvitado = { inicioViewModel.handleInvitado(onLoginInvitado) },
                )

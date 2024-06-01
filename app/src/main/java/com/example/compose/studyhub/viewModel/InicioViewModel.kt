@@ -7,13 +7,13 @@ import com.example.compose.studyhub.data.UserRepository
 ///
 class InicioViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    fun handleContinue(email: String, onNavigateToLogin:(email: String) -> Unit, onNavigateToRegister: (email: String) -> Unit,) {
-        if (userRepository.existeUserEmail(email)) {
+    fun handleContinue(ci: String, onNavigateToLogin:(email: String) -> Unit, onNavigateToRegister: (email: String) -> Unit,) {
+        if (userRepository.existeUserCi(ci)) {
           //  println("> TRUE")
-            onNavigateToLogin(email)
+            onNavigateToLogin(ci)
         } else {
           //  println("> FALSE")
-            onNavigateToRegister(email)
+            onNavigateToRegister(ci)
         }
     }
 

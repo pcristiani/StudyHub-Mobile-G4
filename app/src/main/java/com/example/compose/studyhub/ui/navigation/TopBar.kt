@@ -33,6 +33,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.md_theme_light_shadow
@@ -41,12 +43,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(drawerState: DrawerState) {
+   val navController = rememberNavController()
    val scope = rememberCoroutineScope()
    TasksTopAppBar(openDrawer = {
       scope.launch {
          drawerState.open()
       }
-   },  onClearCompletedTasks = {}, onRefresh = {})
+   }, navController = navController, onClearCompletedTasks = {}, onRefresh = {})
 }
 
 
@@ -66,23 +69,23 @@ fun ReplyProfileImage(drawableResource: Int, description: String, modifier: Modi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TasksTopAppBar(openDrawer: () -> Unit,  onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
+fun TasksTopAppBar(navController: NavHostController, openDrawer: () -> Unit,  onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
    TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) }, navigationIcon = {
       IconButton(onClick = openDrawer) {
          Icon(Icons.Filled.Menu, stringResource(id = R.string.txt_admin))
       }
    }, actions = {
-      MoreTasksMenu(onClearCompletedTasks, onRefresh)
+      MoreTasksMenu(navController, onClearCompletedTasks, onRefresh)
    }, modifier = Modifier.fillMaxWidth())
 }
 
 
 @Composable
-private fun MoreTasksMenu(onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
+private fun MoreTasksMenu(navController: NavHostController, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
    TopAppBarDropdownMenu(iconContent = { //   Icon(Icons.Filled.AccountCircle, stringResource(id = R.string.txt_continue))
       ReplyProfileImage(drawableResource = R.drawable.steve_256, stringResource(id = R.string.txt_close))
    }) { closeMenu ->
-      DropdownMenuItem(onClick = { onClearCompletedTasks(); closeMenu() }) {
+      DropdownMenuItem(onClick = { onClearCompletedTasks(); closeMenu(); navController.navigate(NavRoutes.EditarPerfilScreen)}) {
          Text(text = stringResource(id = R.string.txt_editPerfil))
       }
       DropdownMenuItem(onClick = { onRefresh(); closeMenu() }) {
