@@ -36,6 +36,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.auth.SolicitudRequest
+import com.example.compose.studyhub.http.solicitudesRequest
 import com.example.compose.studyhub.ui.component.registrarEstudiante.QuestionWrapper
 import com.example.compose.studyhub.ui.component.registrarEstudiante.simpleDateFormatPattern
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
@@ -51,7 +53,9 @@ import java.util.TimeZone
 @Composable
 fun SolicitudesScreen(): DrawerState {
    Column(modifier = Modifier.padding(top = 100.dp, bottom = 6.dp)) {
-      Solicitudes(modifier = Modifier.weight(1f).padding(top=20.dp, start=20.dp))
+      Solicitudes(modifier = Modifier
+         .weight(1f)
+         .padding(top = 20.dp, start = 20.dp))
    }
    return DrawerState(DrawerValue.Closed)
 }
@@ -63,6 +67,14 @@ fun Solicitudes(modifier: Modifier) {
    val isLoading = remember { mutableStateOf(false) }
    val listState = rememberLazyListState()
    val coroutineScope = rememberCoroutineScope()
+   var solicitudesNoAprobadas: List<SolicitudRequest>? = null
+
+
+   solicitudesRequest(){success ->
+      if (success != null) {
+         solicitudesNoAprobadas = success
+      }
+   }
 
    LaunchedEffect(Unit) {
       loadMoreUsers(users)
@@ -77,37 +89,45 @@ fun Solicitudes(modifier: Modifier) {
          text = stringResource(id = R.string.txt_solicitudes),
          style = MaterialTheme.typography.headlineSmall
       )
-      LazyColumn(
-         state = listState,
-         modifier = Modifier.weight(1f)
-      ) {
-         items(users.size) { index ->
-            UserItem(user = users[index])
-         }
-         if (isLoading.value) {
-            item {
-               CircularProgressIndicator(
-                  modifier = Modifier
-                     .padding(16.dp)
-                     .align(Alignment.CenterHorizontally)
-               )
+
+   if(solicitudesNoAprobadas != null){
+
+         LazyColumn(
+            state = listState,
+            modifier = Modifier.weight(1f)
+         ) {
+            items(users.size) { index ->
+               UserItem(user = users[index])
             }
-         }
-      }
-      LaunchedEffect(listState) {
-         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
-            .collect { index ->
-               if (index == users.size - 1 && !isLoading.value) {
-                  isLoading.value = true
-                  coroutineScope.launch {
-                     delay(3000) // Simulate network delay
-                     loadMoreUsers(users)
-                     isLoading.value = false
-                  }
+            if (isLoading.value) {
+               item {
+                  CircularProgressIndicator(
+                     modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.CenterHorizontally)
+                  )
                }
             }
-      }
+         }
+         LaunchedEffect(listState) {
+            snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+               .collect { index ->
+                  if (index == users.size - 1 && !isLoading.value) {
+                     isLoading.value = true
+                     coroutineScope.launch {
+                        delay(3000) // Simulate network delay
+                        loadMoreUsers(users)
+                        isLoading.value = false
+                     }
+                  }
+               }
+         }
+   }else{
+      Text(text = "No se encontraron solicitudes no aprobadas")
    }
+   }
+
+
 }
 
 

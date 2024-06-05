@@ -1,7 +1,9 @@
 package com.example.compose.studyhub
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,12 +12,13 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.example.compose.studyhub.services.PushNotificationService
 import com.example.compose.studyhub.ui.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
 import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
@@ -28,6 +31,9 @@ import com.example.compose.studyhub.ui.route.InicioRoute
 import com.example.compose.studyhub.ui.route.LoginRoute
 import com.example.compose.studyhub.ui.route.RegisterRoute
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
+
 
 ///
 // * MainActivity --> Clase principal de la aplicación.
@@ -35,25 +41,72 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 
 class MainActivity: AppCompatActivity() {
 
+/*
+   private fun createNotificationChannel() {
+      // Create the NotificationChannel, but only on API 26+ because
+      // the NotificationChannel class is not in the Support Library.
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+         val name = R.string.channel_name.toString()
+         val descriptionText = R.string.channel_description.toString()
+         val importance = NotificationManager.IMPORTANCE_DEFAULT
 
+         val channel = NotificationChannel("1", name, importance).apply {
+            description = descriptionText
+         }
+         // Register the channel with the system.
+         val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+         notificationManager.createNotificationChannel(channel)
+      }
+   }
 
+ */
 
    override fun onCreate(savedInstanceState: Bundle?) {
 
 
 
+
       enableEdgeToEdge()
       super.onCreate(savedInstanceState)
+      FirebaseApp.initializeApp(this)
 
 
-      setContent{
+      setContent {
          ThemeStudyHub {
-            val navController = rememberNavController()
-            SetupNavGraph(navController = navController)
+            StudyHubNavHost() //
+            //  val navController = rememberNavController()
+            // SetupNavGraph(navController = navController)
          }
       }
+
+      val token = PushNotificationService.getToken(this)
+      println("The token is: $token")
+
+
    }
+
+
+
+
+   /*
+   private fun sendNotification() {
+      val builder = NotificationCompat.Builder(this, "1")
+         .setSmallIcon(R.drawable.a)
+         .setContentTitle(getString(R.string.app_title))
+         .setContentText("Test")
+         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+      with(NotificationManagerCompat.from(this)) {
+         notify(1, builder.build())
+      }
+   }
+
+    */
+
 }
+
+
 
 
 /*
@@ -132,10 +185,13 @@ fun SetupNavGraph(navController: NavHostController) {
       composable(NavRoutes.LoginScreen) {
          val ci = it.arguments?.getString("ci")
 
+         val context = LocalContext.current
+
          LoginRoute(
             ci = ci,
             onLoginSubmitted = {
                navController.navigate("screenNovedades")
+               PushNotificationService.requestNewToken(context)
             },
             onLoginInvitado = {
                // Handle login as guest
@@ -162,6 +218,7 @@ fun SetupNavGraph(navController: NavHostController) {
             }
          )
       }
+
 
 
       composable(NavRoutes.NovedadesScreen) {
@@ -205,6 +262,7 @@ fun ScreenNovedades(drawerState: DrawerState) {
 fun ScreenEstudios(drawerState: DrawerState) {
    TopBar(drawerState)
    PlanEstudiosScreen()
+
 }
 
 

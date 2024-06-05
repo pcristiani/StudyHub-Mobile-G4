@@ -13,7 +13,7 @@ class InicioViewModel(private val userRepository: UserRepository) : ViewModel() 
             onNavigateToLogin(ci)
         } else {
           //  println("> FALSE")
-            onNavigateToRegister(ci)
+            onNavigateToLogin(ci)
         }
     }
 

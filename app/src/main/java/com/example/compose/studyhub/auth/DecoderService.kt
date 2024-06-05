@@ -4,21 +4,44 @@ import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-fun decodeJWT(token: String) {
+fun decodeJWT(token: String): UserRequest? {
     try {
         val jwt = JWT(token)
 
+
         // Acceder a los claims
-        val id = jwt.getClaim("id").asInt()
+        val idUsuario = jwt.getClaim("id").asInt()
+        val nombre = jwt.getClaim("nombre").asString()
+        val apellido = jwt.getClaim("apellido").asString()
+        val email = jwt.getClaim("email").asString()
+        val fechaNacimiento = jwt.getClaim("fechaNacimiento").asString()
         val cedula = jwt.getClaim("cedula").asString()
         val rol = jwt.getClaim("rol").asString()
+        val activo = jwt.getClaim("activo").asBoolean()
+        val validado = jwt.getClaim("validado").asBoolean()
 
-        println("ID: $id")
+        println("ID: $idUsuario")
         println("CI: $cedula")
         println("Rol: $rol")
 
+
+
+
+        return UserRequest(
+            idUsuario,
+            nombre,
+            apellido,
+            email,
+            fechaNacimiento,
+            cedula,
+            rol,
+            activo,
+            validado
+        )
+
     } catch (e: Exception) {
         e.printStackTrace()
+        return null
     }
 }
 
@@ -68,6 +91,8 @@ fun decodeSolicitudes(token: String): List<SolicitudRequest>?{
 
 }
 
+
+
 data class SolicitudRequest(val idCarrera: Int, val nombre: String, val descripcion: String, val requisitos: String, val duracion: Int)
 
-data class UserRequest(val idUsuario: Int, val nombre: String, val apellido: String, val email: String, val fechaNacimiento: String, val rol: String, val cedula: String, val activo: Boolean, val validado: Boolean)
+data class UserRequest(val idUsuario: Int?, val nombre: String?, val apellido: String?, val email: String?, val fechaNacimiento: String?, val rol: String?, val cedula: String?, val activo: Boolean?, val validado: Boolean?)

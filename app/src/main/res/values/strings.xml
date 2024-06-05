@@ -87,4 +87,6 @@
     <string name="txt_tipo_inscripcion">Seleccionar tipo de inscripción</string>
     <string name="txt_tipo_solicitud">Seleccionar tipo de solicitud</string>
 
+    <string name="channel_name">Push Notifications Channel</string>
+    <string name="channel_description">Push Notifications Description</string>
 </resources>

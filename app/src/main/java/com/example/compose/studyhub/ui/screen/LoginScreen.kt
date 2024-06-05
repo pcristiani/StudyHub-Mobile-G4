@@ -40,6 +40,7 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
 import kotlinx.coroutines.launch
+import com.example.compose.studyhub.services.PushNotificationService
 
 ///
 @Composable
@@ -100,6 +101,7 @@ fun LoginTest(
             if (validarResponde) {
                print("VALIDADO - " + ciState.text)
                onLoginSubmitted(ciState.text, passwordState.text)
+
             } else {
                print("NO VALIDADO - " + ciState.text) // onNavigateToRegister()
             }

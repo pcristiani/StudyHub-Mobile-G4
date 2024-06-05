@@ -1,7 +1,6 @@
 package com.example.compose.studyhub.data
 
 import androidx.compose.runtime.Immutable
-import com.example.compose.studyhub.auth.decodeJWT
 import com.example.compose.studyhub.auth.decodeUser
 import retrofit2.Call
 import retrofit2.Callback
@@ -9,7 +8,11 @@ import retrofit2.Response
 
 ///
 sealed class User {
-   @Immutable data class LoggedInUser(val email: String) : User()
+   @Immutable data class LoggedInUser(val id: Int, val ci: String) : User() {
+      val ciString: String = ci
+      val idUsuario: Int = id
+   }
+
    object InvitadoUser : User()
    object NoUserLoggedIn : User()
 }
@@ -22,16 +25,18 @@ object UserRepository {
    val user: User
       get() = _user
 
-   @Suppress("UNUSED_PARAMETER")
-   fun login(email: String, password: String) {
-      _user = User.LoggedInUser(email)
+
+   //@Suppress("UNUSED_PARAMETER")
+   fun login(id: Int, ci: String) {
+      _user = User.LoggedInUser(id, ci)
    }
 
+   /*
    @Suppress("UNUSED_PARAMETER")
    fun signUp(email: String, password: String) {
       _user = User.LoggedInUser(email)
    }
-
+   */
    fun loginInvitado() {
       _user = User.InvitadoUser
    }
@@ -39,6 +44,15 @@ object UserRepository {
    fun logout() {
       _user = User.NoUserLoggedIn
    }
+
+   fun loggedInUser(): Int?{
+      return when (user){
+         is User.LoggedInUser -> (user as User.LoggedInUser).idUsuario
+         else -> null
+      }
+   }
+
+
 
    fun existeUserCi(ci: String): Boolean {
       /*

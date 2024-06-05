@@ -5,8 +5,10 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.compose.studyhub.auth.decodeJWT
+import com.example.compose.studyhub.data.User
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.loginRequest
+import com.example.compose.studyhub.services.PushNotificationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +31,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
       val resp = loginRequest(ci, password) {success ->
          if(success){
+
             onLoginComplete()
          }
          else{

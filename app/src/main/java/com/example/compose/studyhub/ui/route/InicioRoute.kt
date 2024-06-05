@@ -15,6 +15,8 @@ fun InicioRoute(
                ) {
    val inicioViewModel: InicioViewModel = viewModel(factory = InicioViewModelFactory())
    InicioScreen(
+
+
       onLoginRegister = { ci ->
          inicioViewModel.handleContinue(ci = ci, onNavigateToLogin = onNavigateToLogin, onNavigateToRegister = onNavigateToRegister)
       },

@@ -3,6 +3,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
    
@@ -28,6 +29,9 @@ interface ApiService {
 
    @GET("/api/carrera/getCarrerasInscripcionesPendientes")
    fun getInscPendientes(): Call<String>
+
+   @POST("/api/usuario/registerMobileToken/{idUsuario}")
+   fun registerMobileToken(@Path("idUsuario") id: Int, @Body token: TokenRequest): Call<String>
 }
 
 
@@ -36,4 +40,5 @@ data class LoginRequest(val cedula: String, val password: String)
 data class RegisterRequest(val nombre: String, val apellido: String, val email: String, val fechaNacimiento: String, val cedula: String, val password: String, val rol: String="E")
 
 
+data class TokenRequest(val token: String)
 
