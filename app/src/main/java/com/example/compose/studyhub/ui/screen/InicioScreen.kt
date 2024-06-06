@@ -93,7 +93,7 @@ private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onLogin
    val ciState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState()) }
 
    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-      Text(text = stringResource(id = R.string.sign_in_create_account), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), textAlign = TextAlign.Center, modifier = Modifier.padding(top = 150.dp, bottom = 6.dp))
+      Text(text = stringResource(id = R.string.sign_in_create_account), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), textAlign = TextAlign.Center, modifier = Modifier.padding(top = 100.dp, bottom = 6.dp))
       val onSubmit = { // * Verifica si el email es valido
          if (ciState.isValid) {
             onLoginRegister(ciState.text)

@@ -4,6 +4,7 @@ import LoginRequest
 import RegisterRequest
 import RetrofitClient
 import TokenRequest
+//import TokenRequest
 import com.example.compose.studyhub.auth.SolicitudRequest
 import com.example.compose.studyhub.auth.decodeJWT
 import com.example.compose.studyhub.auth.decodeSolicitudes
@@ -32,7 +33,7 @@ fun loginRequest(ci: String, password: String, callback: (Boolean) -> Unit){
                     if(decodedResponse != null){
                         decodedResponse.idUsuario?.let { idUsuario ->
                             decodedResponse.cedula?.let { ci ->
-                                UserRepository.login(idUsuario, ci) }
+                                UserRepository.login(token, idUsuario, ci) }
                             println("I'm here")
                         }
                     }
@@ -59,6 +60,7 @@ fun registerRequest(nombre: String, apellido: String, email: String, fechaNacimi
     val registerRequest = RegisterRequest(nombre, apellido, email, fechaNacimiento, ci, password)
 
     println(registerRequest)
+
 
     RetrofitClient.api.signUp(registerRequest).enqueue(object : Callback<String> {
         override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -117,26 +119,31 @@ fun solicitudesRequest(callback: (List<SolicitudRequest>?) -> Unit){
 }
 
 fun registerTokenRequest(idUsuario: Int, token: String){
-    val tokenRequest = TokenRequest(token)
-    RetrofitClient.api.registerMobileToken(idUsuario, tokenRequest).enqueue(object : Callback<String>{
-        override fun onResponse(call: Call<String>, response: Response<String>) {
+    val tokenRequest = "Bearer " + UserRepository.getToken()
 
 
-            if(response.isSuccessful){
-                println("Token registered successfully")
-            }else{
-                println("Failed to register token for user: $idUsuario")
-                println("Response code: ${response.code()}")
-                println("Response message: ${response.message()}")
-                response.errorBody()?.let { errorBody ->
-                    println("Error body: ${errorBody.string()}")
+
+    if (tokenRequest != null) {
+        RetrofitClient.api.registerMobileToken(idUsuario, token, tokenRequest).enqueue(object : Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+
+
+                if(response.isSuccessful){
+                    println("Token registered successfully")
+                }else{
+                    println("Failed to register token for user: $idUsuario")
+                    println("Response code: ${response.code()}")
+                    println("Response message: ${response.message()}")
+                    response.errorBody()?.let { errorBody ->
+                        println("Error body: ${errorBody.string()}")
+                    }
                 }
             }
-        }
 
-        override fun onFailure(call: Call<String>, t: Throwable) {
-            println("Error: ${t.message}")
-        }
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                println("Error: ${t.message}")
+            }
 
-    })
+        })
+    }
 }

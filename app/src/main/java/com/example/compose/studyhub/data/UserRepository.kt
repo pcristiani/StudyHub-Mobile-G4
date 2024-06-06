@@ -1,5 +1,6 @@
 package com.example.compose.studyhub.data
 
+import TokenRequest
 import androidx.compose.runtime.Immutable
 import com.example.compose.studyhub.auth.decodeUser
 import retrofit2.Call
@@ -8,7 +9,8 @@ import retrofit2.Response
 
 ///
 sealed class User {
-   @Immutable data class LoggedInUser(val id: Int, val ci: String) : User() {
+   @Immutable data class LoggedInUser(val JWTtoken: String, val id: Int, val ci: String) : User() {
+      val token: String = JWTtoken
       val ciString: String = ci
       val idUsuario: Int = id
    }
@@ -27,8 +29,8 @@ object UserRepository {
 
 
    //@Suppress("UNUSED_PARAMETER")
-   fun login(id: Int, ci: String) {
-      _user = User.LoggedInUser(id, ci)
+   fun login(token: String, id: Int, ci: String) {
+      _user = User.LoggedInUser(token, id, ci)
    }
 
    /*
@@ -61,6 +63,8 @@ object UserRepository {
       }
        */
 
+
+
       RetrofitClient.api.getUsers().enqueue(object : Callback<String> {
 
          override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -76,6 +80,11 @@ object UserRepository {
 
             } else {
                println("Incorrect credentials")
+               println("Response code: ${response.code()}")
+               println("Response message: ${response.message()}")
+               response.errorBody()?.let { errorBody ->
+                  println("Error body: ${errorBody.string()}")
+               }
             }
          }
 
@@ -93,6 +102,13 @@ object UserRepository {
          if (email == e.second) return e.first
       }
       return "No encontrado"
+   }
+
+   fun getToken(): String? {
+      return when (user){
+         is User.LoggedInUser -> (user as User.LoggedInUser).token
+         else -> null
+      }
    }
 }
 

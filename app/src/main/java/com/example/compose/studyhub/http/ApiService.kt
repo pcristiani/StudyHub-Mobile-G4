@@ -1,6 +1,7 @@
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -12,13 +13,13 @@ interface ApiService {
            )
 
 
-   @POST("iniciarSesion")
+   @POST("/iniciarSesion")
    fun login(
       @Body
       loginRequest: LoginRequest
             ): Call<String>
 
-   @POST("registerUsuario")
+   @POST("/registerUsuario")
    fun signUp(
        @Body
        registerRequest: RegisterRequest): Call<String>
@@ -31,7 +32,7 @@ interface ApiService {
    fun getInscPendientes(): Call<String>
 
    @POST("/api/usuario/registerMobileToken/{idUsuario}")
-   fun registerMobileToken(@Path("idUsuario") id: Int, @Body token: TokenRequest): Call<String>
+   fun registerMobileToken(@Path("idUsuario") idUsuario: Int, @Body mobileToken: String, @Header("Authorization") token: String): Call<String>
 }
 
 
