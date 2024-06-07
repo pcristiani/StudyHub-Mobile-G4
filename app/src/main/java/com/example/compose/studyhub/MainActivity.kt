@@ -163,63 +163,7 @@ fun SetupNavGraph(navController: NavHostController) {
 
 
 
-   NavHost(navController = navController, startDestination = "inicioScreen") {
-
-      composable("inicioScreen") {
-         /*InicioScreen(
-            onLoginRegister = { navController.navigate("loginRegister") },
-            onLoginInvitado = { /* Handle login as guest */ }
-         )*/
-         InicioRoute(onNavigateToLogin = { ci ->
-            navController.navigate("loginScreen/$ci")
-         },
-            onLoginInvitado = {
-               navController.navigate("homeScreen")
-            })
-      }
-
-
-      composable(NavRoutes.LoginScreen) {
-         val ci = it.arguments?.getString("ci")
-
-         val context = LocalContext.current
-
-         LoginRoute(
-            ci = ci,
-            onLoginSubmitted = {
-               navController.navigate("screenNovedades")
-               //PushNotificationService.requestNewToken(context)
-            },
-            onNavigateToRegister = {
-               navController.navigate("registerScreen/$ci")
-            },
-            onLoginInvitado = {
-               // Handle login as guest
-            },
-            onNavUp = {
-               navController.popBackStack()
-            }
-         )
-      }
-
-      composable(NavRoutes.RegisterScreen) {
-         val ci = it.arguments?.getString("ci")
-
-         RegisterRoute(
-            ci = ci,
-            onRegisterSubmitted = {
-               navController.popBackStack()
-            },
-            onLoginInvitado = {
-               // Handle login as guest
-            },
-            onNavUp = {
-               navController.popBackStack()
-            }
-         )
-      }
-
-
+   NavHost(navController = navController, startDestination = "screenNovedades") {
 
       composable(NavRoutes.NovedadesScreen) {
          MenuLateral(navController, drawerState, contenido = {

@@ -27,7 +27,6 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
          println("Password incorrecta ")
       }*/
 
-      val bool: Boolean
 
       val resp = loginRequest(ci, password) {success ->
          if(success){
