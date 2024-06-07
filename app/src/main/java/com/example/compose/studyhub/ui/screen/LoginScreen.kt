@@ -47,6 +47,7 @@ import com.example.compose.studyhub.services.PushNotificationService
 fun LoginScreen(
    ci: String?,
    onLoginSubmitted: (ci: String, password: String) -> Unit,
+   onNavigateToRegister: (ci: String) -> Unit,
    onLoginInvitado: () -> Unit,
    onNavUp: () -> Unit,
                ) {
@@ -60,15 +61,11 @@ fun LoginScreen(
    }, content = { contentPadding ->
       LoginRegisterScreen(modifier = Modifier.supportWideScreen(), contentPadding = contentPadding, onLoginInvitado = onLoginInvitado) {
          Column(modifier = Modifier.fillMaxWidth()) {
-            LoginTest(ci = ci, onLoginSubmitted = onLoginSubmitted, onLoginInvitado = onLoginInvitado)
+            LoginTest(ci = ci, onLoginSubmitted = onLoginSubmitted, onRegisterSubmitted = onNavigateToRegister, onLoginInvitado = onLoginInvitado)
             Spacer(modifier = Modifier.height(5.dp))
-            
-            TextButton(onClick = {
-               scope.launch {
-                  snackbarHostState.showSnackbar(message = respuesta, actionLabel = snackbarActionLabel)
-               }
-            }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.forgot_password)) }
          }
+
+
       }
    })
    
@@ -82,12 +79,16 @@ fun LoginScreen(
 @Composable
 fun LoginTest(
    ci: String?,
-   onLoginSubmitted: (email: String, password: String) -> Unit,
+   onLoginSubmitted: (ci: String, password: String) -> Unit,
+   onRegisterSubmitted: (ci: String) -> Unit,
    onLoginInvitado: () -> Unit,
              ) {
    val snackbarHostState = remember { SnackbarHostState() }
    val scope = rememberCoroutineScope()
-   
+   val respuesta = stringResource(id = R.string.login_test)
+   val snackbarActionLabel = stringResource(id = R.string.sign_in)
+
+
    Column(modifier = Modifier.fillMaxWidth()) {
       val focusRequester = remember { FocusRequester() }
       val ciState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState(ci)) }
@@ -107,14 +108,32 @@ fun LoginTest(
             }
          }
       }
+
+      val onSubmitRegister = {
+         if (ciState.isValid) {
+            onRegisterSubmitted(ciState.text)
+         }
+      }
       
       Password(label = stringResource(id = R.string.password), passwordState = passwordState, modifier = Modifier.focusRequester(focusRequester), onImeAction = { onSubmit() })
       Spacer(modifier = Modifier.height(16.dp))
       
       Button(onClick = { onSubmit() }, modifier = Modifier
          .fillMaxWidth()
-         .padding(vertical = 16.dp), enabled = ciState.isValid && passwordState.isValid) {
+         .padding(top = 16.dp, bottom= 10.dp), enabled = ciState.isValid && passwordState.isValid) {
          Text(text = stringResource(id = R.string.sign_in))
+      }
+
+      TextButton(onClick = {
+         scope.launch {
+            snackbarHostState.showSnackbar(message = respuesta, actionLabel = snackbarActionLabel)
+         }
+      }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.forgot_password)) }
+
+      Button(onClick = { onSubmitRegister() }, modifier = Modifier
+         .fillMaxWidth()
+         .padding(vertical = 16.dp), enabled = ciState.isValid) {
+         Text(text = stringResource(id = R.string.create_account))
       }
    }
    
@@ -170,6 +189,6 @@ fun OrLoginInvitados(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier)
 @Composable
 fun LoginPreview() {
    ThemeStudyHub {
-      LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onLoginInvitado = {}, onNavUp = {})
+      LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onNavigateToRegister = {_, ->}, onLoginInvitado = {}, onNavUp = {})
    }
 }

@@ -7,18 +7,8 @@ import com.example.compose.studyhub.data.UserRepository
 ///
 class InicioViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    fun handleContinue(ci: String, onNavigateToLogin:(email: String) -> Unit, onNavigateToRegister: (email: String) -> Unit,) {
-
-
-            if (userRepository.existeUserCi(ci)) {
-                println("> TRUE")
-                onNavigateToLogin(ci)
-            } else {
-                println("> FALSE")
-                onNavigateToLogin(ci)
-            }
-
-
+    fun handleContinue(ci: String, onNavigateToLogin:(email: String) -> Unit) {
+        onNavigateToLogin(ci)
     }
 
     fun handleInvitado(onLoginComplete: () -> Unit,) {

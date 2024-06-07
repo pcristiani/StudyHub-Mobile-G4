@@ -75,13 +75,11 @@ class MainActivity: AppCompatActivity() {
       setContent {
          ThemeStudyHub {
             StudyHubNavHost() //
-            //  val navController = rememberNavController()
-            // SetupNavGraph(navController = navController)
+            //val navController = rememberNavController()
+            //SetupNavGraph(navController = navController)
          }
       }
 
-      val token = PushNotificationService.getToken(this)
-      println("The token is: $token")
 
 
    }
@@ -162,7 +160,9 @@ class MainActivity: AppCompatActivity() {
 fun SetupNavGraph(navController: NavHostController) {
    val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-   
+
+
+
    NavHost(navController = navController, startDestination = "inicioScreen") {
 
       composable("inicioScreen") {
@@ -173,9 +173,6 @@ fun SetupNavGraph(navController: NavHostController) {
          InicioRoute(onNavigateToLogin = { ci ->
             navController.navigate("loginScreen/$ci")
          },
-            onNavigateToRegister = { ci ->
-               navController.navigate("loginScreen/$ci")
-                                   },
             onLoginInvitado = {
                navController.navigate("homeScreen")
             })
@@ -191,7 +188,10 @@ fun SetupNavGraph(navController: NavHostController) {
             ci = ci,
             onLoginSubmitted = {
                navController.navigate("screenNovedades")
-               PushNotificationService.requestNewToken(context)
+               //PushNotificationService.requestNewToken(context)
+            },
+            onNavigateToRegister = {
+               navController.navigate("registerScreen/$ci")
             },
             onLoginInvitado = {
                // Handle login as guest
@@ -208,7 +208,7 @@ fun SetupNavGraph(navController: NavHostController) {
          RegisterRoute(
             ci = ci,
             onRegisterSubmitted = {
-               // Handle login submitted action
+               navController.popBackStack()
             },
             onLoginInvitado = {
                // Handle login as guest

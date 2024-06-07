@@ -66,7 +66,7 @@ fun registerRequest(nombre: String, apellido: String, email: String, fechaNacimi
         override fun onResponse(call: Call<String>, response: Response<String>) {
             val responseText = response.body() // Procesar la respuesta del login
 
-            println(response)
+
 
             if (responseText != null) {
                 println(responseText)
@@ -105,6 +105,11 @@ fun solicitudesRequest(callback: (List<SolicitudRequest>?) -> Unit){
             if(response.isSuccessful){
                 val decodedResponse = token?.let { decodeSolicitudes(it) }
 
+                println("Response code: ${response.code()}")
+                println("Response message: ${response.message()}")
+                response.errorBody()?.let { errorBody ->
+                    println("Error body: ${errorBody.string()}")
+                }
                 callback (decodedResponse)
             }
 
@@ -112,6 +117,7 @@ fun solicitudesRequest(callback: (List<SolicitudRequest>?) -> Unit){
 
         override fun onFailure(call: Call<String>, t: Throwable) {
             println("Error: ${t.message}")
+
         }
 
     })

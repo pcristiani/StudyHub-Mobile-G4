@@ -31,7 +31,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
       val resp = loginRequest(ci, password) {success ->
          if(success){
-
+            println("Wenas")
             onLoginComplete()
          }
          else{
