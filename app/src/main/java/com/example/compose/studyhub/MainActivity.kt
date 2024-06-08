@@ -41,36 +41,10 @@ import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity: AppCompatActivity() {
 
-/*
-   private fun createNotificationChannel() {
-      // Create the NotificationChannel, but only on API 26+ because
-      // the NotificationChannel class is not in the Support Library.
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-         val name = R.string.channel_name.toString()
-         val descriptionText = R.string.channel_description.toString()
-         val importance = NotificationManager.IMPORTANCE_DEFAULT
-
-         val channel = NotificationChannel("1", name, importance).apply {
-            description = descriptionText
-         }
-         // Register the channel with the system.
-         val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-         notificationManager.createNotificationChannel(channel)
-      }
-   }
-
- */
-
    override fun onCreate(savedInstanceState: Bundle?) {
-
-
-
-
       enableEdgeToEdge()
       super.onCreate(savedInstanceState)
       FirebaseApp.initializeApp(this)
-
 
       setContent {
          ThemeStudyHub {
@@ -79,86 +53,15 @@ class MainActivity: AppCompatActivity() {
             //SetupNavGraph(navController = navController)
          }
       }
-
-
-
    }
-
-
-
-
-   /*
-   private fun sendNotification() {
-      val builder = NotificationCompat.Builder(this, "1")
-         .setSmallIcon(R.drawable.a)
-         .setContentTitle(getString(R.string.app_title))
-         .setContentText("Test")
-         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-      with(NotificationManagerCompat.from(this)) {
-         notify(1, builder.build())
-      }
-   }
-
-    */
-
 }
 
 
 
 
-/*
-
-class MainActivity: AppCompatActivity() {
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-     super.onCreate(savedInstanceState)/*   setContentView(R.layout.activity_main) */
-
-
-     setContent{
-        ThemeStudyHub {
-           InicioScreen(
-              onLoginRegister = {navController.navigate("loginRegister") },
-              onLoginInvitado = { /* Handle login as guest */ }
-           )
-        }
-     }
-
-
-
-
-
-    val loginRequest = LoginRequest("52275944", "GCBBp79Kz3Mr")
-
-     RetrofitClient.api.login(loginRequest).enqueue(object: Callback<String> {
-        override fun onResponse(call: Call<String>, response: Response<String>) {
-           if (response.isSuccessful) {
-              val token = response.body() // Procesar la respuesta del login
-
-
-              if(token!=null){
-                 val decodedResponse = decodeJWT(token)
-              }
-
-              //println("$decodedResponse")
-              Toast.makeText(this@MainActivity, "Token: $token", Toast.LENGTH_SHORT).show()
-           } else {
-              Toast.makeText(this@MainActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
-           }
-        }
-
-        override fun onFailure(call: Call<String>, t: Throwable) {
-           Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-           println("Error: ${t.message}")
-        }
-     })
-   }
-}*/
-
-
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-   val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
+   //val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
 
@@ -190,6 +93,9 @@ fun SetupNavGraph(navController: NavHostController) {
             ScreenGestion(drawerState)
          })
       }
+
+      composable(NavRoutes.EditarPerfilScreen) {
+         EditarPerfilScreen(drawerState) }
    }
 }
 
@@ -231,6 +137,13 @@ fun ScreenSolicitudes(drawerState: DrawerState) {
 fun ScreenGestion(drawerState: DrawerState) {
    TopBar(drawerState)
    GestionScreen()
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun EditarPerfilScreen(drawerState: DrawerState) {
+   TopBar(drawerState)
+   EditarPerfilScreen(drawerState)
 }
 
 

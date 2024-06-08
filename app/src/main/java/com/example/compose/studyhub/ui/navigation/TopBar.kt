@@ -85,10 +85,18 @@ private fun MoreTasksMenu(navController: NavHostController, onClearCompletedTask
    TopAppBarDropdownMenu(iconContent = { //   Icon(Icons.Filled.AccountCircle, stringResource(id = R.string.txt_continue))
       ReplyProfileImage(drawableResource = R.drawable.steve_256, stringResource(id = R.string.txt_close))
    }) { closeMenu ->
-      DropdownMenuItem(onClick = { onClearCompletedTasks(); closeMenu(); navController.navigate(NavRoutes.EditarPerfilScreen)}) {
+      DropdownMenuItem(onClick = {
+         onClearCompletedTasks()
+         closeMenu()
+         try{
+            navController.navigate(NavRoutes.EditarPerfilScreen)
+         }catch (e: Exception){
+            println("Error al navegar: ${e.message}")
+         }
+      }) {
          Text(text = stringResource(id = R.string.txt_editPerfil))
       }
-      DropdownMenuItem(onClick = { onRefresh(); closeMenu() }) {
+      DropdownMenuItem(onClick = { onRefresh(); closeMenu()}) {
          Text(text = stringResource(id = R.string.txt_close))
       }
    }
