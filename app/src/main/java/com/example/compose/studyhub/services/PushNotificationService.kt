@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.compose.studyhub.data.User
 import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.registerTokenRequest
+import com.example.compose.studyhub.http.requests.registerTokenRequest
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage

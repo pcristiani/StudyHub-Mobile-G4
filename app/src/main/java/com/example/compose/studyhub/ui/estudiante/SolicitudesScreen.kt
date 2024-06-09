@@ -5,6 +5,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,18 +23,25 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchColors
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
@@ -52,10 +61,10 @@ import java.util.TimeZone
 
 @Composable
 fun SolicitudesScreen(): DrawerState {
-   Column(modifier = Modifier.padding(top = 100.dp, bottom = 6.dp)) {
+   Column(modifier = Modifier.padding(top = 120.dp, bottom = 6.dp)) {
       Solicitudes(modifier = Modifier
          .weight(1f)
-         .padding(top = 20.dp, start = 20.dp))
+         .padding(top = 20.dp, start = 20.dp, end = 20.dp))
    }
    return DrawerState(DrawerValue.Closed)
 }
@@ -67,14 +76,10 @@ fun Solicitudes(modifier: Modifier) {
    val isLoading = remember { mutableStateOf(false) }
    val listState = rememberLazyListState()
    val coroutineScope = rememberCoroutineScope()
-   var solicitudesNoAprobadas: List<SolicitudRequest>? = null
+   var asignaturas: List<SolicitudRequest>? = null
 
 
-   solicitudesRequest(){success ->
-      if (success != null) {
-         solicitudesNoAprobadas = success
-      }
-   }
+
 
    LaunchedEffect(Unit) {
       loadMoreUsers(users)
@@ -82,15 +87,57 @@ fun Solicitudes(modifier: Modifier) {
 
    Column(
       modifier = modifier.fillMaxWidth(),
-      verticalArrangement = Arrangement.Center,
-      horizontalAlignment = Alignment.CenterHorizontally
+      verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
+      horizontalAlignment = Alignment.CenterHorizontally,
    ) {
       Text(
          text = stringResource(id = R.string.txt_solicitudes),
-         style = MaterialTheme.typography.headlineSmall
-      )
+         style = MaterialTheme.typography.headlineSmall,
 
-   if(solicitudesNoAprobadas != null){
+         )
+
+
+
+      var checked by remember { mutableStateOf(true) }
+
+
+      Row(modifier = Modifier){
+         Text(text = "Pendientes", modifier = Modifier.padding(top=15.dp), style = MaterialTheme.typography.bodySmall)
+         Spacer(modifier = Modifier.padding(start = 8.dp))
+         Switch(
+            colors = SwitchDefaults.colors(
+               //checkedTrackColor = colorResource(id = R.color.teal_200),
+            ),
+            checked = checked,
+            onCheckedChange = {
+               checked = it
+            }
+         )
+         Text(text = "Aprobadas", modifier = Modifier.padding(top=15.dp, start=6.dp), style = MaterialTheme.typography.bodySmall)
+         Spacer(modifier = Modifier.padding(start = 8.dp))
+      }
+
+
+
+      if(checked == true){
+         solicitudesRequest(){success ->
+            if (success != null) {
+               asignaturas = success
+            }
+         }
+      }
+      else{
+         solicitudesRequest(){success ->
+            if (success != null) {
+               asignaturas = success
+            }
+         }
+      }
+
+
+      if(asignaturas != null){
+
+
 
          LazyColumn(
             state = listState,
@@ -122,9 +169,11 @@ fun Solicitudes(modifier: Modifier) {
                   }
                }
          }
-   }else{
-      Text(text = "No se encontraron solicitudes no aprobadas")
-   }
+      }else{
+
+         Text(text = stringResource(id = R.string.txt_error_solicitudes),
+            textAlign = TextAlign.Center)
+      }
    }
 
 

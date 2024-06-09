@@ -31,6 +31,12 @@ interface ApiService {
    @GET("/api/carrera/getCarrerasInscripcionesPendientes")
    fun getInscPendientes(): Call<String>
 
+    @GET("/api/asignatura/getAsignaturasNoAprobadas/{idUsuario}")
+    fun getAsignaturasNoAprobadas(@Path("idUsuario") idUsuario: Int): Call<String>
+
+    @GET("/api/asignatura/getAsignaturasAprobadas/{idUsuario}")
+    fun getAsignaturasAprobadas(@Path("idUsuario") idUsuario: Int, @Header("Authorization") token: String): Call<String>
+
    @POST("/api/usuario/registerMobileToken/{idUsuario}")
    fun registerMobileToken(@Path("idUsuario") idUsuario: Int, @Body mobileToken: String, @Header("Authorization") token: String): Call<String>
 }

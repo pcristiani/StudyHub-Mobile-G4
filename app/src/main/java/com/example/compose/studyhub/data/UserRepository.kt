@@ -56,6 +56,7 @@ object UserRepository {
 
 
 
+   /*
    fun existeUserCi(ci: String): Boolean {
       /*
       for (e in listEmailRegistrados) { // println(" " + e.second + e.first)
@@ -96,6 +97,9 @@ object UserRepository {
 
       return false
    }
+
+
+    */
 
    fun getPasswordEmail(email: String): String {
       for (e in listEmailRegistrados) {

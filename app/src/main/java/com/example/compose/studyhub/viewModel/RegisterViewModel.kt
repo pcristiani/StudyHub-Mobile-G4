@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.compose.studyhub.auth.decodeJWT
 import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.registerRequest
+import com.example.compose.studyhub.http.requests.registerRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

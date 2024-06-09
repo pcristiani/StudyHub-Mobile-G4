@@ -95,7 +95,8 @@ fun SetupNavGraph(navController: NavHostController) {
       }
 
       composable(NavRoutes.EditarPerfilScreen) {
-         EditarPerfilScreen(drawerState) }
+         EditarPerfilScreen(drawerState)
+      }
    }
 }
 
