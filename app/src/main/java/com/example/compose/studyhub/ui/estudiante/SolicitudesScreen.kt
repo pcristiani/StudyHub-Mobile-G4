@@ -60,6 +60,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 import com.example.compose.studyhub.http.requests.getAsignaturasAprobadasRequest
+import com.example.compose.studyhub.http.requests.getAsignaturasNoAprobadasRequest
 
 
 @Composable
@@ -135,9 +136,13 @@ fun Solicitudes(modifier: Modifier) {
          }
       }
       else{
-         solicitudesRequest(){success ->
-            if (success != null) {
-               asignaturas = success
+         UserRepository.loggedInUser()?.let {
+            UserRepository.getToken()?.let { it1 ->
+               getAsignaturasNoAprobadasRequest(it, it1){ success ->
+                  if (success != null) {
+                     asignaturas = success
+                  }
+               }
             }
          }
       }

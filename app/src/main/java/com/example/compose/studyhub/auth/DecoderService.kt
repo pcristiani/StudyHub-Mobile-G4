@@ -93,6 +93,7 @@ fun decodeSolicitudes(token: String): List<SolicitudRequest>?{
 
 fun decodeAsignaturas(token: String): List<SolicitudRequest>?{
     return try {
+
         val jwt = JWT(token)
 
         val asignaturaJson = jwt.getClaim("").asString() ?: throw IllegalArgumentException("Users claim is missing or invalid")

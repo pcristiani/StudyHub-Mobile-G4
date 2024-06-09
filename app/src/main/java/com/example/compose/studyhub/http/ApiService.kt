@@ -32,7 +32,7 @@ interface ApiService {
    fun getInscPendientes(): Call<String>
 
     @GET("/api/asignatura/getAsignaturasNoAprobadas/{idUsuario}")
-    fun getAsignaturasNoAprobadas(@Path("idUsuario") idUsuario: Int): Call<String>
+    fun getAsignaturasNoAprobadas(@Path("idUsuario") idUsuario: Int, @Header("Authorization") token: String): Call<String>
 
     @GET("/api/asignatura/getAsignaturasAprobadas/{idUsuario}")
     fun getAsignaturasAprobadas(@Path("idUsuario") idUsuario: Int, @Header("Authorization") token: String): Call<String>
