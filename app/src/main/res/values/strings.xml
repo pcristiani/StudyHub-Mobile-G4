@@ -90,4 +90,5 @@
 
     <string name="channel_name">Push Notifications Channel</string>
     <string name="channel_description">Push Notifications Description</string>
+    <string name="download_resume">Descargar escolaridad</string>
 </resources>
