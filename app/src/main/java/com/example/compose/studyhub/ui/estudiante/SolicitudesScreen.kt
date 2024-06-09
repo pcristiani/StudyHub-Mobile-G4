@@ -46,6 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.auth.SolicitudRequest
+import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.getAsignaturasAprobadasRequest
 import com.example.compose.studyhub.http.solicitudesRequest
 import com.example.compose.studyhub.ui.component.registrarEstudiante.QuestionWrapper
 import com.example.compose.studyhub.ui.component.registrarEstudiante.simpleDateFormatPattern
@@ -57,6 +59,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
+import com.example.compose.studyhub.http.requests.getAsignaturasAprobadasRequest
 
 
 @Composable
@@ -119,10 +122,15 @@ fun Solicitudes(modifier: Modifier) {
 
 
 
+
       if(checked == true){
-         solicitudesRequest(){success ->
-            if (success != null) {
-               asignaturas = success
+         UserRepository.loggedInUser()?.let {
+            UserRepository.getToken()?.let { it1 ->
+               getAsignaturasAprobadasRequest(it, it1){ success ->
+                  if (success != null) {
+                     asignaturas = success
+                  }
+               }
             }
          }
       }
