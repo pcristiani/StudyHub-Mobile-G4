@@ -53,6 +53,7 @@ secrets = "2.0.1"
 targetSdk = "33"
 version-catalog-update = "0.8.4"
 window = "1.2.0"
+firebaseCommonKtx = "21.0.0"
 
 [libraries]
 accompanist-adaptive = { module = "com.google.accompanist:accompanist-adaptive", version.ref = "accompanist" }
@@ -132,6 +133,7 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 rometools-modules = { module = "com.rometools:rome-modules", version.ref = "rome" }
 rometools-rome = { module = "com.rometools:rome", version.ref = "rome" }
 window = { group = "androidx.window", name = "window", version.ref = "window" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
