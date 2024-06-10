@@ -34,7 +34,7 @@ fun GestionScreen(): DrawerState {
       Text("Gestion", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
        */
 
-      Column(modifier = Modifier.padding(top = 0.dp, bottom = 0.dp)) {
+      Column(modifier = Modifier.padding(top = 100.dp, bottom = 30.dp)) {
          Gestion(modifier = Modifier
             .weight(1f)
             .padding(top = 20.dp, start = 20.dp, end = 20.dp))
