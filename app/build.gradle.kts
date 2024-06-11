@@ -105,4 +105,12 @@ dependencies {
    implementation("com.google.firebase:firebase-analytics")
    implementation("com.google.firebase:firebase-messaging")
    implementation("io.github.afreakyelf:Pdf-Viewer:2.1.1")
+
+
+
+
+   // include for Common module
+
+   implementation("org.jetbrains.kotlinx:kotlinx-html:0.11.0")
+
 }

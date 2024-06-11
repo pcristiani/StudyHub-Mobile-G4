@@ -1,4 +1,5 @@
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -23,6 +24,14 @@ interface ApiService {
    fun signUp(
        @Body
        registerRequest: RegisterRequest): Call<String>
+
+   @POST("/cerrarSesion")
+   fun logout(@Body token: String): Call<String>
+
+   @GET("/api/usuario/getUsuario/{idUsuario}")
+   fun getUsuario(
+       @Path("idUsuario") idUsuario: Int, @Header("Authorization") token: String): Call<UserRequest>
+
 
    @GET("/api/usuario/getUsuarios")
    fun getUsers(
@@ -49,3 +58,4 @@ data class RegisterRequest(val nombre: String, val apellido: String, val email: 
 
 data class TokenRequest(val token: String)
 
+data class UserRequest(val idUsuario: Int?, val nombre: String?, val apellido: String?, val email: String?, val fechaNacimiento: String?, val rol: String?, val cedula: String?, val activo: Boolean?, val validado: Boolean?)

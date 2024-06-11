@@ -4,21 +4,15 @@ import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-fun decodeJWT(token: String): UserRequest? {
+fun decodeJWT(token: String): LoginResponse? {
     try {
         val jwt = JWT(token)
 
 
         // Acceder a los claims
         val idUsuario = jwt.getClaim("id").asInt()
-        val nombre = jwt.getClaim("nombre").asString()
-        val apellido = jwt.getClaim("apellido").asString()
-        val email = jwt.getClaim("email").asString()
-        val fechaNacimiento = jwt.getClaim("fechaNacimiento").asString()
         val cedula = jwt.getClaim("cedula").asString()
         val rol = jwt.getClaim("rol").asString()
-        val activo = jwt.getClaim("activo").asBoolean()
-        val validado = jwt.getClaim("validado").asBoolean()
 
         println("ID: $idUsuario")
         println("CI: $cedula")
@@ -27,16 +21,10 @@ fun decodeJWT(token: String): UserRequest? {
 
 
 
-        return UserRequest(
+        return LoginResponse(
             idUsuario,
-            nombre,
-            apellido,
-            email,
-            fechaNacimiento,
             cedula,
-            rol,
-            activo,
-            validado
+            rol
         )
 
     } catch (e: Exception) {
@@ -46,7 +34,7 @@ fun decodeJWT(token: String): UserRequest? {
 }
 
 
-fun decodeUser(token: String): List<UserRequest>? {
+fun decodeUser(token: String): List<LoginResponse>? {
     return try {
         val jwt = JWT(token)
 
@@ -55,8 +43,8 @@ fun decodeUser(token: String): List<UserRequest>? {
 
 
         val gson = Gson()
-        val userType = object : TypeToken<List<UserRequest>>() {}.type
-        gson.fromJson<List<UserRequest>>(usersJson, userType)
+        val userType = object : TypeToken<List<LoginResponse>>() {}.type
+        gson.fromJson<List<LoginResponse>>(usersJson, userType)
 
 
     } catch (e: Exception) {
@@ -121,4 +109,4 @@ data class AsignaturaRequest(val idAsignatura: Int, val idCarrera: Int, val nomb
 
 data class SolicitudRequest(val idCarrera: Int, val nombre: String, val descripcion: String, val requisitos: String, val duracion: Int)
 
-data class UserRequest(val idUsuario: Int?, val nombre: String?, val apellido: String?, val email: String?, val fechaNacimiento: String?, val rol: String?, val cedula: String?, val activo: Boolean?, val validado: Boolean?)
+data class LoginResponse(val idUsuario: Int?, val cedula: String?, val rol: String?)

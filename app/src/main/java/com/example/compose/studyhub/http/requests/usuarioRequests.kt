@@ -2,6 +2,7 @@ package com.example.compose.studyhub.http.requests
 
 import LoginRequest
 import RegisterRequest
+import UserRequest
 import com.example.compose.studyhub.auth.decodeJWT
 import com.example.compose.studyhub.data.UserRepository
 import retrofit2.Call
@@ -27,7 +28,10 @@ fun loginRequest(ci: String, password: String, callback: (Boolean) -> Unit){
                     if(decodedResponse != null){
                         decodedResponse.idUsuario?.let { idUsuario ->
                             decodedResponse.cedula?.let { ci ->
-                                UserRepository.login(token, idUsuario, ci) }
+
+                                        UserRepository.login(token, idUsuario, ci)
+
+                            }
                             println("I'm here")
                         }
                     }
@@ -48,7 +52,21 @@ fun loginRequest(ci: String, password: String, callback: (Boolean) -> Unit){
 
 }
 
+fun cerrarSesionRequest(token: String){
 
+    val completeToken = "Bearer $token"
+
+    RetrofitClient.api.logout(completeToken).enqueue(object: Callback<String> {
+        override fun onResponse(call: Call<String>, response: Response<String>) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onFailure(call: Call<String>, t: Throwable) {
+            TODO("Not yet implemented")
+        }
+
+    })
+}
 
 fun registerRequest(nombre: String, apellido: String, email: String, fechaNacimiento: String, ci:String, password:String, callback: (Boolean) -> Unit){
     val registerRequest = RegisterRequest(nombre, apellido, email, fechaNacimiento, ci, password)
@@ -83,4 +101,32 @@ fun registerRequest(nombre: String, apellido: String, email: String, fechaNacimi
         }
     })
 
+}
+
+fun getUsuarioRequest(idUsuario: Int, token: String, callback: (UserRequest?) -> Unit){
+
+
+    val completeToken = "Bearer $token"
+
+    val call = RetrofitClient.api.getUsuario(idUsuario, completeToken)
+    call.enqueue(object : Callback<UserRequest> {
+        override fun onResponse(call: Call<UserRequest>, response: Response<UserRequest>) {
+            if (response.isSuccessful) {
+                callback(response.body())
+            } else {
+                callback(null)
+                println("Response code: ${response.code()}")
+                println("Response message: ${response.message()}")
+                response.errorBody()?.let { errorBody ->
+                    println("Error body: ${errorBody.string()}")
+                }
+            }
+        }
+
+        override fun onFailure(call: Call<UserRequest>, t: Throwable) {
+            t.printStackTrace()
+            callback(null)
+        }
+
+    })
 }

@@ -3,16 +3,19 @@ package com.example.compose.studyhub.data
 import TokenRequest
 import androidx.compose.runtime.Immutable
 import com.example.compose.studyhub.auth.decodeUser
+import com.example.compose.studyhub.http.requests.getUsuarioRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 ///
 sealed class User {
-   @Immutable data class LoggedInUser(val JWTtoken: String, val id: Int, val ci: String) : User() {
+   @Immutable data class LoggedInUser(val JWTtoken: String, val id: Int, val ci: String, val nombre: String, val apellido: String) : User() {
       val token: String = JWTtoken
       val ciString: String = ci
       val idUsuario: Int = id
+      val nombreU: String = nombre
+      val apellidoU: String = apellido
    }
 
    object InvitadoUser : User()
@@ -30,7 +33,18 @@ object UserRepository {
 
    //@Suppress("UNUSED_PARAMETER")
    fun login(token: String, id: Int, ci: String) {
-      _user = User.LoggedInUser(token, id, ci)
+
+      getUsuarioRequest(id, token){
+         success ->
+         if(success != null){
+            _user = success.nombre?.let { success.apellido?.let { it1 ->
+               User.LoggedInUser(token, id, ci, it,
+                  it1
+               )
+            } }!!
+         }
+      }
+
    }
 
    /*
@@ -54,6 +68,20 @@ object UserRepository {
       }
    }
 
+
+   fun getNombre(): String?{
+      return when (user){
+         is User.LoggedInUser -> (user as User.LoggedInUser).nombreU
+         else -> null
+      }
+   }
+
+   fun getApellido(): String?{
+      return when (user){
+         is User.LoggedInUser -> (user as User.LoggedInUser).apellidoU
+         else -> null
+      }
+   }
 
 
    /*
