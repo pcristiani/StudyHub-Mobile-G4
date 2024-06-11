@@ -1,5 +1,4 @@
 package com.example.compose.studyhub.http.requests
-
 import LoginRequest
 import RegisterRequest
 import UserRequest
@@ -40,7 +39,6 @@ fun loginRequest(ci: String, password: String, callback: (Boolean) -> Unit) {
                      }
                   }
                }
-               println("Iasd")
                
             } else {
                callback(false)
