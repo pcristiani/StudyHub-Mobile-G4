@@ -1,12 +1,13 @@
 package com.example.compose.studyhub.http.requests
 
+import com.example.compose.studyhub.auth.AsignaturaRequest
 import com.example.compose.studyhub.auth.SolicitudRequest
 import com.example.compose.studyhub.auth.decodeAsignaturas
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun getAsignaturasAprobadasRequest(idUsuario: Int, token: String, callback: (List<SolicitudRequest>?) -> Unit){
+fun getAsignaturasAprobadasRequest(idUsuario: Int, token: String, callback: (List<AsignaturaRequest>?) -> Unit){
     //val registerRequest = getAsignaturasAprobadas(nombre, apellido, email, fechaNacimiento, ci, password)
 
     val completeToken = "Bearer " + token
@@ -45,7 +46,7 @@ fun getAsignaturasAprobadasRequest(idUsuario: Int, token: String, callback: (Lis
 
 }
 
-fun getAsignaturasNoAprobadasRequest(idUsuario: Int, token: String, callback: (List<SolicitudRequest>?) -> Unit){
+fun getAsignaturasNoAprobadasRequest(idUsuario: Int, token: String, callback: (List<AsignaturaRequest>?) -> Unit){
     //val registerRequest = getAsignaturasAprobadas(nombre, apellido, email, fechaNacimiento, ci, password)
 
     val completeToken = "Bearer " + token

@@ -76,7 +76,7 @@ fun decodeSolicitudes(token: String): List<SolicitudRequest>? {
    
 }
 
-fun decodeAsignaturas(token: String): List<SolicitudRequest>? {
+fun decodeAsignaturas(token: String): List<AsignaturaRequest>? {
    return try {
       val jwt = JWT(token)
       val asignaturaJson = jwt.getClaim("").asString() ?: throw IllegalArgumentException("Users claim is missing or invalid")
@@ -84,7 +84,7 @@ fun decodeAsignaturas(token: String): List<SolicitudRequest>? {
       val asignaturaType = object: TypeToken<List<AsignaturaRequest>>() {}.type
       println(asignaturaType)
       
-      gson.fromJson<List<SolicitudRequest>>(asignaturaJson, asignaturaType)
+      gson.fromJson<List<AsignaturaRequest>>(asignaturaJson, asignaturaType)
       
    } catch (e: Exception) {
       e.printStackTrace()
