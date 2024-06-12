@@ -1,6 +1,7 @@
 package com.example.compose.studyhub.ui.estudiante
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -185,12 +186,17 @@ fun Solicitudes(modifier: Modifier) {
                 }
                 if (isLoading.value) {
                     item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ){
                         CircularProgressIndicator(
                             modifier = Modifier
                                 .padding(16.dp)
-                                .align(Alignment.CenterHorizontally)
+                                .align(Alignment.Center)
                         )
-                    }
+                    }}
                 }
             }
             LaunchedEffect(listState) {
@@ -221,8 +227,8 @@ fun Solicitudes(modifier: Modifier) {
 suspend fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<AsignaturaRequest>) {
     val currentSize = asignaturasList.size
     var listLength: Int
-    if (asignaturas.size < 30){
-        listLength = asignaturas.size-1
+    if ((asignaturas.size - asignaturasList.size) < 30){
+        listLength = (asignaturas.size - asignaturasList.size)-1
     }else{
         listLength = 30
     }
