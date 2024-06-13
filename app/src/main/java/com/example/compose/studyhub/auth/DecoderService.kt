@@ -82,9 +82,12 @@ fun decodeAsignaturas(token: String): List<AsignaturaRequest>? {
       val asignaturaJson = jwt.getClaim("").asString() ?: throw IllegalArgumentException("Users claim is missing or invalid")
       val gson = Gson()
       val asignaturaType = object: TypeToken<List<AsignaturaRequest>>() {}.type
-      println(asignaturaType)
+
+       println(gson.fromJson<List<AsignaturaRequest>>(asignaturaJson, asignaturaType))
       
       gson.fromJson<List<AsignaturaRequest>>(asignaturaJson, asignaturaType)
+
+
       
    } catch (e: Exception) {
       e.printStackTrace()

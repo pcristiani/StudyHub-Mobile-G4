@@ -3,6 +3,8 @@ package com.example.compose.studyhub.http.requests
 import com.example.compose.studyhub.auth.AsignaturaRequest
 import com.example.compose.studyhub.auth.SolicitudRequest
 import com.example.compose.studyhub.auth.decodeAsignaturas
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,16 +18,15 @@ fun getAsignaturasAprobadasRequest(idUsuario: Int, token: String, callback: (Lis
         override fun onResponse(call: Call<String>, response: Response<String>) {
             val responseText = response.body() // Procesar la respuesta del login
 
-
-
-            if (responseText != null) {
-                println(responseText)
-            }
-
             if (response.isSuccessful) {
 
-                callback(responseText?.let { decodeAsignaturas(it) })
-                println(responseText)
+
+
+                val gson = Gson()
+                val listType = object : TypeToken<List<AsignaturaRequest>>() {}.type
+                val asignaturas: List<AsignaturaRequest> = gson.fromJson(responseText, listType)
+                callback(asignaturas)
+                //println("Response: $responseText")
             }
             else{
                 callback(null)
@@ -44,6 +45,7 @@ fun getAsignaturasAprobadasRequest(idUsuario: Int, token: String, callback: (Lis
         }
     })
 
+
 }
 
 fun getAsignaturasNoAprobadasRequest(idUsuario: Int, token: String, callback: (List<AsignaturaRequest>?) -> Unit){
@@ -55,16 +57,15 @@ fun getAsignaturasNoAprobadasRequest(idUsuario: Int, token: String, callback: (L
         override fun onResponse(call: Call<String>, response: Response<String>) {
             val responseText = response.body() // Procesar la respuesta del login
 
-
-
-            if (responseText != null) {
-                println(responseText)
-            }
-
             if (response.isSuccessful) {
 
-                callback(responseText?.let { decodeAsignaturas(it) })
-                println(responseText)
+
+
+                val gson = Gson()
+                val listType = object : TypeToken<List<AsignaturaRequest>>() {}.type
+                val asignaturas: List<AsignaturaRequest> = gson.fromJson(responseText, listType)
+                callback(asignaturas)
+                //println("Response: $responseText")
             }
             else{
                 callback(null)

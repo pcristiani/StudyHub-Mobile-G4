@@ -20,6 +20,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,12 +51,19 @@ fun LoginScreen(
    onNavigateToRegister: (ci: String) -> Unit,
    onLoginInvitado: () -> Unit,
    onNavUp: () -> Unit,
+   loginError: String?,
+   onErrorDismissed: () -> Unit
                ) {
    val snackbarHostState = remember { SnackbarHostState() }
    val scope = rememberCoroutineScope()
    val respuesta = stringResource(id = R.string.login_test)
    val snackbarActionLabel = stringResource(id = R.string.sign_in)
-   
+
+   if(loginError != null){
+      ErrorSnackbar(snackbarHostState = snackbarHostState, onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }, modifier = Modifier)
+
+   }
+
    Scaffold(topBar = {
       LoginRegisterTopAppBar(topAppBarText = stringResource(id = R.string.sign_in), onNavUp = onNavUp)
    }, content = { contentPadding ->
@@ -154,7 +162,7 @@ private fun getLoginTest(emailLogin: String, passwordLogin: String): Boolean {
 fun ErrorSnackbar(snackbarHostState: SnackbarHostState, modifier: Modifier = Modifier, onDismiss: () -> Unit = {}) {
    SnackbarHost(hostState = snackbarHostState, snackbar = { data ->
       Snackbar(modifier = Modifier.padding(16.dp), content = {
-         Text(text = data.visuals.message, style = MaterialTheme.typography.bodyMedium)
+         Text(text = stringResource(R.string.txt_error_login), style = MaterialTheme.typography.bodyMedium)
       }, action = {
          data.visuals.actionLabel?.let {
             TextButton(onClick = onDismiss) {
@@ -189,6 +197,6 @@ fun OrLoginInvitados(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier)
 @Composable
 fun LoginPreview() {
    ThemeStudyHub {
-      LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onNavigateToRegister = {_, ->}, onLoginInvitado = {}, onNavUp = {})
+      LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onNavigateToRegister = {_, ->}, onLoginInvitado = {}, onNavUp = {}, "ERROR", onErrorDismissed = {})
    }
 }

@@ -57,7 +57,8 @@ android {
 
 dependencies {
    implementation(libs.window)
-   //implementation(libs.firebase.common.ktx)
+    implementation(libs.androidx.runtime.livedata)
+    //implementation(libs.firebase.common.ktx)
    val composeBom = platform(libs.androidx.compose.bom)
    implementation(composeBom)
    androidTestImplementation(composeBom)

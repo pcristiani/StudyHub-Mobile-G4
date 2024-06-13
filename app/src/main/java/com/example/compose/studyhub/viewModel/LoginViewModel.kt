@@ -2,8 +2,12 @@ package com.example.compose.studyhub.viewModel
 
 import LoginRequest
 import android.widget.Toast
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.compose.studyhub.R
 import com.example.compose.studyhub.auth.decodeJWT
 import com.example.compose.studyhub.data.User
 import com.example.compose.studyhub.data.UserRepository
@@ -15,6 +19,11 @@ import retrofit2.Response
 
 ///
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
+   private val _loginError = MutableLiveData<String?>(null)
+   val loginError: LiveData<String?> get() = _loginError
+
+   var successfulLogin: Boolean = false
+
    fun login(ci: String, password: String, onLoginComplete: () -> Unit) {
 
 
@@ -28,18 +37,27 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
       }*/
 
 
-      val resp = loginRequest(ci, password) {success ->
-         if(success){
-            println("Wenas")
-            onLoginComplete()
-         }
-         else{
-            println("Incorrect credentials")
-         }
 
+
+
+      loginRequest(ci, password) {success ->
+         if(success){
+            onLoginComplete()
+            successfulLogin = true
+         }
       }
 
 
+      if(successfulLogin == false){
+         _loginError.value = "Credenciales incorrectas."
+         println("Credenciales incorrectas")
+      }
+      successfulLogin = false
+   }
+
+
+   fun clearLoginError(){
+      _loginError.value = null
    }
 
    fun loginInvitado(onLoginComplete: () -> Unit) {
