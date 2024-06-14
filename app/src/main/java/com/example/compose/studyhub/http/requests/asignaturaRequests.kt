@@ -2,7 +2,6 @@ package com.example.compose.studyhub.http.requests
 
 import com.example.compose.studyhub.auth.AsignaturaRequest
 import com.example.compose.studyhub.auth.SolicitudRequest
-import com.example.compose.studyhub.auth.decodeAsignaturas
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call

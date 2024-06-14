@@ -76,28 +76,6 @@ fun decodeSolicitudes(token: String): List<SolicitudRequest>? {
    
 }
 
-fun decodeAsignaturas(token: String): List<AsignaturaRequest>? {
-   return try {
-      val jwt = JWT(token)
-      val asignaturaJson = jwt.getClaim("").asString() ?: throw IllegalArgumentException("Users claim is missing or invalid")
-      val gson = Gson()
-      val asignaturaType = object: TypeToken<List<AsignaturaRequest>>() {}.type
-
-       println(gson.fromJson<List<AsignaturaRequest>>(asignaturaJson, asignaturaType))
-      
-      gson.fromJson<List<AsignaturaRequest>>(asignaturaJson, asignaturaType)
-
-
-      
-   } catch (e: Exception) {
-      e.printStackTrace()
-      null
-   } catch (e: IllegalArgumentException) {
-      e.printStackTrace()
-      null
-   }
-   
-}
 
 data class AsignaturaRequest(val idAsignatura: Int, val idCarrera: Int, val nombre: String, val creditos: Int, val descripcion: String, val departamento: String, val tieneExamen: Boolean, val activa: Boolean, val previaturas: List<Int>)
 

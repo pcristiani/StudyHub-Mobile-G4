@@ -1,13 +1,18 @@
 package com.example.compose.studyhub.ui.navigation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -62,8 +67,25 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                   }
                })
             }
+            Spacer(modifier = Modifier.weight(1f))
+            Box(modifier = Modifier
+               .size(70.dp, 80.dp)
+               .padding(bottom=10.dp, start = 20.dp)
+
+            ){
+               IconButton(
+                  onClick = {},
+                  modifier = Modifier.align(Alignment.CenterStart)
+               ){
+                  Icon(imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp))
+               }
+            }
          }
       }
+
+
+
+
    }) { contenido() }
 }
 

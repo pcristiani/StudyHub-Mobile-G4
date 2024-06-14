@@ -55,21 +55,37 @@ fun loginRequest(ci: String, password: String, callback: (Boolean) -> Unit) {
 }
 
 
-fun cerrarSesionRequest(token: String){
+fun cerrarSesionRequest(token: String, callback: (Boolean) -> Unit){
 
     val completeToken = "Bearer $token"
 
     RetrofitClient.api.logout(completeToken).enqueue(object: Callback<String> {
         override fun onResponse(call: Call<String>, response: Response<String>) {
-            TODO("Not yet implemented")
+            val responseText = response.body() // Procesar la respuesta del login
+
+
+
+            if (response.isSuccessful) {
+                callback(true)
+                println(responseText)
+            } else {
+                callback(false)
+                println("Response code: ${response.code()}")
+                println("Response message: ${response.message()}")
+                response.errorBody()?.let { errorBody ->
+                    println("Error body: ${errorBody.string()}")
+                }
+            }
         }
 
+
         override fun onFailure(call: Call<String>, t: Throwable) {
-            TODO("Not yet implemented")
+            println("Error: ${t.message}")
         }
 
     })
 }
+
 
 
 fun registerRequest(nombre: String, apellido: String, email: String, fechaNacimiento: String, ci: String, password: String, callback: (Boolean) -> Unit) {
