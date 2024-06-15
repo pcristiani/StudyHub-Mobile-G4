@@ -2,6 +2,7 @@ package com.example.compose.studyhub.ui.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.Logout
@@ -68,18 +70,41 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                })
             }
             Spacer(modifier = Modifier.weight(1f))
-            Box(modifier = Modifier
-               .size(70.dp, 80.dp)
-               .padding(bottom=10.dp, start = 20.dp)
+            Row(){
+               Box(modifier = Modifier
+                  .size(70.dp, 80.dp)
+                  .padding(bottom = 10.dp, start = 20.dp)
 
-            ){
-               IconButton(
-                  onClick = {},
-                  modifier = Modifier.align(Alignment.CenterStart)
                ){
-                  Icon(imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp))
+                  IconButton(
+                     onClick = {},
+                     modifier = Modifier.align(Alignment.CenterStart)
+                  ){
+                     Icon(imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp))
+                  }
+               }
+
+               Box(modifier = Modifier
+                  .size(70.dp, 80.dp)
+                  .padding(bottom = 10.dp, start = 20.dp)
+
+               ){
+                  IconButton(
+                     onClick = {scope.launch {
+                        drawerState.close()
+                     }
+                        try {
+                           navController.navigate(NavRoutes.EditarPerfilScreen) //  println(item.ruta)
+                        } catch (e: Exception) {
+                           println("Error al navegar: ${e.message}")
+                        }},
+                     modifier = Modifier.align(Alignment.CenterStart)
+                  ){
+                     Icon(imageVector = Icons.Filled.Build, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp))
+                  }
                }
             }
+
          }
       }
 

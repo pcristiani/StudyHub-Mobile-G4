@@ -42,7 +42,7 @@ import com.example.compose.studyhub.util.supportWideScreen
 
 @Composable
 fun EditarPerfilScreen(
-    onProfileEditSubmitted: (nombre: String?, apellido: String?, email: String?, fechaNacimiento:String?, password: String?) -> Unit,
+   onProfileEditSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String) -> Unit,
     onNavUp: () -> Unit,
 ): DrawerState {
     Scaffold(topBar = {
@@ -62,7 +62,7 @@ fun EditarPerfilScreen(
 
 @Composable
 fun EditarPerfil(modifier: Modifier,
-                 onProfileEditSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String, password: String) -> Unit,
+                 onProfileEditSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String) -> Unit,
                  ){
     Column(modifier = Modifier.fillMaxWidth()){
         val passwordFocusRequest = remember { FocusRequester() }
@@ -84,17 +84,10 @@ fun EditarPerfil(modifier: Modifier,
         val birthdayState = remember{ DateTimeState() }
         Birthday(birthdayState, onImeAction = { passwordFocusRequest.requestFocus() })
 
-        Spacer(modifier = Modifier.height(16.dp))
-        val passwordState = remember { PasswordState() }
-        Password(label = stringResource(id = R.string.password), passwordState = passwordState, imeAction = ImeAction.Next, onImeAction = { confirmationPasswordFocusRequest.requestFocus() }, modifier = Modifier.focusRequester(passwordFocusRequest))
-
-        Spacer(modifier = Modifier.height(1.dp))
-        val confirmPasswordState = remember { ConfirmPasswordState(passwordState = passwordState) }
-        Password(label = stringResource(id = R.string.confirm_password), passwordState = confirmPasswordState, onImeAction = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text,"05/12/2000", passwordState.text) }, modifier = Modifier.focusRequester(confirmationPasswordFocusRequest))
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        Button(onClick = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text,birthdayState.day + {"/"} + birthdayState.month + {"/"} + birthdayState.year, passwordState.text) }, modifier = Modifier.fillMaxWidth(), passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.txt_editPerfil)) }
+        Button(onClick = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text,birthdayState.day + {"/"} + birthdayState.month + {"/"} + birthdayState.year) }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.txt_editPerfil)) }
     }
 }
 
@@ -102,7 +95,7 @@ fun EditarPerfil(modifier: Modifier,
 @Composable
 fun EditarPerfilScreenPreview(){
     ThemeStudyHub {
-        EditarPerfilScreen(onProfileEditSubmitted = { _, _, _, _, _ -> },
+        EditarPerfilScreen(onProfileEditSubmitted = { _, _, _, _ -> },
             onNavUp = {},
             )
     }

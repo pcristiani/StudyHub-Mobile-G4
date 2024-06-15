@@ -84,6 +84,13 @@ object UserRepository {
    }
 
 
+   fun getCI(): String?{
+      return when (user){
+         is User.LoggedInUser -> (user as User.LoggedInUser).ciString
+         else -> null
+      }
+   }
+
    /*
    fun existeUserCi(ci: String): Boolean {
       /*

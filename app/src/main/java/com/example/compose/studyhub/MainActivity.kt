@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.compose.studyhub.ui.estudiante.EditarPerfilScreen
 import com.example.compose.studyhub.ui.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
 import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
@@ -21,6 +22,7 @@ import com.example.compose.studyhub.ui.estudiante.SolicitudesScreen
 import com.example.compose.studyhub.ui.navigation.MenuLateral
 import com.example.compose.studyhub.ui.navigation.NavRoutes
 import com.example.compose.studyhub.ui.navigation.TopBar
+import com.example.compose.studyhub.ui.route.EditarPerfilRoute
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.google.firebase.FirebaseApp
 
@@ -79,7 +81,10 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
       }
       
       composable(NavRoutes.EditarPerfilScreen) {
-         EditarPerfilScreen(drawerState)
+         MenuLateral(navController, drawerState, contenido = {
+            ScreenEditarPerfil(navController, drawerState)
+         })
+
       }
    }
 }
@@ -128,9 +133,12 @@ fun ScreenGestion(drawerState: DrawerState) {
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun EditarPerfilScreen(drawerState: DrawerState) {
+fun ScreenEditarPerfil(navController: NavHostController, drawerState: DrawerState) {
    TopBar(drawerState)
-   EditarPerfilScreen(drawerState)
+   EditarPerfilRoute(
+      onProfileEditSubmitted = {navController.navigate(NavRoutes.NovedadesScreen)},
+      onNavUp = navController::navigateUp,
+   )
 }
 
 

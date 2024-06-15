@@ -5,6 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
@@ -24,6 +25,12 @@ interface ApiService {
    fun signUp(
        @Body
        registerRequest: RegisterRequest): Call<String>
+
+
+    @PUT("/api/usuario/modificarPerfil/{idUsuario}")
+    fun modifyProfile(@Path("idUsuario") idUsuario: Int,
+                      @Header("Authorization") token: String,
+                      @Body modifyProfileRequest: ModifyProfileRequest): Call<String>
 
    @POST("/cerrarSesion")
    fun logout(@Body token: String): Call<String>
@@ -57,6 +64,7 @@ data class LoginRequest(val cedula: String, val password: String)
 
 data class RegisterRequest(val nombre: String, val apellido: String, val email: String, val fechaNacimiento: String, val cedula: String, val password: String, val rol: String="E")
 
+data class ModifyProfileRequest(val nombre: String, val apellido: String, val email: String, val fechaNacimiento: String)
 
 data class TokenRequest(val token: String)
 

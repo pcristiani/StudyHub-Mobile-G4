@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.compose.studyhub.Destinations.EDITAR_PERFIL_ROUTE
 import com.example.compose.studyhub.Destinations.INICIO_ROUTE
 import com.example.compose.studyhub.Destinations.LOGIN_ROUTE
 import com.example.compose.studyhub.Destinations.QUESTION_RESULTS_ROUTE
@@ -23,6 +24,7 @@ object Destinations {
    const val LOGIN_ROUTE = "login/{ci}"
    const val QUESTION_ROUTE = "questionLogin"
    const val QUESTION_RESULTS_ROUTE = "screenNovedades"
+   const val EDITAR_PERFIL_ROUTE = "editarPerfil"
 }
 
 
@@ -74,6 +76,13 @@ fun StudyHubNavHost(
          val navController = rememberNavController()
          SetupNavGraph(navController = navController)
       }
+
+
+      composable(EDITAR_PERFIL_ROUTE){
+
+      }
    }
-   
+
+
+
 } // QuestionResultScreen2 { navController.navigate(INICIO_ROUTE) }

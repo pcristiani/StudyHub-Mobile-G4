@@ -1,5 +1,6 @@
 package com.example.compose.studyhub.http.requests
 import LoginRequest
+import ModifyProfileRequest
 import RegisterRequest
 import UserRequest
 import RetrofitClient
@@ -146,4 +147,44 @@ fun getUsuarioRequest(idUsuario: Int, token: String, callback: (UserRequest?) ->
         }
 
     })
+}
+
+fun modifyProfileRequest(token: String, idUsuario: Int, nombre: String, apellido: String, email: String, fechaNacimiento: String, callback: (Boolean) -> Unit) {
+
+
+    val fullToken = "Bearer $token"
+
+    val modifyProfileRequest = ModifyProfileRequest(nombre, apellido, email, fechaNacimiento)
+
+
+
+    RetrofitClient.api.modifyProfile(idUsuario, fullToken, modifyProfileRequest).enqueue(object: Callback<String> {
+        override fun onResponse(call: Call<String>, response: Response<String>) {
+            val responseText = response.body() // Procesar la respuesta del login
+
+
+
+            if (responseText != null) {
+                println(responseText)
+            }
+
+            if (response.isSuccessful) {
+                callback(true)
+                println(responseText)
+            } else {
+                callback(false)
+                println("Response code: ${response.code()}")
+                println("Response message: ${response.message()}")
+                response.errorBody()?.let { errorBody ->
+                    println("Error body: ${errorBody.string()}")
+                }
+            }
+        }
+
+        override fun onFailure(call: Call<String>, t: Throwable) {
+            println("Error: ${t.message}")
+            callback(false)
+        }
+    })
+
 }
