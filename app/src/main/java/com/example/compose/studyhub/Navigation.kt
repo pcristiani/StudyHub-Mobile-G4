@@ -72,7 +72,6 @@ fun StudyHubNavHost(
       }
       
       composable(QUESTION_RESULTS_ROUTE) {
-         val startingEmail = it.arguments?.getString("email")
          val navController = rememberNavController()
          SetupNavGraph(navController = navController)
       }

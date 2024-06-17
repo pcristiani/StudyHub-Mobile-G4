@@ -27,9 +27,13 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,7 +41,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.compose.studyhub.Destinations
+import com.example.compose.studyhub.MainActivity
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.StudyHubNavHost
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.cerrarSesionRequest
 import com.example.compose.studyhub.ui.component.DialogBoxCreation
@@ -148,10 +155,19 @@ fun HeaderMenuLateral(topAppBarText: String, onNavUp: () -> Unit) {
 
 @Composable
 fun LogoutBox(navController: NavHostController, onDismiss: () -> Unit){
+
    LogoutRoute(
       onConfirmation = {
-         println("Llegué acá")
-         navController.navigate(NavRoutes.InicioScreen)
+
+         println("Acá estoy")
+         navController.navigate(Destinations.INICIO_ROUTE) {
+            popUpTo(navController.graph.startDestinationId) {
+               saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+         }
+
          onDismiss()
       },
       dialogTitle = stringResource(id = R.string.Logout_title),

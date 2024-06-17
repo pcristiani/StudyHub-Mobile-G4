@@ -10,12 +10,13 @@ import retrofit2.Response
 
 ///
 sealed class User {
-   @Immutable data class LoggedInUser(val JWTtoken: String, val id: Int, val ci: String, val nombre: String, val apellido: String) : User() {
+   @Immutable data class LoggedInUser(val JWTtoken: String, val id: Int, val ci: String, val nombre: String, val apellido: String, val email: String) : User() {
       val token: String = JWTtoken
       val ciString: String = ci
       val idUsuario: Int = id
       val nombreU: String = nombre
       val apellidoU: String = apellido
+      val emailU: String = email
    }
 
    object InvitadoUser : User()
@@ -38,9 +39,11 @@ object UserRepository {
          success ->
          if(success != null){
             _user = success.nombre?.let { success.apellido?.let { it1 ->
-               User.LoggedInUser(token, id, ci, it,
-                  it1
-               )
+               success.email?.let { it2 ->
+                  User.LoggedInUser(token, id, ci, it,
+                     it1, it2
+                  )
+               }
             } }!!
          }
       }
@@ -83,11 +86,37 @@ object UserRepository {
       }
    }
 
+   fun getEmail(): String?{
+      return when (user){
+         is User.LoggedInUser -> (user as User.LoggedInUser).emailU
+         else -> null
+      }
+   }
 
    fun getCI(): String?{
       return when (user){
          is User.LoggedInUser -> (user as User.LoggedInUser).ciString
          else -> null
+      }
+   }
+
+   fun modificarPerfil(){
+      loggedInUser()?.let {
+         getToken()?.let { it1 ->
+            getUsuarioRequest(it, it1){ success ->
+               if(success != null){
+                  _user = success.nombre?.let { nombre -> success.apellido?.let { apellido ->
+                     success.email?.let { email ->
+                        getCI()?.let { it2 ->
+                           User.LoggedInUser(it1, it, it2, nombre,
+                              apellido, email
+                           )
+                        }
+                     }
+                  } }!!
+               }
+            }
+         }
       }
    }
 

@@ -11,6 +11,7 @@ class LogoutViewModel(private val userRepository: UserRepository) : ViewModel() 
         
         cerrarSesionRequest(token) {success ->
             if(success){
+                UserRepository.logout()
                 onLogoffComplete()
             }
         }

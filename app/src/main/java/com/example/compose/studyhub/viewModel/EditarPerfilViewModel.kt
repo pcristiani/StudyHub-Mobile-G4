@@ -20,6 +20,7 @@ class EditarPerfilViewModel(private val userRepository: UserRepository) : ViewMo
                 modifyProfileRequest(token, idUsuario, nombre, apellido, email, fechaNacimiento){ success ->
                     if(success){
                         onModifyProfileSubmitted()
+                        UserRepository.modificarPerfil()
                     }
                 }
             }

@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.domain.CIState
 import com.example.compose.studyhub.domain.ConfirmPasswordState
 import com.example.compose.studyhub.domain.DateTimeState
@@ -65,24 +66,34 @@ fun EditarPerfil(modifier: Modifier,
                  onProfileEditSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String) -> Unit,
                  ){
     Column(modifier = Modifier.fillMaxWidth()){
-        val passwordFocusRequest = remember { FocusRequester() }
-        val confirmationPasswordFocusRequest = remember { FocusRequester() }
+        val focusRequest = remember { FocusRequester() }
 
 
-        val nameState = remember { TextFieldState() }
-        Name(nameState, onImeAction = { passwordFocusRequest.requestFocus() })
+        val nombre = UserRepository.getNombre()
+        val apellido = UserRepository.getApellido()
+        val email = UserRepository.getEmail()
+
+
+        val nameState = remember { val textFieldState = TextFieldState()
+            textFieldState.text = nombre ?: ""
+            textFieldState }
+        Name(nameState, onImeAction = { focusRequest.requestFocus() })
 
         Spacer(modifier = Modifier.height(16.dp))
-        val surNameState = remember { TextFieldState() }
-        SurName(surNameState, onImeAction = { passwordFocusRequest.requestFocus() })
+        val surNameState = remember { val textFieldState = TextFieldState()
+            textFieldState.text = apellido ?: ""
+            textFieldState }
+        SurName(surNameState, onImeAction = { focusRequest.requestFocus() })
 
         Spacer(modifier = Modifier.height(16.dp))
-        val emailState = remember{ EmailState() }
-        Email(emailState, onImeAction = { passwordFocusRequest.requestFocus() })
+        val emailState = remember{ val textFieldState = TextFieldState()
+            textFieldState.text = email ?: ""
+            textFieldState }
+        Email(emailState, onImeAction = { focusRequest.requestFocus() })
 
         Spacer(modifier = Modifier.height(16.dp))
         val birthdayState = remember{ DateTimeState() }
-        Birthday(birthdayState, onImeAction = { passwordFocusRequest.requestFocus() })
+        Birthday(birthdayState, onImeAction = { focusRequest.requestFocus() })
 
 
         Spacer(modifier = Modifier.height(15.dp))

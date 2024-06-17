@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.ui.estudiante.EditarPerfilScreen
 import com.example.compose.studyhub.ui.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
@@ -88,6 +89,11 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
 
       }
 
+
+      composable(NavRoutes.InicioScreen) {
+         val navController = rememberNavController()
+         StudyHubNavHost(navController)
+      }
 
    }
 }
