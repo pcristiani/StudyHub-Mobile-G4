@@ -58,9 +58,9 @@ fun loginRequest(ci: String, password: String, callback: (Boolean) -> Unit) {
 
 fun cerrarSesionRequest(token: String, callback: (Boolean) -> Unit){
 
-    val completeToken = "Bearer $token"
+    //val completeToken = "Bearer $token"
 
-    RetrofitClient.api.logout(completeToken).enqueue(object: Callback<String> {
+    RetrofitClient.api.logout(token).enqueue(object: Callback<String> {
         override fun onResponse(call: Call<String>, response: Response<String>) {
             val responseText = response.body() // Procesar la respuesta del login
 

@@ -31,7 +31,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
       val passwordState = userRepository.getPasswordEmail(email)
       if (passwordState == password) {
          println("Login correcto")
-         onLoginComplete()
+         onLoginComplete()k
       } else {
          println("Password incorrecta ")
       }*/

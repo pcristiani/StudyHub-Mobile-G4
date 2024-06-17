@@ -77,10 +77,6 @@ fun StudyHubNavHost(
          SetupNavGraph(navController = navController)
       }
 
-
-      composable(EDITAR_PERFIL_ROUTE){
-
-      }
    }
 
 

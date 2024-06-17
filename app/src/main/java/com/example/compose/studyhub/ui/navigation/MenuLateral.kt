@@ -27,6 +27,8 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,11 +38,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.cerrarSesionRequest
+import com.example.compose.studyhub.ui.component.DialogBoxCreation
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuGestion
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuInscripcion
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuNovedades
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuPlanEstudios
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuSolicitudes
+import com.example.compose.studyhub.ui.route.LogoutRoute
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import kotlinx.coroutines.launch
 
@@ -48,7 +54,8 @@ import kotlinx.coroutines.launch
 fun MenuLateral(navController: NavHostController, drawerState: DrawerState, contenido: @Composable () -> Unit) {
    val scope = rememberCoroutineScope()
    val menuItems = listOf(ItemMenuNovedades, ItemMenuPlanEstudios, ItemMenuInscripcion, ItemMenuSolicitudes, ItemMenuGestion)
-   
+   val showLogoutDialog = remember { mutableStateOf(false) }
+
    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
       ModalDrawerSheet { //  Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
          Column(modifier = Modifier.padding(end = 5.dp, top = 5.dp, bottom = 5.dp)) {
@@ -77,7 +84,12 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
 
                ){
                   IconButton(
-                     onClick = {},
+                     onClick = {scope.launch {
+                        drawerState.close()
+                        }
+                        showLogoutDialog.value = true
+
+                               },
                      modifier = Modifier.align(Alignment.CenterStart)
                   ){
                      Icon(imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp))
@@ -104,7 +116,9 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                   }
                }
             }
-
+            if (showLogoutDialog.value) {
+               LogoutBox(navController = navController, onDismiss = { showLogoutDialog.value = false })
+            }
          }
       }
 
@@ -130,6 +144,20 @@ fun HeaderMenuLateral(topAppBarText: String, onNavUp: () -> Unit) {
          }
       },
       actions = { Spacer(modifier = Modifier.width(68.dp)) }, )
+}
+
+@Composable
+fun LogoutBox(navController: NavHostController, onDismiss: () -> Unit){
+   LogoutRoute(
+      onConfirmation = {
+         println("Llegué acá")
+         navController.navigate(NavRoutes.InicioScreen)
+         onDismiss()
+      },
+      dialogTitle = stringResource(id = R.string.Logout_title),
+      dialogText = stringResource(id = R.string.Logout_question),
+      onDismiss =  onDismiss
+   )
 }
 
 

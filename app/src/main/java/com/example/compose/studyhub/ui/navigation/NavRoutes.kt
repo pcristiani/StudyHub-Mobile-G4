@@ -9,4 +9,5 @@ object NavRoutes {
    val EditarPerfilScreen = "editarPerfilScreen"
    val LoginScreen = "loginScreen/{ci}"
    val RegisterScreen = "registerScreen/{ci}"
+   val InicioScreen = "inicio"
 }

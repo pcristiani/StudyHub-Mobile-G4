@@ -92,5 +92,9 @@
     <string name="channel_description">Push Notifications Description</string>
     <string name="download_resume">Descargar escolaridad</string>
 
+
+    <string name="Logout_title">Cerrar Sesión</string>
+    <string name="Logout_question">¿Estás seguro?</string>
+
     <string name="txt_error_login">Credenciales incorrectas</string>
 </resources>
