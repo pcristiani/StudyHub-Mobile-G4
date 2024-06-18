@@ -54,7 +54,7 @@ import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 ///
 // LoginRegisterScreen muestra la pantalla de inicio de sesión y registro
 @Composable
-fun LoginRegisterScreen(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier, contentPadding: PaddingValues = PaddingValues(), content: @Composable () -> Unit) {
+fun LoginRegisterScreen(modifier: Modifier = Modifier, contentPadding: PaddingValues = PaddingValues(), content: @Composable () -> Unit) {
    LazyColumn(modifier = modifier, contentPadding = contentPadding) {
       item {
          Spacer(modifier = Modifier.height(44.dp))
@@ -276,21 +276,6 @@ fun TextFieldError(textError: String) {
 }
 
 
-///
-// OrLoginInvitado muestra un botón para iniciar sesión como invitado
-@Composable
-fun OrLoginInvitado(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier) {
-   Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-      Text(text = stringResource(id = R.string.or), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), modifier = Modifier.paddingFromBaseline(top = 20.dp))
-      OutlinedButton(
-         onClick = onLoginInvitado,
-         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp, bottom = 20.dp),
-                    ) { Text(text = stringResource(id = R.string.txt_btn_invitado)) }
-   }
-}
-
 
 ///
 @Preview
@@ -298,7 +283,7 @@ fun OrLoginInvitado(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier) 
 fun LoginRegisterScreenPreview() {
    ThemeStudyHub {
       Surface {
-         LoginRegisterScreen(onLoginInvitado = {}, modifier = Modifier.fillMaxSize(), content = {
+         LoginRegisterScreen(modifier = Modifier.fillMaxSize(), content = {
             Column {
                CI(ciState = remember { CIState() })
                Password(label = stringResource(id = R.string.password), passwordState = remember { EmailState() })

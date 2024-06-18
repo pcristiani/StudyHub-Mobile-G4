@@ -84,7 +84,7 @@ fun TasksTopAppBar(navController: NavHostController, openDrawer: () -> Unit,  on
 private fun MoreTasksMenu(navController: NavHostController, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
    TopAppBarDropdownMenu(iconContent = { //   Icon(Icons.Filled.AccountCircle, stringResource(id = R.string.txt_continue))
       ReplyProfileImage(drawableResource = R.drawable.steve_256, stringResource(id = R.string.txt_close))
-   }) { closeMenu ->
+   }){} /*{ closeMenu ->
       DropdownMenuItem(onClick = {
          onClearCompletedTasks()
          closeMenu()
@@ -99,7 +99,7 @@ private fun MoreTasksMenu(navController: NavHostController, onClearCompletedTask
       DropdownMenuItem(onClick = { onRefresh(); closeMenu()}) {
          Text(text = stringResource(id = R.string.txt_close))
       }
-   }
+   }*/
 }
 
 
@@ -115,7 +115,9 @@ private fun TopAppBarDropdownMenu(iconContent: @Composable () -> Unit, content: 
          content { expanded = !expanded }
       }
    }
-}/*
+}
+
+/*
 @Composable
 private fun FilterTasksMenu(onFilterAllTasks: () -> Unit, onFilterActiveTasks: () -> Unit, onFilterCompletedTasks: () -> Unit) {
    TopAppBarDropdownMenu(iconContent = {}) { closeMenu ->
@@ -130,7 +132,7 @@ private fun FilterTasksMenu(onFilterAllTasks: () -> Unit, onFilterActiveTasks: (
       }
    }
 }
-*//*
+
 @Composable
 fun MessageCard() { // Add padding around our message
    Row(modifier = Modifier.padding(all = 8.dp)) {

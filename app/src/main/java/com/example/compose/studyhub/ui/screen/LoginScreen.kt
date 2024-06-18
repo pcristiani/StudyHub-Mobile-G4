@@ -49,7 +49,6 @@ fun LoginScreen(
    ci: String?,
    onLoginSubmitted: (ci: String, password: String) -> Unit,
    onNavigateToRegister: (ci: String) -> Unit,
-   onLoginInvitado: () -> Unit,
    onNavUp: () -> Unit,
    loginError: String?,
    onErrorDismissed: () -> Unit
@@ -67,9 +66,9 @@ fun LoginScreen(
    Scaffold(topBar = {
       LoginRegisterTopAppBar(topAppBarText = stringResource(id = R.string.sign_in), onNavUp = onNavUp)
    }, content = { contentPadding ->
-      LoginRegisterScreen(modifier = Modifier.supportWideScreen(), contentPadding = contentPadding, onLoginInvitado = onLoginInvitado) {
+      LoginRegisterScreen(modifier = Modifier.supportWideScreen(), contentPadding = contentPadding) {
          Column(modifier = Modifier.fillMaxWidth()) {
-            LoginTest(ci = ci, onLoginSubmitted = onLoginSubmitted, onRegisterSubmitted = onNavigateToRegister, onLoginInvitado = onLoginInvitado)
+            LoginTest(ci = ci, onLoginSubmitted = onLoginSubmitted, onRegisterSubmitted = onNavigateToRegister)
             Spacer(modifier = Modifier.height(5.dp))
          }
 
@@ -89,7 +88,6 @@ fun LoginTest(
    ci: String?,
    onLoginSubmitted: (ci: String, password: String) -> Unit,
    onRegisterSubmitted: (ci: String) -> Unit,
-   onLoginInvitado: () -> Unit,
              ) {
    val snackbarHostState = remember { SnackbarHostState() }
    val scope = rememberCoroutineScope()
@@ -176,27 +174,14 @@ fun ErrorSnackbar(snackbarHostState: SnackbarHostState, modifier: Modifier = Mod
 }
 
 
-///
-@Composable
-fun OrLoginInvitados(onLoginInvitado: () -> Unit, modifier: Modifier = Modifier) {
-   Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-      Text(text = stringResource(id = R.string.or), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), modifier = Modifier.paddingFromBaseline(top = 20.dp))
-      OutlinedButton(
-         onClick = onLoginInvitado,
-         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp, bottom = 20.dp),
-                    ) { Text(text = stringResource(id = R.string.txt_btn_invitado)) }
-   }
-}
 
 
-///
+
 @Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_NO)
 /*@Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_YES)*/
 @Composable
 fun LoginPreview() {
    ThemeStudyHub {
-      LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onNavigateToRegister = {_, ->}, onLoginInvitado = {}, onNavUp = {}, "ERROR", onErrorDismissed = {})
+      LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onNavigateToRegister = {_, ->}, onNavUp = {}, "ERROR", onErrorDismissed = {})
    }
 }

@@ -11,7 +11,6 @@ import com.example.compose.studyhub.viewModel.RegisterViewModelFactory
 fun RegisterRoute(
     ci: String?,
     onRegisterSubmitted: () -> Unit,
-    onLoginInvitado: () -> Unit,
     onNavUp: () -> Unit,
 ) {
     val signUpViewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory())
@@ -21,7 +20,6 @@ fun RegisterRoute(
             signUpViewModel.signUp(nombre, apellido, email, fechaNacimiento, ci, password,onRegisterSubmitted)
 
         },
-        onLoginInvitado = { signUpViewModel.loginInvitado(onLoginInvitado) },
         onNavUp = onNavUp,
     )
 }

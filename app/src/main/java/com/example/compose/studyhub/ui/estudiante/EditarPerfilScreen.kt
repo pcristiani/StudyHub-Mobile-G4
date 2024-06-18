@@ -34,7 +34,6 @@ import com.example.compose.studyhub.ui.screen.Email
 import com.example.compose.studyhub.ui.screen.LoginRegisterScreen
 import com.example.compose.studyhub.ui.screen.LoginRegisterTopAppBar
 import com.example.compose.studyhub.ui.screen.Name
-import com.example.compose.studyhub.ui.screen.OrLoginInvitados
 import com.example.compose.studyhub.ui.screen.Password
 import com.example.compose.studyhub.ui.screen.SurName
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
@@ -52,7 +51,7 @@ fun EditarPerfilScreen(
             onNavUp = onNavUp
         )
 
-        }, content = {contentPadding -> LoginRegisterScreen(onLoginInvitado = {}, contentPadding = contentPadding, modifier = Modifier.supportWideScreen()){
+        }, content = {contentPadding -> LoginRegisterScreen(contentPadding = contentPadding, modifier = Modifier.supportWideScreen()){
         Column{
             EditarPerfil(modifier = Modifier.weight(1f), onProfileEditSubmitted = onProfileEditSubmitted)
         }

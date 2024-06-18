@@ -33,7 +33,6 @@ import com.example.compose.studyhub.util.supportWideScreen
 fun RegisterScreen(
    ci: String?,
    onRegisterSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String, ci: String, password: String) -> Unit,
-   onLoginInvitado: () -> Unit,
    onNavUp: () -> Unit,
 ) {
    Scaffold(topBar = {
@@ -42,12 +41,11 @@ fun RegisterScreen(
          onNavUp = onNavUp,
       )
    }, content = { contentPadding ->
-      LoginRegisterScreen(onLoginInvitado = onLoginInvitado, contentPadding = contentPadding, modifier = Modifier.supportWideScreen()) {
+      LoginRegisterScreen(contentPadding = contentPadding, modifier = Modifier.supportWideScreen()) {
          Column {
             RegisterContent(
                ci = ci,
                onRegisterSubmitted = onRegisterSubmitted,
-               onLoginInvitado = onLoginInvitado,
             )
          }
       }
@@ -59,7 +57,6 @@ fun RegisterScreen(
 fun RegisterContent(
    ci: String?,
    onRegisterSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String, ci: String, password: String) -> Unit,
-   onLoginInvitado: () -> Unit,
 ) {
    Column(modifier = Modifier.fillMaxWidth()) {
       val passwordFocusRequest = remember { FocusRequester() }
@@ -102,7 +99,6 @@ fun RegisterContent(
 
       Button(onClick = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text,birthdayState.day + {"/"} + birthdayState.month + {"/"} + birthdayState.year, ciState.text, passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
 
-      OrLoginInvitados(onLoginInvitado = onLoginInvitado, modifier = Modifier.fillMaxWidth())
    }
 }
 
@@ -117,7 +113,6 @@ fun RegisterPreview() {
       RegisterScreen(
          ci = null,
          onRegisterSubmitted = { _, _, _, _, _, _ -> },
-         onLoginInvitado = {},
          onNavUp = {},
       )
    }

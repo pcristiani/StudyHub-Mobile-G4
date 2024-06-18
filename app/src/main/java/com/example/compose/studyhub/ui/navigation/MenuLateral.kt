@@ -36,6 +36,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -99,7 +101,9 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                                },
                      modifier = Modifier.align(Alignment.CenterStart)
                   ){
-                     Icon(imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp))
+                     Icon(imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp), tint = colorResource(
+                        id = R.color.darker_gray
+                     ))
                   }
                }
 
@@ -119,7 +123,9 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                         }},
                      modifier = Modifier.align(Alignment.CenterStart)
                   ){
-                     Icon(imageVector = Icons.Filled.Build, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp))
+                     Icon(imageVector = Icons.Filled.Build, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp), tint = colorResource(
+                             id = R.color.darker_gray
+                             ))
                   }
                }
             }

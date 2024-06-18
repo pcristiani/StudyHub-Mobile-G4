@@ -10,7 +10,6 @@ import com.example.compose.studyhub.viewModel.InicioViewModelFactory
 @Composable
 fun InicioRoute(
    onNavigateToLogin: (ci: String) -> Unit,
-   onLoginInvitado: () -> Unit,
                ) {
    val inicioViewModel: InicioViewModel = viewModel(factory = InicioViewModelFactory())
    InicioScreen(
@@ -19,6 +18,5 @@ fun InicioRoute(
       onLoginRegister = { ci ->
          inicioViewModel.handleContinue(ci = ci, onNavigateToLogin = onNavigateToLogin)
       },
-      onLoginInvitado = { inicioViewModel.handleInvitado(onLoginInvitado) },
                )
 }

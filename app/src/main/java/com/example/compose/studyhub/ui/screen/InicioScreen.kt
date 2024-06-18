@@ -39,7 +39,7 @@ import com.example.compose.studyhub.util.supportWideScreen
 ///
 // ? Pantalla de Bienvenida
 @Composable
-fun InicioScreen(onLoginRegister: (email: String) -> Unit, onLoginInvitado: () -> Unit) {
+fun InicioScreen(onLoginRegister: (email: String) -> Unit) {
    var showLogoTitle by rememberSaveable { mutableStateOf(true) }
 
    Scaffold(modifier = Modifier.supportWideScreen()) { innerPadding ->
@@ -49,7 +49,7 @@ fun InicioScreen(onLoginRegister: (email: String) -> Unit, onLoginInvitado: () -
          .verticalScroll(rememberScrollState())) {
          AnimatedVisibility(showLogoTitle, Modifier.fillMaxWidth()) { LogoTitle() }
 
-         LoginCreateAccount(onLoginRegister = onLoginRegister, onLoginInvitado = onLoginInvitado, onFocusChange = { focused -> showLogoTitle = !focused }, modifier = Modifier
+         LoginCreateAccount(onLoginRegister = onLoginRegister, onFocusChange = { focused -> showLogoTitle = !focused }, modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp))
       }
@@ -89,7 +89,7 @@ private fun Logo(
 ///
 // ? Crear cuenta
 @Composable
-private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onLoginInvitado: () -> Unit, onFocusChange: (Boolean) -> Unit, modifier: Modifier = Modifier) { // ! Guardar y resturar un estado
+private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onFocusChange: (Boolean) -> Unit, modifier: Modifier = Modifier) { // ! Guardar y resturar un estado
    val ciState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState()) }
 
    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -109,7 +109,6 @@ private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onLogin
          .padding(top = 24.dp, bottom = 8.dp)) {
          Text(text = stringResource(id = R.string.next), style = MaterialTheme.typography.titleSmall)
       }
-      OrLoginInvitados(onLoginInvitado = onLoginInvitado, modifier = Modifier.fillMaxWidth())
    }
 }
 
@@ -121,7 +120,6 @@ fun InicioScreenPreview() {
    ThemeStudyHub {
       InicioScreen(
          onLoginRegister = {},
-         onLoginInvitado = {},
       )
    }
 }

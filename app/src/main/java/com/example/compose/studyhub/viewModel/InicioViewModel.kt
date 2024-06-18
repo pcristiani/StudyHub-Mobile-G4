@@ -11,10 +11,6 @@ class InicioViewModel(private val userRepository: UserRepository) : ViewModel() 
         onNavigateToLogin(ci)
     }
 
-    fun handleInvitado(onLoginComplete: () -> Unit,) {
-        userRepository.loginInvitado()
-        onLoginComplete()
-    }
 }
 
 ///

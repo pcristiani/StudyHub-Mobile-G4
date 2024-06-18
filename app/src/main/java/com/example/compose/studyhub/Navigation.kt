@@ -37,7 +37,6 @@ fun StudyHubNavHost(
       composable(INICIO_ROUTE) {
          InicioRoute(
             onNavigateToLogin = { navController.navigate("login/$it") },
-            onLoginInvitado = { navController.navigate(QUESTION_ROUTE) },
                     )
       }
       
@@ -47,7 +46,6 @@ fun StudyHubNavHost(
             ci = startingCi,
             onLoginSubmitted = { navController.navigate(QUESTION_RESULTS_ROUTE)},
             onNavigateToRegister = {navController.navigate("signup/$it")},
-            onLoginInvitado = { navController.navigate(QUESTION_ROUTE) },
             onNavUp = navController::navigateUp,
                    )
       }
@@ -57,7 +55,6 @@ fun StudyHubNavHost(
          RegisterRoute(
             ci = ci,
             onRegisterSubmitted = { navController.navigate(INICIO_ROUTE) },
-            onLoginInvitado = { navController.navigate(QUESTION_ROUTE) },
             onNavUp = navController::navigateUp,
                       )
       }

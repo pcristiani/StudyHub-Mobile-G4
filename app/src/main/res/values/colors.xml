@@ -11,6 +11,7 @@
     <color name="text_black">#212121</color>
     <color name="divider">#ABABAB</color>
     <color name="dark_gray">#717171</color>
+    <color name="darker_gray">#474747</color>
     <color name="color_primary">#F44336</color>
     <color name="colorPrimaryDark">#D32F2F</color>
     <color name="colorAccent">#FFFF00</color>

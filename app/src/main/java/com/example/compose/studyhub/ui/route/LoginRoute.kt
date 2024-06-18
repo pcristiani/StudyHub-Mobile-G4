@@ -10,9 +10,9 @@ import com.example.compose.studyhub.viewModel.LoginViewModelFactory
 
 ///
 @Composable
-fun LoginRoute(ci: String?, onLoginSubmitted: () -> Unit, onNavigateToRegister: (ci: String?) -> Unit, onLoginInvitado: () -> Unit, onNavUp: () -> Unit) {
+fun LoginRoute(ci: String?, onLoginSubmitted: () -> Unit, onNavigateToRegister: (ci: String?) -> Unit, onNavUp: () -> Unit) {
    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory())
    val loginError by loginViewModel.loginError.observeAsState()
 
-   LoginScreen(ci = ci, onLoginSubmitted = { ci, password -> loginViewModel.login(ci, password, onLoginSubmitted) }, onNavigateToRegister = {onNavigateToRegister(ci)}, onLoginInvitado = { loginViewModel.loginInvitado(onLoginInvitado) }, onNavUp = onNavUp, loginError = loginError, onErrorDismissed = {loginViewModel.clearLoginError()})
+   LoginScreen(ci = ci, onLoginSubmitted = { ci, password -> loginViewModel.login(ci, password, onLoginSubmitted) }, onNavigateToRegister = {onNavigateToRegister(ci)}, onNavUp = onNavUp, loginError = loginError, onErrorDismissed = {loginViewModel.clearLoginError()})
 }
