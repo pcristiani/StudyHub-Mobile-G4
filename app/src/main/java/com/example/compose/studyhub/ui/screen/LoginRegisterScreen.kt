@@ -54,10 +54,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.data.User
+import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.domain.CIState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.TextFieldState
 import com.example.compose.studyhub.domain.datePicker
+import com.example.compose.studyhub.domain.reformatDate
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -185,8 +188,20 @@ fun Birthday(birthdayState: DatePickerState, imeAction: ImeAction = ImeAction.Ne
       val currentDate = Date(System.currentTimeMillis())
       Button(onClick = { showDatePicker.value = true }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(5.dp), colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.white), contentColor = colorResource(R.color.text_black)),border = BorderStroke(1.dp, colorResource(R.color.darker_gray))) {
 
-         val displayDate = selectedDate.value ?: currentDate
-         Text(text = sdf.format(displayDate), style = MaterialTheme.typography.bodyMedium)
+
+         if(UserRepository.user == User.NoUserLoggedIn){
+            val displayDate = selectedDate.value ?: currentDate
+            Text(text = sdf.format(displayDate), style = MaterialTheme.typography.bodyMedium)
+         }else
+         {
+            val fechaNacimiento = UserRepository.getFechaNacimiento()
+            if(fechaNacimiento != null){
+               Text(text = reformatDate(fechaNacimiento), style = MaterialTheme.typography.bodyMedium)
+
+            }
+         }
+
+
       }
 
       if (showDatePicker.value) {

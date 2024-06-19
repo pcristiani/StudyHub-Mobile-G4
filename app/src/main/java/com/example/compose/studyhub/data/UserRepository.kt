@@ -10,13 +10,14 @@ import retrofit2.Response
 
 ///
 sealed class User {
-   @Immutable data class LoggedInUser(val JWTtoken: String, val id: Int, val ci: String, val nombre: String, val apellido: String, val email: String) : User() {
+   @Immutable data class LoggedInUser(val JWTtoken: String, val id: Int, val ci: String, val nombre: String, val apellido: String, val email: String, val fechaNacimiento: String) : User() {
       val token: String = JWTtoken
       val ciString: String = ci
       val idUsuario: Int = id
       val nombreU: String = nombre
       val apellidoU: String = apellido
       val emailU: String = email
+      val fechaNac: String = fechaNacimiento
    }
 
    object InvitadoUser : User()
@@ -38,11 +39,13 @@ object UserRepository {
       getUsuarioRequest(id, token){
          success ->
          if(success != null){
-            _user = success.nombre?.let { success.apellido?.let { it1 ->
-               success.email?.let { it2 ->
-                  User.LoggedInUser(token, id, ci, it,
-                     it1, it2
-                  )
+            _user = success.nombre?.let { success.apellido?.let { apellido ->
+               success.email?.let { email ->
+                  success.fechaNacimiento?.let { it1 ->
+                     User.LoggedInUser(token, id, ci, it,
+                        apellido, email, it1
+                     )
+                  }
                }
             } }!!
          }
@@ -100,6 +103,13 @@ object UserRepository {
       }
    }
 
+   fun getFechaNacimiento(): String?{
+      return when (user){
+         is User.LoggedInUser -> (user as User.LoggedInUser).fechaNac
+         else -> null
+      }
+   }
+
    fun modificarPerfil(){
       loggedInUser()?.let {
          getToken()?.let { it1 ->
@@ -108,9 +118,11 @@ object UserRepository {
                   _user = success.nombre?.let { nombre -> success.apellido?.let { apellido ->
                      success.email?.let { email ->
                         getCI()?.let { it2 ->
-                           User.LoggedInUser(it1, it, it2, nombre,
-                              apellido, email
-                           )
+                           success.fechaNacimiento?.let { it3 ->
+                              User.LoggedInUser(it1, it, it2, nombre,
+                                 apellido, email, it3
+                              )
+                           }
                         }
                      }
                   } }!!

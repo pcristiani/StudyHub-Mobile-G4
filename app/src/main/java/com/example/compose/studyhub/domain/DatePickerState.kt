@@ -54,3 +54,16 @@ fun formatDate(datePickerState: DatePickerState, pattern: String = "yyyy-MM-dd")
         ""
     }
 }
+
+
+fun reformatDate(dateString: String, fromPattern: String = "yyyy-MM-dd", toPattern: String = "MMM dd,yyyy"): String {
+    val fromDateFormat = SimpleDateFormat(fromPattern, Locale.getDefault())
+    val toDateFormat = SimpleDateFormat(toPattern, Locale.getDefault())
+
+    val date: Date? = fromDateFormat.parse(dateString)
+    return if (date != null) {
+        toDateFormat.format(date)
+    } else {
+        ""
+    }
+}
