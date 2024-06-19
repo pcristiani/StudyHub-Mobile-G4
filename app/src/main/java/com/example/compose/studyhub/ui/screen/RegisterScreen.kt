@@ -1,10 +1,13 @@
 package com.example.compose.studyhub.ui.screen
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
+import androidx.compose.material3.DatePickerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,9 +27,13 @@ import com.example.compose.studyhub.domain.DateTimeState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.PasswordState
 import com.example.compose.studyhub.domain.TextFieldState
+import com.example.compose.studyhub.domain.datePicker
+import com.example.compose.studyhub.domain.formatDate
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 ///
 @Composable
@@ -53,6 +60,7 @@ fun RegisterScreen(
 }
 
 ///
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterContent(
    ci: String?,
@@ -79,8 +87,9 @@ fun RegisterContent(
       Email(emailState, onImeAction = { passwordFocusRequest.requestFocus() })
 
       Spacer(modifier = Modifier.height(16.dp))
-      val birthdayState = remember{ DateTimeState() }
-      Birthday(birthdayState, onImeAction = { passwordFocusRequest.requestFocus() })
+      val birthdayState = datePicker()
+      Birthday(birthdayState,onImeAction = { passwordFocusRequest.requestFocus()} )
+
 
       Spacer(modifier = Modifier.height(16.dp))
       val passwordState = remember { PasswordState() }
@@ -97,11 +106,10 @@ fun RegisterContent(
       Spacer(modifier = Modifier.height(15.dp))
 
 
-      Button(onClick = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text,birthdayState.day + {"/"} + birthdayState.month + {"/"} + birthdayState.year, ciState.text, passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
+      Button(onClick = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text, formatDate(birthdayState), ciState.text, passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
 
    }
 }
-
 
 
 ///

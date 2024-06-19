@@ -1,34 +1,43 @@
 package com.example.compose.studyhub.ui.screen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +45,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,11 +55,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.CIState
-import com.example.compose.studyhub.domain.DateTimeState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.TextFieldState
+import com.example.compose.studyhub.domain.datePicker
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
-import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 ///
 // LoginRegisterScreen muestra la pantalla de inicio de sesión y registro
@@ -158,71 +170,51 @@ fun Email(emailState: TextFieldState = remember { EmailState() }, imeAction: Ime
       ?.let { error -> TextFieldError(textError = error) }
 }
 
+
 @Composable
-fun Birthday(birthdayState: DateTimeState = remember { DateTimeState() }, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
-   Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
-      Text(
-         text= stringResource(id=R.string.birthday),
-         style = MaterialTheme.typography.bodyMedium
-      )
-      Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
-         modifier = Modifier.padding(vertical = 8.dp)
-      ){
-         //Día
-         OutlinedTextField(value = birthdayState.day, onValueChange = {birthdayState.day = it}, label = {Text(text = stringResource(id = R.string.day))}, modifier = Modifier.weight(1f).onFocusChanged { focusState -> birthdayState.onFocusChange(focusState.isFocused)
-            if(!focusState.isFocused){
-               birthdayState.enableShowErrors()
-            }
+@OptIn(ExperimentalMaterial3Api::class)
+fun Birthday(birthdayState: DatePickerState, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
 
-         },
-            textStyle = MaterialTheme.typography.bodyMedium,
-            isError = birthdayState.showErrors(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-               imeAction = ImeAction.Next,
-               keyboardType = KeyboardType.Number
-            ),
-            keyboardActions = KeyboardActions(onNext = { onImeAction() }),
-            singleLine = true
-         )
+   Text(text = stringResource(id = R.string.birthday), style = MaterialTheme.typography.bodyMedium)
+   Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()){
+      val showDatePicker = remember { mutableStateOf(false) }
+      val selectedDate = remember { mutableStateOf<Date?>(null) } // this will store whatever date the user selects
+      // Button to show the date picker dialog
 
-         //Mes
-         OutlinedTextField(value = birthdayState.month, onValueChange = {birthdayState.month = it}, label = {Text(text = stringResource(id = R.string.month))}, modifier = Modifier.weight(1f).onFocusChanged { focusState -> birthdayState.onFocusChange(focusState.isFocused)
-            if(!focusState.isFocused){
-               birthdayState.enableShowErrors()
-            }
+      val sdf = SimpleDateFormat("MMM dd,yyyy", Locale.getDefault())
+      val currentDate = Date(System.currentTimeMillis())
+      Button(onClick = { showDatePicker.value = true }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(5.dp), colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.white), contentColor = colorResource(R.color.text_black)),border = BorderStroke(1.dp, colorResource(R.color.darker_gray))) {
 
-         },
-            textStyle = MaterialTheme.typography.bodyMedium,
-            isError = birthdayState.showErrors(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-               imeAction = ImeAction.Next,
-               keyboardType = KeyboardType.Number
-            ),
-            keyboardActions = KeyboardActions(onNext = { onImeAction() }),
-            singleLine = true
-         )
-
-         //Año
-         OutlinedTextField(value = birthdayState.year, onValueChange = {birthdayState.year = it}, label = {Text(text = stringResource(id = R.string.year))}, modifier = Modifier.weight(1f).onFocusChanged { focusState -> birthdayState.onFocusChange(focusState.isFocused)
-            if(!focusState.isFocused){
-               birthdayState.enableShowErrors()
-            }
-
-         },
-            textStyle = MaterialTheme.typography.bodyMedium,
-            isError = birthdayState.showErrors(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-               imeAction = ImeAction.Done,
-               keyboardType = KeyboardType.Number
-            ),
-            keyboardActions = KeyboardActions(onNext = { onImeAction() }),
-            singleLine = true
-         )
+         val displayDate = selectedDate.value ?: currentDate
+         Text(text = sdf.format(displayDate), style = MaterialTheme.typography.bodyMedium)
       }
-      birthdayState.getError()
-         ?.let { error -> TextFieldError(textError = error) }
+
+      if (showDatePicker.value) {
+         DatePickerDialog(
+            onDismissRequest = { showDatePicker.value = false },
+            confirmButton = {
+               TextButton(
+                  onClick = {
+                     showDatePicker.value = false
+                     selectedDate.value = Date(birthdayState.selectedDateMillis ?: 0)
+                  },
+                  enabled = birthdayState.selectedDateMillis != null
+               ) {
+                  Text(text = "Confirm")
+               }
+            },
+            dismissButton = {
+               TextButton(onClick = { showDatePicker.value = false }) {
+                  Text(text = "Dismiss")
+               }
+            }
+         ) {
+            DatePicker(state = birthdayState)
+         }
+      }
    }
-}
+
+   }
 
 ///
 // Password muestra un campo de texto para la contraseña

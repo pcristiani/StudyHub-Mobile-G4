@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,6 +29,8 @@ import com.example.compose.studyhub.domain.DateTimeState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.PasswordState
 import com.example.compose.studyhub.domain.TextFieldState
+import com.example.compose.studyhub.domain.datePicker
+import com.example.compose.studyhub.domain.formatDate
 import com.example.compose.studyhub.ui.screen.Birthday
 import com.example.compose.studyhub.ui.screen.CI
 import com.example.compose.studyhub.ui.screen.Email
@@ -60,6 +63,7 @@ fun EditarPerfilScreen(
     return DrawerState(DrawerValue.Closed)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditarPerfil(modifier: Modifier,
                  onProfileEditSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String) -> Unit,
@@ -91,13 +95,15 @@ fun EditarPerfil(modifier: Modifier,
         Email(emailState, onImeAction = { focusRequest.requestFocus() })
 
         Spacer(modifier = Modifier.height(16.dp))
-        val birthdayState = remember{ DateTimeState() }
+        val birthdayState = datePicker()
         Birthday(birthdayState, onImeAction = { focusRequest.requestFocus() })
 
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        Button(onClick = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text,birthdayState.day + {"/"} + birthdayState.month + {"/"} + birthdayState.year) }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.txt_editPerfil)) }
+        Button(onClick = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text,
+            formatDate(birthdayState)
+        ) }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.txt_editPerfil)) }
     }
 }
 
