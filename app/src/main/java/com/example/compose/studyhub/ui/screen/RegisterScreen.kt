@@ -1,12 +1,10 @@
 package com.example.compose.studyhub.ui.screen
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -23,17 +21,15 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.CIState
 import com.example.compose.studyhub.domain.ConfirmPasswordState
-import com.example.compose.studyhub.domain.DateTimeState
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.PasswordState
 import com.example.compose.studyhub.domain.TextFieldState
 import com.example.compose.studyhub.domain.datePicker
 import com.example.compose.studyhub.domain.formatDate
+import com.example.compose.studyhub.ui.component.loginRegisterEdit.Birthday
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 ///
 @Composable

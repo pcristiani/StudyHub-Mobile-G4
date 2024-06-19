@@ -90,6 +90,9 @@ interface ApiService {
       @Header("Authorization")
       token: String
                           ): Call<String>
+
+   @GET("/api/carrera/getCarrerasInscripto/{idUsuario}")
+   fun getCarrerasInscripto(@Path("idUsuario") idUsuario: Int, @Header("Authorization")token:String): Call<String>
 }
 
 data class LoginRequest(val cedula: String, val password: String)
@@ -101,3 +104,5 @@ data class ModifyProfileRequest(val nombre: String, val apellido: String, val em
 data class TokenRequest(val token: String)
 
 data class UserRequest(val idUsuario: Int?, val nombre: String?, val apellido: String?, val email: String?, val fechaNacimiento: String?, val rol: String?, val cedula: String?, val activo: Boolean?, val validado: Boolean?)
+
+data class CarreraRequest(val idCarrera: Int, val nombre: String, val descripcion: String, val requisitos: String, val duracion: Int, val activa: Boolean)

@@ -1,5 +1,6 @@
 package com.example.compose.studyhub.ui.estudiante
 
+import CarreraRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.Image
@@ -16,6 +17,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,7 +31,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.data.User
 import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
+import com.example.compose.studyhub.ui.component.gestion.ExpandableList
+import com.example.compose.studyhub.ui.component.gestion.WebViewComponent
 import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 import com.example.compose.studyhub.util.HTMLTemplate
 import com.example.compose.studyhub.util.exportAsPdf
@@ -56,10 +65,10 @@ fun GestionScreen(): DrawerState {
 
 @Composable
 fun Gestion(modifier: Modifier){
-   val HTML = UserRepository.getNombre()?.let { UserRepository.getApellido()
-      ?.let { it1 -> HTMLTemplate(it, it1) } }
+
    var webView:WebView? = null
    val context = LocalContext.current
+
 
    Column(
       modifier = modifier.fillMaxWidth(),
@@ -67,38 +76,43 @@ fun Gestion(modifier: Modifier){
       horizontalAlignment = Alignment.CenterHorizontally,
    ) {
 
+      var listaCarreras: List<CarreraRequest>? = null
+      val nombresCarrera = remember { mutableStateListOf<String>() }
+      val idsCarrera = remember { mutableStateListOf<Int>() }
+
+      UserRepository.loggedInUser()?.let {idUsuario -> UserRepository.getToken()
+         ?.let {token -> inscripcionesCarreraRequest(idUsuario, token){success->
+            if(success!=null){
+               listaCarreras = success
+               println(success)
+               nombresCarrera.clear()
+               idsCarrera.clear()
+               listaCarreras?.forEach {
+                  nombresCarrera.add(it.nombre)
+                  idsCarrera.add(it.idCarrera)
+                  println(listaCarreras)
+               }
+            }
+         } } }
+
+      var carreraSelected = remember { mutableIntStateOf(0) }
 
 
-      /*
-      PdfRendererViewCompose(
-         modifier = modifier.fillMaxWidth().weight(1f),
-         url = "https://ia800205.us.archive.org/12/items/gameoflifehowtop00shin/gameoflifehowtop00shin.pdf",
-         lifecycleOwner = LocalLifecycleOwner.current
-      )
-       */
+      ExpandableList(modifier=Modifier.padding(top = 20.dp, bottom = 5.dp), headerTitle = "Lista", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value = selectedId})
 
-      println(HTML)
+      println(carreraSelected.intValue)
 
-      if(HTML != null){
-         AndroidView(
-            modifier = modifier.fillMaxWidth().weight(1f),
-            factory = { context ->
-               WebView(context)
-                  .apply {
-                     webViewClient = WebViewClient()
-                     loadDataWithBaseURL(null, HTML, "text/html", "UTF-8", null)
-                  }
-            },
-         ){
-            webView = it
-            it.webViewClient = WebViewClient()
-            it.loadDataWithBaseURL(null, HTML, "text/html", "UTF-8", null)
-         }
-      }
+
+      WebViewComponent(carreraSelected.intValue,
+         modifier
+            .fillMaxWidth()
+            .weight(1f))
 
 
 
-      Button(onClick = {exportAsPdf(webView, context)}, modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)){
+      Button(onClick = {exportAsPdf(webView, context)}, modifier = Modifier
+         .fillMaxWidth()
+         .padding(vertical = 16.dp)){
          Text(text = stringResource(id = R.string.download_resume))
       }
    }

@@ -174,62 +174,6 @@ fun Email(emailState: TextFieldState = remember { EmailState() }, imeAction: Ime
 }
 
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun Birthday(birthdayState: DatePickerState, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
-
-   Text(text = stringResource(id = R.string.birthday), style = MaterialTheme.typography.bodyMedium)
-   Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()){
-      val showDatePicker = remember { mutableStateOf(false) }
-      val selectedDate = remember { mutableStateOf<Date?>(null) } // this will store whatever date the user selects
-      // Button to show the date picker dialog
-
-      val sdf = SimpleDateFormat("MMM dd,yyyy", Locale.getDefault())
-      val currentDate = Date(System.currentTimeMillis())
-      Button(onClick = { showDatePicker.value = true }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(5.dp), colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.white), contentColor = colorResource(R.color.text_black)),border = BorderStroke(1.dp, colorResource(R.color.darker_gray))) {
-
-
-         if(UserRepository.user == User.NoUserLoggedIn){
-            val displayDate = selectedDate.value ?: currentDate
-            Text(text = sdf.format(displayDate), style = MaterialTheme.typography.bodyMedium)
-         }else
-         {
-            val fechaNacimiento = UserRepository.getFechaNacimiento()
-            if(fechaNacimiento != null){
-               Text(text = reformatDate(fechaNacimiento), style = MaterialTheme.typography.bodyMedium)
-
-            }
-         }
-
-
-      }
-
-      if (showDatePicker.value) {
-         DatePickerDialog(
-            onDismissRequest = { showDatePicker.value = false },
-            confirmButton = {
-               TextButton(
-                  onClick = {
-                     showDatePicker.value = false
-                     selectedDate.value = Date(birthdayState.selectedDateMillis ?: 0)
-                  },
-                  enabled = birthdayState.selectedDateMillis != null
-               ) {
-                  Text(text = "Confirm")
-               }
-            },
-            dismissButton = {
-               TextButton(onClick = { showDatePicker.value = false }) {
-                  Text(text = "Dismiss")
-               }
-            }
-         ) {
-            DatePicker(state = birthdayState)
-         }
-      }
-   }
-
-   }
 
 ///
 // Password muestra un campo de texto para la contraseña
