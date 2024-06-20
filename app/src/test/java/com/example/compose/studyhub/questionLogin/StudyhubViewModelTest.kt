@@ -2,7 +2,6 @@ package com.example.compose.studyhub.questionLogin
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.compose.studyhub.ui.component.registrarEstudiante.QuestionViewModel
 import com.google.common.truth.Truth
 import org.junit.Before
 import org.junit.Test

@@ -5,13 +5,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.compose.studyhub.Destinations.EDITAR_PERFIL_ROUTE
 import com.example.compose.studyhub.Destinations.INICIO_ROUTE
 import com.example.compose.studyhub.Destinations.LOGIN_ROUTE
 import com.example.compose.studyhub.Destinations.QUESTION_RESULTS_ROUTE
 import com.example.compose.studyhub.Destinations.QUESTION_ROUTE
 import com.example.compose.studyhub.Destinations.REGISTER_ROUTE
-import com.example.compose.studyhub.ui.component.registrarEstudiante.QuestionRoute
 import com.example.compose.studyhub.ui.route.InicioRoute
 import com.example.compose.studyhub.ui.route.LoginRoute
 import com.example.compose.studyhub.ui.route.RegisterRoute
@@ -59,14 +57,14 @@ fun StudyHubNavHost(
                       )
       }
       
-      composable(QUESTION_ROUTE) {
+   /*    composable(QUESTION_ROUTE) {
          val startingEmail = it.arguments?.getString("email")
          QuestionRoute(
             email = startingEmail,
             onQuestionComplete = { navController.navigate(INICIO_ROUTE) },
             onNavUp = navController::navigateUp,
                       )
-      }
+      } */
       
       composable(QUESTION_RESULTS_ROUTE) {
          val navController = rememberNavController()

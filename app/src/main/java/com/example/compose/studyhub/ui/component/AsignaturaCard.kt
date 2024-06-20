@@ -13,34 +13,39 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 
+
 @Composable
 fun AsignaturaCard(nombre: String) {
-   Card(
-      modifier = Modifier
-         .fillMaxWidth()
-         .padding(horizontal = 25.dp, vertical = 5.dp), // elevation = 10.dp,
-      // backgroundColor = Color.White,
-      shape = RoundedCornerShape(10.dp)
-       ) {
-      Row(modifier = Modifier.fillMaxWidth()) {
-         Text(
-            text = nombre, modifier = Modifier.padding(start = 20.dp, top = 15.dp, bottom = 15.dp), style = MaterialTheme.typography.labelSmall
-             )/*Spacer(modifier = Modifier.padding(start = 100.dp))
-            Text(
-                text = nombre,
-                modifier = Modifier.padding(start= 20.dp, top = 15.dp, bottom = 15.dp),
-                style = MaterialTheme.typography.labelSmall,
-                textAlign = TextAlign.End
-            )*/
-      }
-   }
-}
+  Card(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(horizontal = 25.dp, vertical = 5.dp),
+    //elevation = 10.dp,
+    //backgroundColor = Color.White,
+    shape = RoundedCornerShape(10.dp)
+  ) {
+    Row(modifier = Modifier.fillMaxWidth()){
+      Text(
+        text = nombre,
+        modifier = Modifier.padding(start= 20.dp, top = 15.dp, bottom = 15.dp),
+        style = MaterialTheme.typography.labelSmall
+      )
+      /*Spacer(modifier = Modifier.padding(start = 100.dp))
+      Text(
+          text = nombre,
+          modifier = Modifier.padding(start= 20.dp, top = 15.dp, bottom = 15.dp),
+          style = MaterialTheme.typography.labelSmall,
+          textAlign = TextAlign.End
+      )*/
+    }
 
+  }
+}
 
 @Preview
 @Composable
 fun AsignaturaCardPreview() {
-   ThemeStudyHub {
-      AsignaturaCard("Asignatura")
-   }
+  ThemeStudyHub {
+    AsignaturaCard("Asignatura")
+  }
 }

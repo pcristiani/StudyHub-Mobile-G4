@@ -1,5 +1,6 @@
 package com.example.compose.studyhub.ui.navigation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.ChevronLeft
@@ -38,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,6 +58,7 @@ import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuInscr
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuNovedades
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuPlanEstudios
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuSolicitudes
+import com.example.compose.studyhub.ui.navigation.NavRoutes.EditarPerfilScreen
 import com.example.compose.studyhub.ui.route.LogoutRoute
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import kotlinx.coroutines.launch
@@ -64,7 +68,7 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
    val scope = rememberCoroutineScope()
    val menuItems = listOf(ItemMenuNovedades, ItemMenuPlanEstudios, ItemMenuInscripcion, ItemMenuSolicitudes, ItemMenuGestion)
    val showLogoutDialog = remember { mutableStateOf(false) }
-
+   
    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
       ModalDrawerSheet { //  Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
          Column(modifier = Modifier.padding(end = 5.dp, top = 5.dp, bottom = 5.dp)) {
@@ -86,46 +90,50 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                })
             }
             Spacer(modifier = Modifier.weight(1f))
-            Row(){
-               Box(modifier = Modifier
-                  .size(70.dp, 80.dp)
-                  .padding(bottom = 10.dp, start = 20.dp)
-
-               ){
+            Row() {
+               Box(
+                  modifier = Modifier
+                     .size(50.dp, 50.dp)
+                     .padding(bottom = 10.dp, start = 20.dp)
+                  ) {
                   IconButton(
-                     onClick = {scope.launch {
-                        drawerState.close()
+                     onClick = {
+                        scope.launch {
+                           drawerState.close()
                         }
                         showLogoutDialog.value = true
-
-                               },
-                     modifier = Modifier.align(Alignment.CenterStart)
-                  ){
-                     Icon(imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp), tint = colorResource(
-                        id = R.color.darker_gray
-                     ))
+                     }, modifier = Modifier.align(Alignment.CenterStart)
+                            ) {
+                     Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "Settings", modifier = Modifier.size(40.dp, 50.dp), tint = colorResource(
+                           id = R.color.darker_gray
+                                                                                                                                                                     )
+                         )
                   }
                }
-
-               Box(modifier = Modifier
-                  .size(70.dp, 80.dp)
-                  .padding(bottom = 10.dp, start = 20.dp)
-
-               ){
+               
+               Box(
+                  modifier = Modifier
+                     .size(50.dp, 50.dp)
+                     .padding(bottom = 10.dp, start = 20.dp)
+                  ) {
                   IconButton(
-                     onClick = {scope.launch {
-                        drawerState.close()
-                     }
+                     onClick = {
+                        scope.launch {
+                           drawerState.close()
+                        }
                         try {
                            navController.navigate(NavRoutes.EditarPerfilScreen) //  println(item.ruta)
                         } catch (e: Exception) {
                            println("Error al navegar: ${e.message}")
-                        }},
-                     modifier = Modifier.align(Alignment.CenterStart)
-                  ){
-                     Icon(imageVector = Icons.Filled.Build, contentDescription = "Settings", modifier=Modifier.size(70.dp, 80.dp), tint = colorResource(
-                             id = R.color.darker_gray
-                             ))
+                        }
+                     }, modifier = Modifier.align(Alignment.CenterStart)
+                            ) {
+                     Icon(
+                        imageVector = Icons.Filled.Build, contentDescription = "Settings", modifier = Modifier.size(60.dp, 60.dp), tint = colorResource(
+                           id = R.color.darker_gray
+                                                                                                                                                       )
+                         )
                   }
                }
             }
@@ -134,10 +142,6 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
             }
          }
       }
-
-
-
-
    }) { contenido() }
 }
 
@@ -145,26 +149,29 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeaderMenuLateral(topAppBarText: String, onNavUp: () -> Unit) {
-   CenterAlignedTopAppBar(
-      title = {
-         Text(text = topAppBarText, modifier = Modifier
+   CenterAlignedTopAppBar(title = {
+      Text(
+         text = topAppBarText, modifier = Modifier
             .fillMaxSize()
-            .wrapContentSize(Alignment.Center))
-      },
-      navigationIcon = {
-         IconButton(onClick = onNavUp) {
-            Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.back), tint = MaterialTheme.colorScheme.secondary)
-         }
-      },
-      actions = { Spacer(modifier = Modifier.width(68.dp)) }, )
+            .wrapContentSize(Alignment.Center)
+          )
+   }, actions = {
+      val navController = rememberNavController()
+      IconButton(onClick = onNavUp) {
+         Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = stringResource(id = R.string.strprueba), tint = MaterialTheme.colorScheme.secondary)
+      }
+   }, navigationIcon = {
+      IconButton(onClick = onNavUp) {
+         Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.back), tint = MaterialTheme.colorScheme.secondary)
+      }
+   })
 }
 
-@Composable
-fun LogoutBox(navController: NavHostController, onDismiss: () -> Unit){
 
+@Composable
+fun LogoutBox(navController: NavHostController, onDismiss: () -> Unit) {
    LogoutRoute(
       onConfirmation = {
-
          println("Acá estoy")
          navController.navigate(Destinations.INICIO_ROUTE) {
             popUpTo(navController.graph.startDestinationId) {
@@ -173,13 +180,10 @@ fun LogoutBox(navController: NavHostController, onDismiss: () -> Unit){
             launchSingleTop = true
             restoreState = true
          }
-
+         
          onDismiss()
-      },
-      dialogTitle = stringResource(id = R.string.Logout_title),
-      dialogText = stringResource(id = R.string.Logout_question),
-      onDismiss =  onDismiss
-   )
+      }, dialogTitle = stringResource(id = R.string.Logout_title), dialogText = stringResource(id = R.string.Logout_question), onDismiss = onDismiss
+              )
 }
 
 

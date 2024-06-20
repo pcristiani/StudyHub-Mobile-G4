@@ -11,43 +11,30 @@ import retrofit2.Callback
 import retrofit2.Response
 
 ///
-class RegisterViewModel(private val userRepository: UserRepository) : ViewModel() {
-
-    // Considere todos los registros exitosos
-    fun signUp(nombre: String, apellido: String, email: String, fechaNacimiento:String, ci: String, password: String, onRegisterSubmitted: () -> Unit) {
-
-
-            /*userRepository.login(email, password)
-            val passwordState = userRepository.getPasswordEmail(email)
-            if (passwordState == password) {
-               println("Login correcto")
-               onLoginComplete()
-            } else {
-               println("Password incorrecta ")
-            }*/
-
-
-            val registerRequest = registerRequest(nombre, apellido, email, fechaNacimiento, ci, password){success ->
-                if(success){
-                    onRegisterSubmitted()
-                }
-            }
-
-    }
-
-    fun loginInvitado(onRegisterSubmitted: () -> Unit,) {
-        userRepository.loginInvitado()
+class RegisterViewModel(private val userRepository: UserRepository): ViewModel() {
+  // Considere todos los registros exitosos
+  fun signUp(nombre: String, apellido: String, email: String, fechaNacimiento: String, ci: String, password: String, onRegisterSubmitted: () -> Unit) {
+    registerRequest(nombre, apellido, email, fechaNacimiento, ci, password) { success ->
+      if (success) {
         onRegisterSubmitted()
+      }
     }
+  }
+
+  fun loginInvitado(onRegisterSubmitted: () -> Unit) {
+    userRepository.loginInvitado()
+    onRegisterSubmitted()
+  }
+}
+///
+class RegisterViewModelFactory: ViewModelProvider.Factory {
+  @Suppress("UNCHECKED_CAST")
+  override fun <T: ViewModel> create(modelClass: Class<T>): T {
+    if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
+      return RegisterViewModel(UserRepository) as T
+    }
+    throw IllegalArgumentException("Unknown ViewModel class")
+  }
 }
 
-///
-class RegisterViewModelFactory : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-            return RegisterViewModel(UserRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
 }

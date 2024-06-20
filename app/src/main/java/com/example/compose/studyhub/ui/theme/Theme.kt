@@ -1,10 +1,19 @@
 package com.example.compose.studyhub.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Colors
+import androidx.compose.material.Typography
+
+import androidx.compose.material.Shapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.unit.dp
+import com.example.compose.studyhub.R
+import com.example.compose.studyhub.ui.theme.OwlTheme.shapes
+import com.example.compose.studyhub.ui.theme.OwlTheme.typography
 
 const val stronglyDeemphasizedAlpha = 0.6f
 const val slightlyDeemphasizedAlpha = 0.87f
@@ -69,6 +78,37 @@ private val DarkColors = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
 )
 
+
+private val LightElevation = Elevations()
+
+private val DarkElevation = Elevations(card = 1.dp)
+
+private val LightImages = Images(lockupLogo = R.drawable.ic_lockup_blue)
+
+private val DarkImages = Images(lockupLogo = R.drawable.ic_lockup_white)
+
+
+@Composable
+private fun OwlTheme(
+    darkTheme: Boolean,
+    colors: Colors,
+    content: @Composable () -> Unit
+                    ) {
+    val elevation = if (darkTheme) DarkElevation else LightElevation
+    val images = if (darkTheme) DarkImages else LightImages
+    CompositionLocalProvider(
+        LocalElevations provides elevation,
+        LocalImages provides images
+                            ) {
+        androidx.compose.material.MaterialTheme(
+            colors = colors,
+            typography = typography,
+            shapes = shapes,
+            content = content
+                                               )
+    }
+}
+
 ///
 @Composable
 fun ThemeStudyHub(
@@ -88,4 +128,43 @@ fun ThemeStudyHub(
         typography = Typography,
         content = content,
     )
+}
+
+
+object OwlTheme {
+    
+    /**
+     * Proxy to [MaterialTheme]
+     */
+    val colors: Colors
+        @Composable
+        get() = androidx.compose.material.MaterialTheme.colors
+    
+    /**
+     * Proxy to [MaterialTheme]
+     */
+    val typography: Typography
+        @Composable
+        get() = androidx.compose.material.MaterialTheme.typography
+    
+    /**
+     * Proxy to [MaterialTheme]
+     */
+    val shapes: Shapes
+        @Composable
+        get() = androidx.compose.material.MaterialTheme.shapes
+    
+    /**
+     * Retrieves the current [Elevations] at the call site's position in the hierarchy.
+     */
+    val elevations: Elevations
+        @Composable
+        get() = LocalElevations.current
+    
+    /**
+     * Retrieves the current [Images] at the call site's position in the hierarchy.
+     */
+    val images: Images
+        @Composable
+        get() = LocalImages.current
 }

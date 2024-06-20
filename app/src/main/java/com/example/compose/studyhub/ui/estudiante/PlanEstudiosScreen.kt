@@ -1,15 +1,35 @@
 package com.example.compose.studyhub.ui.estudiante
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,11 +40,91 @@ import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 
 @Composable
 fun PlanEstudiosScreen(): DrawerState {
-   Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-      Image(painter = painterResource(id = R.drawable.celebridad_512), modifier = Modifier.size(120.dp), contentDescription = "Logo")
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+   
+   Column(
+      modifier = Modifier.fillMaxSize(),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally
+         ) {
+      Image(
+         painter = painterResource(id = R.drawable.celebridad_512),
+         modifier = Modifier.size(120.dp),
+         contentDescription = "Logo"
+           )
       Text("Plan de estudios", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
+      DropdownMenuExamples()
+      
+      }
+
+return DrawerState(DrawerValue.Closed)
+}
+
+fun DropdownMenuItem(text: @Composable () -> Unit, onClick: () -> Unit, leadingIcon: @Composable () -> Unit) {
+
+}
+
+@Composable
+fun TextButton(
+   onClick: () -> Unit,
+   modifier: Modifier = Modifier,
+   enabled: Boolean = true,
+   shape: androidx.compose.ui.graphics.Shape = ButtonDefaults.textShape,
+   colors: ButtonColors = ButtonDefaults.textButtonColors(),
+   elevation: ButtonElevation? = null,
+   border: BorderStroke? = null,
+   contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
+   interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+   content: @Composable RowScope.() -> Unit
+              ) {
+}
+
+
+@Composable
+fun DropdownMenuExamples() {
+   var expanded by remember { mutableStateOf(true) }
+   val items = listOf("Option 1", "Option 2", "Option 3")
+   var selectedOption by remember { mutableStateOf(items[0]) }
+   
+   Column(
+      modifier = Modifier.padding(16.dp)
+         ) {
+      Button(
+         onClick = { expanded = true },
+         colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+                                             ),
+         modifier = Modifier
+            .fillMaxWidth()
+            .height(54.dp)
+            ) {
+         Text(
+            text = selectedOption,
+            modifier = Modifier.weight(1f)
+             )
+         Icon(
+            imageVector = Icons.Filled.ArrowDropDown,
+            contentDescription = null,
+            modifier = Modifier.weight(0.2f)
+             )
+      }
+      DropdownMenuItem(
+         text = { Text("Send Feedback") },
+         onClick = { /* Handle send feedback! */ },
+         leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null) },
+     
+                      )
    }
-   return DrawerState(DrawerValue.Closed)
+}
+
+
+@Composable
+fun DropdownMenuItem(onClick: () -> Unit, interactionSource: @Composable () -> Unit) {
+   DropdownMenuExamples(
+ 
+         )
+   
 }
 
 

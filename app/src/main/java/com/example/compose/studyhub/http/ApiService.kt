@@ -62,8 +62,15 @@ interface ApiService {
    
    @GET("/api/carrera/getCarrerasInscripcionesPendientes")
    fun getInscPendientes(): Call<String>
-   
-   
+
+
+
+
+   @GET("/api/carrera/getCarreras")
+   fun getCarreras(@Header("Authorization") token: String): Call<String>
+
+
+
    @GET("/api/asignatura/getAsignaturasNoAprobadas/{idUsuario}")
    fun getAsignaturasNoAprobadas(
       @Path("idUsuario")
@@ -120,3 +127,4 @@ data class AsignaturaRequest(val idAsignatura: Int, val idCarrera: Int, val nomb
 data class CalificacionExamenRequest(val idAsignatura: Int, val asignatura: String, val idExamen: Int, val resultado: String, val calificacion: Int)
 
 data class CalificacionAsignaturaRequest(val idAsignatura: Int, val asignatura: String, val idExamen: Int, val resultado: String, val calificacion: Int)
+

@@ -123,4 +123,5 @@ fun Gestion(modifier: Modifier){
 @Composable
 fun GestionScreenPreview() {
    GestionScreen()
+   Gestion(modifier = Modifier.fillMaxWidth())
 }

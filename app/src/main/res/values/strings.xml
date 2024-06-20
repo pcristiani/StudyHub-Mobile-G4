@@ -30,6 +30,8 @@
     <string name="close">Salir</string>
     <string name="show_password">Mostrar contraseña</string>
     <string name="hide_password">Contraseña oculta</string>
+    <string name="strprueba">Prueba</string>
+    <string name="select_null"></string>
 
     <!-- questionLogin -->
     <string name="question_count">\u00A0de %d</string>
@@ -97,4 +99,13 @@
     <string name="Logout_question">¿Estás seguro?</string>
 
     <string name="txt_error_login">Credenciales incorrectas</string>
+    <string name="seleccionar_carrera">Seleccionar Carrera</string>
+
+    <string name="asignatura1">Programacion I</string>
+    <string name="asignatura2">Programacion II</string>
+    <string name="asignatura3">Programacion III</string>
+    <string name="asignatura4">Programacion Avanzada</string>
+    <string name="asignatura5">Programacion Aplicaciones</string>
+
+
 </resources>

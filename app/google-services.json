@@ -7,9 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:951000701506:android:8cef0e033d2502db142bdb",
+        "mobilesdk_app_id": "1:951000701506:android:eac5ae27f7ea9618142bdb",
         "android_client_info": {
           "package_name": "com.example.compose.studyhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIlNhGdiEZQoRQMGzK6cj7LOJLlLTAOhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951000701506:android:8cef0e033d2502db142bdb",
+        "android_client_info": {
+          "package_name": "com.g4.StudyHub"
         }
       },
       "oauth_client": [],

@@ -53,9 +53,7 @@ fun EditarPerfilScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditarPerfil(modifier: Modifier,
-                 onProfileEditSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String) -> Unit,
-                 ){
+fun EditarPerfil(modifier: Modifier,onProfileEditSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String) -> Unit,){
     Column(modifier = Modifier.fillMaxWidth()){
         val focusRequest = remember { FocusRequester() }
 

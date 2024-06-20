@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
+package com.example.compose.studyhub.ui.theme
 
-plugins {
-    alias(libs.plugins.gradle.versions)
-    alias(libs.plugins.version.catalog.update)
-    id("com.google.gms.google-services") version "4.4.2" apply false
+import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
+
+/**
+ * Images that can vary by theme.
+ */
+@Immutable
+data class Images(@DrawableRes val lockupLogo: Int)
+
+internal val LocalImages = staticCompositionLocalOf<Images> {
+    error("No LocalImages specified")
 }
-
-apply("${project.rootDir}/buildscripts/toml-updater-config.gradle")
-

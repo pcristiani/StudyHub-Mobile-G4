@@ -2,18 +2,20 @@ package com.example.compose.studyhub.ui.navigation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.ui.theme.OwlTheme
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.md_theme_light_shadow
 import kotlinx.coroutines.launch
@@ -51,7 +54,23 @@ fun TopBar(drawerState: DrawerState) {
       }
    }, navController = navController, onClearCompletedTasks = {}, onRefresh = {})
 }
-
+/* fun TopBar(onboardingComplete: DrawerState) {
+   Row(
+      horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+         .fillMaxWidth()
+         .statusBarsPadding()
+      ) {
+      Image(
+         painter = painterResource(id = OwlTheme.images.lockupLogo), contentDescription = null, modifier = Modifier.padding(16.dp)
+           )
+      androidx.compose.material.IconButton(modifier = Modifier.padding(16.dp), onClick = { onboardingComplete }) {
+         androidx.compose.material.Icon(
+            imageVector = Icons.Filled.AccountCircle,
+            contentDescription = stringResource(R.string.txt_admin)
+                                       )
+      }
+   }
+} */
 
 @Composable
 fun ReplyProfileImage(drawableResource: Int, description: String, modifier: Modifier = Modifier) {
@@ -81,7 +100,7 @@ fun TasksTopAppBar(navController: NavHostController, openDrawer: () -> Unit,  on
 
 
 @Composable
-private fun MoreTasksMenu(navController: NavHostController, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
+ fun MoreTasksMenu(navController: NavHostController, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
    TopAppBarDropdownMenu(iconContent = { //   Icon(Icons.Filled.AccountCircle, stringResource(id = R.string.txt_continue))
       ReplyProfileImage(drawableResource = R.drawable.steve_256, stringResource(id = R.string.txt_close))
    }){} /*{ closeMenu ->
@@ -104,7 +123,7 @@ private fun MoreTasksMenu(navController: NavHostController, onClearCompletedTask
 
 
 @Composable
-private fun TopAppBarDropdownMenu(iconContent: @Composable () -> Unit, content: @Composable ColumnScope.(() -> Unit) -> Unit) {
+fun TopAppBarDropdownMenu(iconContent: @Composable () -> Unit, content: @Composable ColumnScope.(() -> Unit) -> Unit) {
    var expanded by remember { mutableStateOf(false) }
    
    Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
@@ -155,7 +174,12 @@ fun MessageCard() { // Add padding around our message
 @Composable
 fun TopBarPreview() {
    ThemeStudyHub {
-      TopBar(drawerState = DrawerState(DrawerValue.Closed)) //   MessageCard()
+      TopBar(DrawerState())
    }
+}
+
+fun DrawerState(): DrawerState {
+   
+   return DrawerState()
 }
 
