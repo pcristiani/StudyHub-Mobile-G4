@@ -25,37 +25,59 @@ import kotlinx.html.title
 import kotlinx.html.ul
 
 
-fun HTMLTemplate(listaCalificacionesAsignatura: List<CalificacionAsignaturaRequest>, listaCalificacionesExamen: List<CalificacionExamenRequest>): String{
+fun HTMLTemplate(listaCalificacionesAsignatura: List<CalificacionAsignaturaRequest>?, listaCalificacionesExamen: List<CalificacionExamenRequest>?): String{
     val nombre: String? = UserRepository.getNombre()
     val apellido: String? = UserRepository.getApellido()
     val email: String? = UserRepository.getEmail()
     val ci: String? = UserRepository.getCI()
 
 
+    if (listaCalificacionesAsignatura != null) {
+        listaCalificacionesAsignatura.forEach { item->
+            val calificaciones = item.calificaciones
+            calificaciones.forEach{
+                item2-> println(item2.calificacion)
+            }
+
+        }
+    }
     return createHTML().html {
         head{
             title{+"Escolaridad"}
         }
         body{
             h2{+"Escolaridad de $nombre $apellido" }
-            p{style = "font-weight:bold" + "Email: $email"}
-            p{style = "font-weight:bold" + "Cédula de Identidad: $ci"}
+            p{+ "Email: $email"}
+            p{+ "Cédula de Identidad: $ci"}
             h2{+"============================================="}
 
 
             h3{+ "Asignaturas: "}
             ul{
-                listaCalificacionesAsignatura.forEach {item ->
-                    li{+(item.asignatura + ", nota: " + item.calificacion + ". Resultado: " + item.resultado) }
+                if (listaCalificacionesAsignatura != null) {
+                    listaCalificacionesAsignatura.forEach {item ->
+                        li{+(item.asignatura + ", nota/s: ")}
+                        ul{
+                            item.calificaciones.forEach{calificacion ->
+                                li{+(calificacion.calificacion.toString() + ". Resultado: " + calificacion.resultado) }
+                            }
 
+                        }
+                    }
+                }else{
+                    p{+"No hay asignaturas aprobadas."}
                 }
             }
 
             h3{+ "Exámenes: "}
             ul{
-                listaCalificacionesExamen.forEach {item ->
-                    li{+(item.asignatura + ", nota: " + item.calificacion + ". Resultado: " + item.resultado) }
+                if (listaCalificacionesExamen != null) {
+                    listaCalificacionesExamen.forEach {item ->
+                        li{+(item.asignatura + ", nota: " + item.calificacion + ". Resultado: " + item.resultado) }
 
+                    }
+                }else{
+                    p{+"No hay exámenes aprobados."}
                 }
             }
         }

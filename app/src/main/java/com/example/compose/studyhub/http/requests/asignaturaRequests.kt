@@ -77,6 +77,8 @@ fun getCalificacionesAsignaturasRequest(idUsuario: Int, idCarrera: Int, token: S
       override fun onResponse(call: Call<String>, response: Response<String>) {
          val responseText = response.body()
 
+         println("Response: $responseText")
+
          if (response.isSuccessful) {
             val gson = Gson()
             val listType = object: TypeToken<List<CalificacionAsignaturaRequest>>() {}.type

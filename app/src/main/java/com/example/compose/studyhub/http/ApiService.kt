@@ -126,5 +126,6 @@ data class AsignaturaRequest(val idAsignatura: Int, val idCarrera: Int, val nomb
 
 data class CalificacionExamenRequest(val idAsignatura: Int, val asignatura: String, val idExamen: Int, val resultado: String, val calificacion: Int)
 
-data class CalificacionAsignaturaRequest(val idAsignatura: Int, val asignatura: String, val idExamen: Int, val resultado: String, val calificacion: Int)
+data class Calificacion(val resultado: String, val calificacion: Int)
 
+data class CalificacionAsignaturaRequest(val idAsignatura: Int, val asignatura: String, val calificaciones: List<Calificacion>)
