@@ -1,5 +1,6 @@
 package com.example.compose.studyhub.ui.estudiante
 
+import CarreraRequest
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -27,6 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,6 +39,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
+import com.example.compose.studyhub.ui.component.gestion.ExpandableList
 import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 
 @Composable
@@ -47,15 +53,41 @@ fun PlanEstudiosScreen(): DrawerState {
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally
          ) {
+
+
+      var listaCarreras: List<CarreraRequest>? = null
+      val nombresCarrera = remember { mutableStateListOf<String>() }
+      val idsCarrera = remember { mutableStateListOf<Int>() }
+
+      UserRepository.loggedInUser()?.let { idUsuario -> UserRepository.getToken()
+         ?.let {token -> inscripcionesCarreraRequest(idUsuario, token){success->
+            if(success!=null){
+               listaCarreras = success
+               println(success)
+               nombresCarrera.clear()
+               idsCarrera.clear()
+               listaCarreras?.forEach {
+                  nombresCarrera.add(it.nombre)
+                  idsCarrera.add(it.idCarrera)
+                  println(listaCarreras)
+               }
+            }
+         } } }
+
+      var carreraSelected = remember { mutableIntStateOf(0) }
+
+
+      ExpandableList(modifier=Modifier.padding(top = 20.dp, bottom = 5.dp), headerTitle = "Lista", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value = selectedId})
+
+
       Image(
          painter = painterResource(id = R.drawable.celebridad_512),
          modifier = Modifier.size(120.dp),
          contentDescription = "Logo"
-           )
+      )
       Text("Plan de estudios", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
-      DropdownMenuExamples()
-      
-      }
+      //
+   }
 
 return DrawerState(DrawerValue.Closed)
 }

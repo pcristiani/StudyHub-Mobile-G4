@@ -14,6 +14,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.ui.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
 import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
@@ -38,6 +40,7 @@ class MainActivity: AppCompatActivity() {
     setContent {
       ThemeStudyHub {
         StudyHubNavHost() //
+
         // val navController = rememberNavController()
         // SetupNavGraph(navController = navController)
       }
@@ -47,7 +50,6 @@ class MainActivity: AppCompatActivity() {
 @Composable
 fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
   val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
 
 
   NavHost(navController = navController, startDestination = "screenNovedades") {/*   composable("home") {

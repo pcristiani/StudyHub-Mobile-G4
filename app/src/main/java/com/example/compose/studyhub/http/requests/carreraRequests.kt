@@ -3,6 +3,7 @@ package com.example.compose.studyhub.http.requests
 import AsignaturaRequest
 import CarreraRequest
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,16 +42,25 @@ fun inscripcionesCarreraRequest(idUsuario: Int, token: String, callback: (List<C
 
 
 fun getCarrerasRequest(token: String, callback: (List<CarreraRequest>?) -> Unit) { // val registerRequest = getAsignaturasAprobadas(nombre, apellido, email, fechaNacimiento, ci, password)
-    val completeTokens = "Bearer " + token
 
-    RetrofitClient.api.getCarreras(completeTokens).enqueue(object: Callback<String> {
+
+    val completeToken = "Bearer " + token
+
+    RetrofitClient.api.getCarreras(completeToken).enqueue(object: Callback<String> {
         override fun onResponse(call: Call<String>, response: Response<String>) {
             val responseText = response.body() // Procesar la respuesta del login
 
+
+
+            println(responseText)
             if (response.isSuccessful) {
-                val gson = Gson()
+
+                val cuttedResponseText = responseText?.substring(22, responseText.length-42)
+                val jsonArrayText = """[$cuttedResponseText]"""
+
+                val gson = GsonBuilder().setLenient().create()
                 val listType = object: TypeToken<List<CarreraRequest>>() {}.type
-                val carreras: List<CarreraRequest> = gson.fromJson(responseText, listType)
+                val carreras: List<CarreraRequest> = gson.fromJson(jsonArrayText, listType)
                 callback(carreras) // println("Response: $responseText")
             } else {
                 callback(null)
@@ -69,6 +79,8 @@ fun getCarrerasRequest(token: String, callback: (List<CarreraRequest>?) -> Unit)
     })
 
 }
+
+
 
 
 
@@ -94,3 +106,5 @@ object CarreraRepository {
         })
     }
 }
+
+

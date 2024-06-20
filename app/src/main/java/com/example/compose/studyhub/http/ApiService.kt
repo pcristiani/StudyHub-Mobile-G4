@@ -108,6 +108,10 @@ interface ApiService {
    @GET("/api/estudiante/getCalificacionesAsignaturas/{idUsuario}")
    fun getCalificacionesAsignatura(@Path("idUsuario") idUsuario:Int, @Query("idCarrera") idCarrera: Int, @Header("Authorization")token:String): Call<String>
 
+
+
+   @GET("/api/carrera/getPreviaturasGrafo/{idCarrera}")
+   fun getPreviaturasGrafo(@Path("idCarrera") idCarrera:Int): Call<String>
 }
 
 data class LoginRequest(val cedula: String, val password: String)

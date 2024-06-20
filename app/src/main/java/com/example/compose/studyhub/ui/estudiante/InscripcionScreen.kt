@@ -34,6 +34,7 @@ import androidx.navigation.NavController
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.CarreraRepository
+import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.ui.theme.slightlyDeemphasizedAlpha
 import kotlinx.coroutines.delay
@@ -124,22 +125,21 @@ fun Carreras(modifier: Modifier) {
 }
 @Composable
 fun firstLoad2(checked: Boolean): List<CarreraRequest>? {
-  var carrera by remember { mutableStateOf<List<CarreraRequest>?>(null) }
+  var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
+  LaunchedEffect(checked) {
+    UserRepository.getToken()?.let { token ->
+      getCarrerasRequest(token) { carreras ->
+        carreras?.let {
+          println("Carreras: " + carreras)
 
-  LaunchedEffect(true) {
-    UserRepository.loggedInUser()?.let { user ->
-      UserRepository.getToken()?.let { token ->
-        CarreraRepository.getCarreras(token) { results ->
-            println("Resultado:" + "${results.toString()}")
-          results?.let { //   carrera =
-          } ?: run {
-            println("Error al obtener las carreras.")
-          }
+          println("Carreras: $it")
+        } ?: run {
+          println("Error al obtener las carreras.")
         }
       }
     }
   }
-  return carrera;
+  return carreras
 }
 
 suspend fun loadMoreAsignaturas2(asignaturasList: MutableList<String>, asignaturas: List<CarreraRequest>) {

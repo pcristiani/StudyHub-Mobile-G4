@@ -107,6 +107,7 @@ dependencies {
    implementation("com.google.firebase:firebase-analytics")
    implementation("com.google.firebase:firebase-messaging")
    implementation("io.github.afreakyelf:Pdf-Viewer:2.1.1")
+   implementation("io.github.rchowell:dotlin:1.0.2")
 
 
 

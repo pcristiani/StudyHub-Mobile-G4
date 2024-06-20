@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.List
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.material.icons.rounded.List
 import androidx.compose.material3.Icon
@@ -71,12 +72,19 @@ fun SectionHeader(text: String, isExpanded: Boolean, onHeaderClicked: () -> Unit
     Row(modifier = Modifier
         .clickable { onHeaderClicked() }
         .background(Color.LightGray)
-        .padding(vertical = 8.dp, horizontal = 16.dp)
+        .padding(vertical = 8.dp, horizontal = 16.dp),
+
+
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.weight(1.0f)
+        )
+        Icon(
+            imageVector = Icons.Filled.ArrowDropDown,
+            contentDescription = null,
+            modifier = Modifier.weight(0.2f)
         )
         if (isExpanded) {
             Icons.AutoMirrored.Rounded.List

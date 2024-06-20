@@ -16,6 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 
 @Composable
@@ -23,7 +25,10 @@ fun NovedadesScreen(): DrawerState {
    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
       Image(painter = painterResource(id = R.drawable.logotext), modifier = Modifier.size(220.dp), contentDescription = "Logo")
       Text("Novedades", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
+
    }
+
+
    return DrawerState(DrawerValue.Closed)
 }
 
