@@ -1,6 +1,7 @@
 package com.example.compose.studyhub.http.requests
 
-import com.example.compose.studyhub.auth.AsignaturaRequest
+import AsignaturaRequest
+import CalificacionAsignaturaRequest
 import com.example.compose.studyhub.auth.SolicitudRequest
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -66,4 +67,34 @@ fun getAsignaturasNoAprobadasRequest(idUsuario: Int, token: String, callback: (L
       }
    })
    
+}
+
+fun getCalificacionesAsignaturasRequest(idUsuario: Int, idCarrera: Int, token: String, callback: (List<CalificacionAsignaturaRequest>?) -> Unit) {
+   val completeToken = "Bearer " + token
+
+
+   RetrofitClient.api.getCalificacionesAsignatura(idUsuario, idCarrera, completeToken).enqueue(object: Callback<String>{
+      override fun onResponse(call: Call<String>, response: Response<String>) {
+         val responseText = response.body()
+
+         if (response.isSuccessful) {
+            val gson = Gson()
+            val listType = object: TypeToken<List<CalificacionAsignaturaRequest>>() {}.type
+            val calificacionesAsignatura: List<CalificacionAsignaturaRequest> = gson.fromJson(responseText, listType)
+            callback(calificacionesAsignatura)
+         } else {
+            callback(null)
+            println("Response code: ${response.code()}")
+            println("Response message: ${response.message()}")
+            response.errorBody()?.let { errorBody ->
+               println("Error body: ${errorBody.string()}")
+            }
+         }
+      }
+
+      override fun onFailure(call: Call<String>, t: Throwable) {
+         println("Error: ${t.message}")
+         callback(null)
+      }
+   })
 }
