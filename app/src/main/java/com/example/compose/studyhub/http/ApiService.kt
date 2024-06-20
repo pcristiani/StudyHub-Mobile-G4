@@ -69,6 +69,8 @@ interface ApiService {
    @GET("/api/carrera/getCarreras")
    fun getCarreras(@Header("Authorization") token: String): Call<String>
 
+   @POST("/api/carrera/inscripcionCarrera")
+   fun inscripcionCarrera(@Header("Authorization") token: String, @Body inscripcionCarreraRequest: InscripcionCarreraRequest): Call<String>
 
 
    @GET("/api/asignatura/getAsignaturasNoAprobadas/{idUsuario}")
@@ -112,6 +114,8 @@ interface ApiService {
 
    @GET("/api/carrera/getPreviaturasGrafo/{idCarrera}")
    fun getPreviaturasGrafo(@Path("idCarrera") idCarrera:Int): Call<String>
+
+
 }
 
 data class LoginRequest(val cedula: String, val password: String)
@@ -125,6 +129,8 @@ data class TokenRequest(val token: String)
 data class UserRequest(val idUsuario: Int?, val nombre: String?, val apellido: String?, val email: String?, val fechaNacimiento: String?, val rol: String?, val cedula: String?, val activo: Boolean?, val validado: Boolean?)
 
 data class CarreraRequest(val idCarrera: Int, val nombre: String, val descripcion: String, val requisitos: String, val duracion: Int, val activa: Boolean)
+
+data class InscripcionCarreraRequest(val idCarrera: Int, val idEstudiante: Int, val validado: Boolean)
 
 data class AsignaturaRequest(val idAsignatura: Int, val idCarrera: Int, val nombre: String, val creditos: Int, val descripcion: String, val departamento: String, val tieneExamen: Boolean, val activa: Boolean, val previaturas: List<Int>)
 

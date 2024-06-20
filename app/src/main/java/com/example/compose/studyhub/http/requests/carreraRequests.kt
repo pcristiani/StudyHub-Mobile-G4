@@ -2,6 +2,8 @@ package com.example.compose.studyhub.http.requests
 
 import AsignaturaRequest
 import CarreraRequest
+import InscripcionCarreraRequest
+import RetrofitClient
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -35,9 +37,6 @@ fun inscripcionesCarreraRequest(idUsuario: Int, token: String, callback: (List<C
         }
     })
 }
-
-
-
 
 
 
@@ -81,7 +80,33 @@ fun getCarrerasRequest(token: String, callback: (List<CarreraRequest>?) -> Unit)
 }
 
 
+fun inscripcionCarreraRequest(token: String, inscripcionCarreraRequest: InscripcionCarreraRequest, callback: (Boolean) -> Unit){
+    val completeToken = "Bearer " + token
 
+    RetrofitClient.api.inscripcionCarrera(completeToken, inscripcionCarreraRequest).enqueue(object: Callback<String> {
+        override fun onResponse(call: Call<String>, response: Response<String>) {
+            val responseText = response.body()
+
+            if (response.isSuccessful) {
+                callback(true)
+                println(responseText)
+            } else {
+                callback(false)
+                println("Response code: ${response.code()}")
+                println("Response message: ${response.message()}")
+                response.errorBody()?.let { errorBody ->
+                    println("Error body: ${errorBody.string()}")
+                }
+            }
+        }
+
+        override fun onFailure(call: Call<String>, t: Throwable) {
+            t.printStackTrace()
+            callback(false)
+        }
+
+    })
+}
 
 
 
