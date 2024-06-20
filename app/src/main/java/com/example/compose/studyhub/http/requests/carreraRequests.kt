@@ -108,28 +108,36 @@ fun inscripcionCarreraRequest(token: String, inscripcionCarreraRequest: Inscripc
     })
 }
 
+fun getAsignaturasDeCarreraRequest(idCarrera:Int, token: String, callback: (List<AsignaturaRequest>?) -> Unit){
+    val completeToken = "Bearer " + token
 
+    RetrofitClient.api.getAsignaturasDeCarrera(idCarrera, completeToken).enqueue(object: Callback<String> {
+        override fun onResponse(call: Call<String>, response: Response<String>) {
+            val responseText = response.body() // Procesar la respuesta del login
 
-object CarreraRepository {
-    fun getCarreras(jwtLogin: String, onResult: (String?) -> Unit) {
-        val call = RetrofitClient.api.getCarreras("Bearer $jwtLogin")
-
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful) {
-                    println("Responses: ${response.body()}")
-                    onResult(response.body())
-                } else {
-                    onResult(null)
+            println(responseText)
+            if (response.isSuccessful) {
+                val cuttedResponseText = responseText?.substring(22, responseText.length-42)
+                val jsonArrayText = """[$cuttedResponseText]"""
+                val gson = GsonBuilder().setLenient().create()
+                val listType = object: TypeToken<List<CarreraRequest>>() {}.type
+                val asignaturas: List<AsignaturaRequest> = gson.fromJson(jsonArrayText, listType)
+                callback(asignaturas) // println("Response: $responseText")
+            } else {
+                callback(null)
+                println("Response code: ${response.code()}")
+                println("Response message: ${response.message()}")
+                response.errorBody()?.let { errorBody ->
+                    println("Error body: ${errorBody.string()}")
                 }
             }
+        }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                println("Error: ${t.message}")
-                onResult(null)
-            }
-        })
-    }
+        override fun onFailure(call: Call<String>, t: Throwable) {
+            println("Error: ${t.message}")
+            callback(null)
+        }
+
+
+    })
 }
-
-

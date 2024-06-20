@@ -72,6 +72,11 @@ interface ApiService {
    @POST("/api/carrera/inscripcionCarrera")
    fun inscripcionCarrera(@Header("Authorization") token: String, @Body inscripcionCarreraRequest: InscripcionCarreraRequest): Call<String>
 
+   @GET("/api/carrera/getCarrerasInscripto/{idUsuario}")
+   fun getCarrerasInscripto(@Path("idUsuario") idUsuario: Int, @Header("Authorization")token:String): Call<String>
+
+   @GET("/api/asignatura/getAsignaturasDeCarrera/{idCarrera}")
+   fun getAsignaturasDeCarrera(@Path("idCarrera") idCarrera: Int, @Header("Authorization")token:String): Call<String>
 
    @GET("/api/asignatura/getAsignaturasNoAprobadas/{idUsuario}")
    fun getAsignaturasNoAprobadas(
@@ -100,9 +105,6 @@ interface ApiService {
       @Header("Authorization")
       token: String
                           ): Call<String>
-
-   @GET("/api/carrera/getCarrerasInscripto/{idUsuario}")
-   fun getCarrerasInscripto(@Path("idUsuario") idUsuario: Int, @Header("Authorization")token:String): Call<String>
 
    @GET("/api/estudiante/getCalificacionesExamenes/{idUsuario}")
    fun getCalificacionesExamenes(@Path("idUsuario") idUsuario:Int, @Query("idCarrera") idCarrera: Int, @Header("Authorization")token:String): Call<String>

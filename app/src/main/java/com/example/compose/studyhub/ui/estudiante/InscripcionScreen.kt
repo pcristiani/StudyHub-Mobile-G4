@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.requests.CarreraRepository
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.ui.theme.slightlyDeemphasizedAlpha
