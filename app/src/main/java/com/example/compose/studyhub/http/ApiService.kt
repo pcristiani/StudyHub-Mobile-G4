@@ -122,6 +122,9 @@ interface ApiService {
    @GET("/api/examen/getExamenesAsignatura/{idAsignatura}")
    fun getExamenesAsignatura(@Path("idAsignatura") idAsignatura:Int, @Header("Authorization")token:String): Call<String>
 
+   @POST("/api/examen/inscripcionExamen")
+   fun inscripcionExamen(@Header("Authorization") token: String, @Body inscripcionExamenRequest:InscripcionExamenRequest): Call<String>
+
    @GET("/api/carrera/getPreviaturasGrafo/{idCarrera}")
    fun getPreviaturasGrafo(@Path("idCarrera") idCarrera:Int): Call<String>
 
@@ -144,6 +147,8 @@ data class InscripcionCarreraRequest(val idCarrera: Int, val idEstudiante: Int, 
 
 data class InscripcionAsignaturaRequest(val idEstudiante: Int, val idAsignatura: Int, val idHorario:Int)
 
+data class InscripcionExamenRequest(val idEstudiante:Int, val idExamen: Int)
+
 data class AsignaturaRequest(val idAsignatura: Int, val idCarrera: Int, val nombre: String, val creditos: Int, val descripcion: String, val departamento: String, val tieneExamen: Boolean, val activa: Boolean, val previaturas: List<Int>)
 
 data class Calificacion(val resultado: String, val calificacion: Int)
@@ -159,3 +164,4 @@ data class HorariosAsignaturaRequest(val idHorarioAsignatura: Int, val idAsignat
 data class HorariosDias(val diaSemana: String, val horaInicio: String, val horaFin: String)
 
 data class ExamenRequest(val idExamen: Int, val asignatura: String, val periodoExamen: String, val fechaHora: String)
+

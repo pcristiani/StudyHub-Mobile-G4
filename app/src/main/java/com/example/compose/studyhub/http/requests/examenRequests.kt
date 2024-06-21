@@ -3,6 +3,7 @@ package com.example.compose.studyhub.http.requests
 import AsignaturaRequest
 import CalificacionExamenRequest
 import ExamenRequest
+import InscripcionExamenRequest
 import RetrofitClient
 import com.example.compose.studyhub.auth.SolicitudRequest
 import com.google.gson.Gson
@@ -66,6 +67,33 @@ fun getExamenesAsignatura(idAsignatura: Int, token: String, callback: (List<Exam
         override fun onFailure(call: Call<String>, t: Throwable) {
             println("Error: ${t.message}")
             callback(null)
+        }
+    })
+}
+
+fun inscripcionExamenRequest(token: String, inscripcionExamenRequest: InscripcionExamenRequest, callback: (Boolean) -> Unit){
+    val completeToken= "Bearer " + token
+
+    RetrofitClient.api.inscripcionExamen(completeToken, inscripcionExamenRequest).enqueue(object: Callback<String>{
+        override fun onResponse(call: Call<String>, response: Response<String>) {
+            val responseText = response.body()
+
+            if (response.isSuccessful) {
+                callback(true)
+                println(responseText)
+            } else {
+                callback(false)
+                println("Response code: ${response.code()}")
+                println("Response message: ${response.message()}")
+                response.errorBody()?.let { errorBody ->
+                    println("Error body: ${errorBody.string()}")
+                }
+            }
+        }
+
+        override fun onFailure(call: Call<String>, t: Throwable) {
+            println("Error: ${t.message}")
+            callback(false)
         }
     })
 }
