@@ -3,7 +3,7 @@ package com.example.compose.studyhub.viewModel
 import RegisterRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.compose.studyhub.auth.decodeJWT
+import com.example.compose.studyhub.http.auth.decodeJWT
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.registerRequest
 import retrofit2.Call

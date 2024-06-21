@@ -1,0 +1,127 @@
+package com.example.compose.studyhub.ui.screen.estudiante
+
+import CarreraRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.example.compose.studyhub.R
+import com.example.compose.studyhub.data.User
+import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
+import com.example.compose.studyhub.ui.component.gestion.ExpandableList
+import com.example.compose.studyhub.ui.component.gestion.WebViewComponent
+import com.example.compose.studyhub.ui.theme.md_theme_dark_text
+import com.example.compose.studyhub.util.HTMLTemplate
+import com.example.compose.studyhub.util.exportAsPdf
+import com.rajat.pdfviewer.compose.PdfRendererViewCompose
+
+@Composable
+fun GestionScreen(): DrawerState {
+   Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+      /*Image(painter = painterResource(id = R.drawable.a19_dj_128), modifier = Modifier.size(120.dp), contentDescription = "Logo")
+
+
+      Text("Gestion", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
+       */
+
+      Column(modifier = Modifier.padding(top = 100.dp, bottom = 30.dp)) {
+         Gestion(modifier = Modifier
+            .weight(1f)
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp))
+
+
+
+      }
+   }
+   return DrawerState(DrawerValue.Closed)
+}
+
+
+@Composable
+fun Gestion(modifier: Modifier){
+
+   var webView:WebView? = null
+   val context = LocalContext.current
+
+
+   Column(
+      modifier = modifier.fillMaxWidth(),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally,
+   ) {
+
+      var listaCarreras: List<CarreraRequest>? = null
+      val nombresCarrera = remember { mutableStateListOf<String>() }
+      val idsCarrera = remember { mutableStateListOf<Int>() }
+
+      UserRepository.loggedInUser()?.let {idUsuario -> UserRepository.getToken()
+         ?.let {token -> inscripcionesCarreraRequest(idUsuario, token){success->
+            if(success!=null){
+               listaCarreras = success
+               println(success)
+               nombresCarrera.clear()
+               idsCarrera.clear()
+               listaCarreras?.forEach {
+                  nombresCarrera.add(it.nombre)
+                  idsCarrera.add(it.idCarrera)
+                  println(listaCarreras)
+               }
+            }
+         } } }
+
+      var carreraSelected = remember { mutableIntStateOf(0) }
+
+
+      ExpandableList(modifier=Modifier.padding(top = 20.dp, bottom = 5.dp), headerTitle = "Lista", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value = selectedId})
+
+      println(carreraSelected.intValue)
+
+
+      WebViewComponent(carreraSelected.intValue,
+         modifier
+            .fillMaxWidth()
+            .weight(1f))
+
+
+
+      Button(onClick = {exportAsPdf(webView, context)}, modifier = Modifier
+         .fillMaxWidth()
+         .padding(vertical = 16.dp)){
+         Text(text = stringResource(id = R.string.download_resume))
+      }
+   }
+}
+
+
+@Preview
+@Composable
+fun GestionScreenPreview() {
+   GestionScreen()
+   Gestion(modifier = Modifier.fillMaxWidth())
+}

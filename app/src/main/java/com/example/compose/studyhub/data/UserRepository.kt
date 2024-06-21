@@ -2,7 +2,7 @@ package com.example.compose.studyhub.data
 
 import TokenRequest
 import androidx.compose.runtime.Immutable
-import com.example.compose.studyhub.auth.decodeUser
+import com.example.compose.studyhub.http.auth.decodeUser
 import com.example.compose.studyhub.http.requests.getUsuarioRequest
 import retrofit2.Call
 import retrofit2.Callback

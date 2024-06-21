@@ -1,4 +1,4 @@
-package com.example.compose.studyhub.ui.estudiante
+package com.example.compose.studyhub.ui.screen.estudiante
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

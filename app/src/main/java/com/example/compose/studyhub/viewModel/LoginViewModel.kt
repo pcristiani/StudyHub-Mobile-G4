@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.compose.studyhub.R
-import com.example.compose.studyhub.auth.decodeJWT
+import com.example.compose.studyhub.http.auth.decodeJWT
 import com.example.compose.studyhub.data.User
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.loginRequest

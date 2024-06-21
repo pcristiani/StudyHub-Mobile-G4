@@ -1,4 +1,4 @@
-package com.example.compose.studyhub.ui.estudiante
+package com.example.compose.studyhub.ui.screen.estudiante
 
 import AsignaturaRequest
 import androidx.compose.foundation.layout.*
@@ -51,7 +51,7 @@ fun Solicitudes(modifier: Modifier) {
   }
 
   Column(
-    modifier = modifier.fillMaxWidth(),
+    modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
   ) {
     Text(
       text = stringResource(id = R.string.txt_solicitudes),
@@ -60,32 +60,46 @@ fun Solicitudes(modifier: Modifier) {
 
     Row(modifier = Modifier
        .fillMaxWidth()
-       .padding(start = 10.dp)) {
-      Box(modifier = Modifier
-         .size(50.dp, 60.dp)
-         .padding(bottom = 10.dp, start = 0.dp)) {
+       .padding(start = 0.dp),
+      horizontalArrangement = Arrangement.Center) {
+      /*Box(
+        modifier = Modifier
+          .size(50.dp, 60.dp)
+          .padding(bottom = 10.dp, start = 0.dp)
+      ) {
         IconButton(onClick = {}, modifier = Modifier.align(Alignment.CenterStart)) {
           Icon(imageVector = Icons.Filled.CalendarMonth, contentDescription = "Calendar")
         }
       }
-      Spacer(modifier = Modifier.padding(start = 10.dp))
+      Spacer(modifier = Modifier.padding(start = 10.dp))*/
 
-      Text(text = "Pendientes", modifier = Modifier.padding(top = 15.dp), style = MaterialTheme.typography.bodySmall)
+      Text(
+        text = "Pendientes",
+        modifier = Modifier.padding(top = 15.dp),
+        style = MaterialTheme.typography.bodySmall
+      )
       Spacer(modifier = Modifier.padding(start = 8.dp))
       Switch(colors = SwitchDefaults.colors(), checked = checked, onCheckedChange = { newChecked ->
         checked = newChecked
       })
-      Text(text = "Aprobadas", modifier = Modifier.padding(top = 15.dp, start = 6.dp), style = MaterialTheme.typography.bodySmall)
-      Spacer(modifier = Modifier.padding(start = 10.dp))
+      Text(
+        text = "Aprobadas",
+        modifier = Modifier.padding(top = 15.dp, start = 6.dp),
+        style = MaterialTheme.typography.bodySmall
+      )
+      /*Spacer(modifier = Modifier.padding(start = 10.dp))
 
-      Box(modifier = Modifier
-         .size(50.dp, 60.dp)
-         .padding(bottom = 10.dp)) {
+      Box(
+        modifier = Modifier
+          .size(50.dp, 60.dp)
+          .padding(bottom = 10.dp)
+      ) {
         IconButton(onClick = {}, modifier = Modifier.align(Alignment.CenterEnd)) {
           Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
         }
-      }
+      }*/
     }
+
 
     if (asignaturas != null) {
       LazyColumn(state = listState, modifier = Modifier

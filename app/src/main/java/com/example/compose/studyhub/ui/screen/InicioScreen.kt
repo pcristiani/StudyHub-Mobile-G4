@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.EmailStateSaver
+import com.example.compose.studyhub.ui.component.Logo
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
@@ -73,18 +74,7 @@ private fun LogoTitle(modifier: Modifier = Modifier) {
 }
 
 // ? Logo Imagen
-@Composable
-private fun Logo(
-   modifier: Modifier = Modifier,
-   lightTheme: Boolean = LocalContentColor.current.luminance() < 0.5f,
-) {
-   val assetId = if (lightTheme) {
-      R.drawable.a
-   } else {
-      R.drawable.a
-   }
-   Image(painter = painterResource(id = assetId), modifier = modifier, contentDescription = null)
-}
+
 
 ///
 // ? Crear cuenta

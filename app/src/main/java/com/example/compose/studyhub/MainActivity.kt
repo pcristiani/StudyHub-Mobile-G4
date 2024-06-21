@@ -1,8 +1,6 @@
 package com.example.compose.studyhub
 
-import InscripcionExamenRequest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,18 +15,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.requests.inscripcionExamenRequest
 import com.example.compose.studyhub.services.PushNotificationService
-import com.example.compose.studyhub.ui.estudiante.GestionScreen
-import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
-import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
-import com.example.compose.studyhub.ui.estudiante.PlanEstudiosScreen
-import com.example.compose.studyhub.ui.estudiante.SolicitudesScreen
 import com.example.compose.studyhub.ui.navigation.MenuLateral
 import com.example.compose.studyhub.ui.navigation.NavRoutes
-import com.example.compose.studyhub.ui.navigation.TopBar // import com.example.compose.studyhub.ui.navigation.TopBar
+import com.example.compose.studyhub.ui.navigation.TopBar
 import com.example.compose.studyhub.ui.route.EditarPerfilRoute
+import com.example.compose.studyhub.ui.screen.estudiante.GestionScreen
+import com.example.compose.studyhub.ui.screen.estudiante.InscripcionScreen
+import com.example.compose.studyhub.ui.screen.estudiante.NovedadesScreen
+import com.example.compose.studyhub.ui.screen.estudiante.PlanEstudiosScreen
+import com.example.compose.studyhub.ui.screen.estudiante.SolicitudesScreen
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.google.firebase.FirebaseApp
 
@@ -62,7 +58,7 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
 
     composable(NavRoutes.NovedadesScreen) {
       MenuLateral(navController, drawerState, contenido = {
-        ScreenNovedades(drawerState)
+        ScreenNovedades(drawerState, navController)
       })
     }
     composable(NavRoutes.EstudiosScreen) {
@@ -101,9 +97,9 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
 }
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenNovedades(drawerState: DrawerState) {
+fun ScreenNovedades(drawerState: DrawerState, navController: NavHostController) {
   TopBar(drawerState)
-  NovedadesScreen()
+  NovedadesScreen(navController)
 }
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -142,7 +138,7 @@ fun ScreenEditarPerfil(navController: NavHostController, drawerState: DrawerStat
 @Composable
 fun NovedadesScreenPreview() {
   ThemeStudyHub {
-    TopBar(NovedadesScreen())
+    //TopBar(NovedadesScreen())
   }
 }
 @Preview
@@ -207,3 +203,4 @@ fun GestionScreenPreview() {
 
    
  */
+

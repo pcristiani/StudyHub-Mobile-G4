@@ -5,7 +5,7 @@ import ModifyProfileRequest
 import RegisterRequest
 import UserRequest
 import RetrofitClient
-import com.example.compose.studyhub.auth.decodeJWT
+import com.example.compose.studyhub.http.auth.decodeJWT
 import com.example.compose.studyhub.data.UserRepository
 import retrofit2.Call
 import retrofit2.Callback

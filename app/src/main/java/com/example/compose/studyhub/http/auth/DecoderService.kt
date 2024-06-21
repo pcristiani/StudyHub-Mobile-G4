@@ -1,4 +1,4 @@
-package com.example.compose.studyhub.auth
+package com.example.compose.studyhub.http.auth
 
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson

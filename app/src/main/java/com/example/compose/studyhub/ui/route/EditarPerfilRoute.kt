@@ -1,6 +1,6 @@
 package com.example.compose.studyhub.ui.route
 
-import com.example.compose.studyhub.ui.estudiante.EditarPerfilScreen
+import com.example.compose.studyhub.ui.screen.estudiante.EditarPerfilScreen
 import com.example.compose.studyhub.ui.navigation.NavRoutes.EditarPerfilScreen
 import com.example.compose.studyhub.viewModel.EditarPerfilViewModel
 import com.example.compose.studyhub.viewModel.EditarPerfilViewModelFactory

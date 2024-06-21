@@ -5,7 +5,7 @@ import CalificacionAsignaturaRequest
 import HorariosAsignaturaRequest
 import InscripcionAsignaturaRequest
 import RetrofitClient
-import com.example.compose.studyhub.auth.SolicitudRequest
+import com.example.compose.studyhub.http.auth.SolicitudRequest
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
