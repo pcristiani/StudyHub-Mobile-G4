@@ -2,6 +2,7 @@ package com.example.compose.studyhub
 
 import InscripcionExamenRequest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -17,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.inscripcionExamenRequest
+import com.example.compose.studyhub.services.PushNotificationService
 import com.example.compose.studyhub.ui.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
 import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
@@ -52,6 +55,7 @@ class MainActivity: AppCompatActivity() {
 fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
   val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
+  PushNotificationService.requestNewToken(context = LocalContext.current)
 
   NavHost(navController = navController, startDestination = "screenNovedades") {
 

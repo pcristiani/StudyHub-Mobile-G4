@@ -15,9 +15,11 @@ class PushNotificationService: FirebaseMessagingService() {
         super.onNewToken(token)
 
 
-
+/*
         UserRepository.loggedInUser()?.let { registerTokenRequest(it, token) }
         println(token)
+
+*/
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
