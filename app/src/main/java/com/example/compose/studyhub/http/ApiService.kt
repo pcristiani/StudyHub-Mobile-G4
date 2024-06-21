@@ -64,8 +64,6 @@ interface ApiService {
    fun getInscPendientes(): Call<String>
 
 
-
-
    @GET("/api/carrera/getCarreras")
    fun getCarreras(@Header("Authorization") token: String): Call<String>
 
@@ -77,6 +75,9 @@ interface ApiService {
 
    @GET("/api/asignatura/getAsignaturasDeCarrera/{idCarrera}")
    fun getAsignaturasDeCarrera(@Path("idCarrera") idCarrera: Int, @Header("Authorization")token:String): Call<String>
+
+   @GET("/api/asignatura/getHorarios/{idAsignatura}")
+   fun getHorariosAsignatura(@Path("idAsignatura") idAsignatura: Int, @Header("Authorization")token:String): Call<String>
 
    @GET("/api/asignatura/getAsignaturasNoAprobadas/{idUsuario}")
    fun getAsignaturasNoAprobadas(
@@ -136,8 +137,14 @@ data class InscripcionCarreraRequest(val idCarrera: Int, val idEstudiante: Int, 
 
 data class AsignaturaRequest(val idAsignatura: Int, val idCarrera: Int, val nombre: String, val creditos: Int, val descripcion: String, val departamento: String, val tieneExamen: Boolean, val activa: Boolean, val previaturas: List<Int>)
 
-data class CalificacionExamenRequest(val idAsignatura: Int, val asignatura: String, val idExamen: Int, val resultado: String, val calificacion: Int)
-
 data class Calificacion(val resultado: String, val calificacion: Int)
 
+data class CalificacionExamenRequest(val idAsignatura: Int, val asignatura: String, val idExamen: Int, val resultado: String, val calificacion: Int)
+
+
 data class CalificacionAsignaturaRequest(val idAsignatura: Int, val asignatura: String, val calificaciones: List<Calificacion>)
+
+data class HorariosAsignaturaRequest(val idHorarioAsignatura: Int, val idAsignatura: Int, val anio: Int, val dtHorarioDias: List<HorariosDias>)
+
+
+data class HorariosDias(val diaSemana: String, val horaInicio: String, val horaFin: String)
