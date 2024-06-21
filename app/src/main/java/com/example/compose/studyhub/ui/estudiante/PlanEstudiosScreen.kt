@@ -50,8 +50,8 @@ fun PlanEstudiosScreen(): DrawerState {
    
    Column(
       modifier = Modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.Center,
-      horizontalAlignment = Alignment.CenterHorizontally
+      verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
+      horizontalAlignment = Alignment.CenterHorizontally,
          ) {
 
 
@@ -79,14 +79,14 @@ fun PlanEstudiosScreen(): DrawerState {
 
       ExpandableList(modifier=Modifier.padding(top = 20.dp, bottom = 5.dp), headerTitle = "Lista", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value = selectedId})
 
-
+      /*
       Image(
          painter = painterResource(id = R.drawable.celebridad_512),
          modifier = Modifier.size(120.dp),
          contentDescription = "Logo"
       )
       Text("Plan de estudios", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
-      //
+      */
    }
 
 return DrawerState(DrawerValue.Closed)

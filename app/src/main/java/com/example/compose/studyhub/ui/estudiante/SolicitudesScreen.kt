@@ -52,8 +52,6 @@ fun Solicitudes(modifier: Modifier) {
 
   Column(
     modifier = modifier.fillMaxWidth(),
-    verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
-    horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(
       text = stringResource(id = R.string.txt_solicitudes),

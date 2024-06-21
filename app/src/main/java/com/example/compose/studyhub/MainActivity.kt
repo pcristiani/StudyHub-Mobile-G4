@@ -52,7 +52,7 @@ class MainActivity: AppCompatActivity() {
 fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
   val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
- 
+
   NavHost(navController = navController, startDestination = "screenNovedades") {
 
 

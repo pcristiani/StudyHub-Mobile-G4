@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -27,9 +28,11 @@ import com.example.compose.studyhub.ui.screen.Email
 import com.example.compose.studyhub.ui.screen.LoginRegisterScreen
 import com.example.compose.studyhub.ui.screen.LoginRegisterTopAppBar
 import com.example.compose.studyhub.ui.screen.Name
+import com.example.compose.studyhub.ui.screen.RecoverPassBox
 import com.example.compose.studyhub.ui.screen.SurName
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.util.supportWideScreen
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditarPerfilScreen(
@@ -54,6 +57,8 @@ fun EditarPerfilScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditarPerfil(modifier: Modifier,onProfileEditSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String) -> Unit,){
+    val showEditPassDialog = remember { mutableStateOf(false) }
+
     Column(modifier = Modifier.fillMaxWidth()){
         val focusRequest = remember { FocusRequester() }
 
@@ -86,6 +91,7 @@ fun EditarPerfil(modifier: Modifier,onProfileEditSubmitted: (nombre: String, ape
 
 
         Spacer(modifier = Modifier.height(15.dp))
+
 
         Button(onClick = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text,
             formatDate(birthdayState)

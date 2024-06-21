@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -33,6 +34,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.EmailStateSaver
@@ -42,6 +46,9 @@ import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
 import kotlinx.coroutines.launch
 import com.example.compose.studyhub.services.PushNotificationService
+import com.example.compose.studyhub.ui.component.AlertDialogBoxWithText
+import com.example.compose.studyhub.ui.route.RecoverPassRoute
+import kotlinx.coroutines.GlobalScope
 
 ///
 @Composable
@@ -58,27 +65,33 @@ fun LoginScreen(
    val respuesta = stringResource(id = R.string.login_test)
    val snackbarActionLabel = stringResource(id = R.string.sign_in)
 
+/*
    if(loginError != null){
-      ErrorSnackbar(snackbarHostState = snackbarHostState, onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }, modifier = Modifier)
+      ErrorSnackbar(message="Hola", snackbarHostState = snackbarHostState, onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }, modifier = Modifier)
 
    }
-
+*/
    Scaffold(topBar = {
       LoginRegisterTopAppBar(topAppBarText = stringResource(id = R.string.sign_in), onNavUp = onNavUp)
-   }, content = { contentPadding ->
+   },
+      snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+      content = { contentPadding ->
       LoginRegisterScreen(modifier = Modifier.supportWideScreen(), contentPadding = contentPadding) {
          Column(modifier = Modifier.fillMaxWidth()) {
             LoginTest(ci = ci, onLoginSubmitted = onLoginSubmitted, onRegisterSubmitted = onNavigateToRegister)
             Spacer(modifier = Modifier.height(5.dp))
+
          }
 
 
       }
    })
-   
+/*
    Box(modifier = Modifier.fillMaxSize()) {
-      ErrorSnackbar(snackbarHostState = snackbarHostState, onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }, modifier = Modifier.align(Alignment.BottomCenter))
+      ErrorSnackbar(message = "Hola", snackbarHostState = snackbarHostState, onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }, modifier = Modifier.align(Alignment.BottomCenter))
    }
+
+ */
 }
 
 
@@ -93,6 +106,9 @@ fun LoginTest(
    val scope = rememberCoroutineScope()
    val respuesta = stringResource(id = R.string.login_test)
    val snackbarActionLabel = stringResource(id = R.string.sign_in)
+   val showRecoverPassDialog = remember {mutableStateOf(false)}
+   val showSnackbar = remember {mutableStateOf(true)}
+   var snackbarMessage = remember {mutableStateOf("")}
 
 
    Column(modifier = Modifier.fillMaxWidth()) {
@@ -126,14 +142,18 @@ fun LoginTest(
       
       Button(onClick = { onSubmit() }, modifier = Modifier
          .fillMaxWidth()
-         .padding(top = 16.dp, bottom= 10.dp), enabled = ciState.isValid && passwordState.isValid) {
+         .padding(top = 16.dp, bottom = 10.dp), enabled = ciState.isValid && passwordState.isValid) {
          Text(text = stringResource(id = R.string.sign_in))
       }
 
       TextButton(onClick = {
+         showRecoverPassDialog.value = true
          scope.launch {
+
             snackbarHostState.showSnackbar(message = respuesta, actionLabel = snackbarActionLabel)
+
          }
+
       }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.forgot_password)) }
 
       Button(onClick = { onSubmitRegister() }, modifier = Modifier
@@ -142,10 +162,26 @@ fun LoginTest(
          Text(text = stringResource(id = R.string.create_account))
       }
    }
-   
-   Box(modifier = Modifier.fillMaxSize()) {
-      ErrorSnackbar(snackbarHostState = snackbarHostState, onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }, modifier = Modifier.align(Alignment.BottomCenter))
+
+   if(showRecoverPassDialog.value == true){
+      RecoverPassBox(onConfirmation = {snackbarMessage.value = it; showSnackbar.value = true}, onDismiss = {showRecoverPassDialog.value = false})
    }
+
+   if(showSnackbar.value){
+      LaunchedEffect(showSnackbar.value) {
+         scope.launch {
+
+            snackbarHostState.showSnackbar(
+               message = "snackbarMessage.value",
+               actionLabel = "Cerrar",
+               duration = SnackbarDuration.Short
+            )
+
+         }
+         showSnackbar.value = false
+      }
+   }
+
 }
 
 
@@ -157,10 +193,24 @@ private fun getLoginTest(emailLogin: String, passwordLogin: String): Boolean {
 
 
 @Composable
-fun ErrorSnackbar(snackbarHostState: SnackbarHostState, modifier: Modifier = Modifier, onDismiss: () -> Unit = {}) {
+fun RecoverPassBox(onConfirmation: (String) -> Unit, onDismiss: () -> Unit){
+   RecoverPassRoute(onConfirmation = {
+
+     onConfirmation(it) },
+      dialogTitle = "Recuperar contraseña",
+      onDismiss = {onDismiss()},
+      onFail = {onConfirmation("Error: $it")}
+   )
+
+}
+
+
+@Composable
+fun ErrorSnackbar(message: String, snackbarHostState: SnackbarHostState, modifier: Modifier = Modifier, onDismiss: () -> Unit = {}) {
    SnackbarHost(hostState = snackbarHostState, snackbar = { data ->
+      println("Hello")
       Snackbar(modifier = Modifier.padding(16.dp), content = {
-         Text(text = stringResource(R.string.txt_error_login), style = MaterialTheme.typography.bodyMedium)
+         Text(text = message, style = MaterialTheme.typography.bodyMedium)
       }, action = {
          data.visuals.actionLabel?.let {
             TextButton(onClick = onDismiss) {
@@ -185,3 +235,4 @@ fun LoginPreview() {
       LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onNavigateToRegister = {_, ->}, onNavUp = {}, "ERROR", onErrorDismissed = {})
    }
 }
+

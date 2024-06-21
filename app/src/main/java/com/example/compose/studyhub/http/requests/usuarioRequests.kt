@@ -173,3 +173,34 @@ fun modifyProfileRequest(token: String, idUsuario: Int, nombre: String, apellido
    })
    
 }
+
+fun forgotPasswordRequest(email: String, callback: (state: Boolean, response: String) -> Unit){
+
+   println("Email: $email")
+   RetrofitClient.api.forgotPassword(email).enqueue(object: Callback<String> {
+      override fun onResponse(call: Call<String>, response: Response<String>) {
+         val responseText = response.body() // Procesar la respuesta del login
+
+         if (response.isSuccessful) {
+            if (responseText != null) {
+               callback(true, responseText)
+            }
+            println(responseText)
+         } else {
+            if (responseText != null) {
+               callback(false, responseText)
+            }
+            println("Response code: ${response.code()}")
+            println("Response message: ${response.message()}")
+            response.errorBody()?.let { errorBody ->
+               println("Error body: ${errorBody.string()}")
+            }
+         }
+      }
+
+      override fun onFailure(call: Call<String>, t: Throwable) {
+         println("Error: ${t.message}")
+         t.message?.let { callback(false, it) }
+      }
+   })
+}

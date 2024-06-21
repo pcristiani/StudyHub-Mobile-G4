@@ -126,9 +126,10 @@ interface ApiService {
    fun inscripcionExamen(@Header("Authorization") token: String, @Body inscripcionExamenRequest:InscripcionExamenRequest): Call<String>
 
    @GET("/api/carrera/getPreviaturasGrafo/{idCarrera}")
-   fun getPreviaturasGrafo(@Path("idCarrera") idCarrera:Int): Call<String>
+   fun getPreviaturasGrafo(@Path("idCarrera") idCarrera:Int, @Header("Authorization") token: String): Call<String>
 
-
+   @POST("/forgotPassword")
+   fun forgotPassword(@Body email: String): Call<String>
 }
 
 data class LoginRequest(val cedula: String, val password: String)
@@ -164,4 +165,3 @@ data class HorariosAsignaturaRequest(val idHorarioAsignatura: Int, val idAsignat
 data class HorariosDias(val diaSemana: String, val horaInicio: String, val horaFin: String)
 
 data class ExamenRequest(val idExamen: Int, val asignatura: String, val periodoExamen: String, val fechaHora: String)
-
