@@ -99,7 +99,9 @@ interface ApiService {
       @Header("Authorization")
       token: String
                               ): Call<String>
-   
+
+   @GET("/api/asignatura/getAsignaturasConExamenPendiente/{idEstudiante}")
+   fun getAsignaturasConExamenPendiente(@Path("idEstudiante")idUsuario:Int, @Query("idCarrera") idCarrera:Int, @Header("Authorization") token: String): Call<String>
    
    @POST("/api/usuario/registerMobileToken/{idUsuario}")
    fun registerMobileToken(

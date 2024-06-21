@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.getAsignaturasConExamenPendienteRequest
 import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.http.requests.getHorariosAsignaturaRequest
@@ -58,13 +59,9 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
   val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
 
-  NavHost(navController = navController, startDestination = "screenNovedades") {/*   composable("home") {
-         HomeScreen(navController)
-      }
 
-      composable("detail")      {
-         DetailScreen(navController)
-      } */
+  NavHost(navController = navController, startDestination = "screenNovedades") {
+
 
     composable(NavRoutes.NovedadesScreen) {
       MenuLateral(navController, drawerState, contenido = {

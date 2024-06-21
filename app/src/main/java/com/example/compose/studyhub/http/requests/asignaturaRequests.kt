@@ -160,3 +160,32 @@ fun inscripcionAsignaturaRequest(token:String, inscripcionAsignaturaRequest: Ins
       }
    })
 }
+
+fun getAsignaturasConExamenPendienteRequest(idUsuario:Int, idCarrera:Int, token:String, callback: (List<AsignaturaRequest>?) -> Unit){
+   val completeToken = "Bearer " + token
+
+   RetrofitClient.api.getAsignaturasConExamenPendiente(idUsuario,idCarrera,completeToken).enqueue(object: Callback<String>{
+      override fun onResponse(call: Call<String>, response: Response<String>) {
+         val responseText = response.body() // Procesar la respuesta del login
+
+         if (response.isSuccessful) {
+            val gson = Gson()
+            val listType = object: TypeToken<List<AsignaturaRequest>>() {}.type
+            val asignaturas: List<AsignaturaRequest> = gson.fromJson(responseText, listType)
+            callback(asignaturas) // println("Response: $responseText")
+         } else {
+            callback(null)
+            println("Response code: ${response.code()}")
+            println("Response message: ${response.message()}")
+            response.errorBody()?.let { errorBody ->
+               println("Error body: ${errorBody.string()}")
+            }
+         }
+      }
+
+      override fun onFailure(call: Call<String>, t: Throwable) {
+         println("Error: ${t.message}")
+         callback(null)
+      }
+   })
+}
