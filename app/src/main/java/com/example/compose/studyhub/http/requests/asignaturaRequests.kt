@@ -3,6 +3,8 @@ package com.example.compose.studyhub.http.requests
 import AsignaturaRequest
 import CalificacionAsignaturaRequest
 import HorariosAsignaturaRequest
+import InscripcionAsignaturaRequest
+import RetrofitClient
 import com.example.compose.studyhub.auth.SolicitudRequest
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -126,6 +128,35 @@ fun getHorariosAsignaturaRequest(idAsignatura:Int, token: String, callback: (Lis
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          callback(null)
+      }
+   })
+}
+
+fun inscripcionAsignaturaRequest(token:String, inscripcionAsignaturaRequest: InscripcionAsignaturaRequest, callback: (Boolean) -> Unit){
+   val completeToken = "Bearer " + token
+
+   RetrofitClient.api.inscripcionAsignatura(completeToken, inscripcionAsignaturaRequest).enqueue(object: Callback<String>{
+      override fun onResponse(call: Call<String>, response: Response<String>) {
+         val responseText = response.body()
+
+         println(responseText)
+
+         if (response.isSuccessful) {
+            callback(true)
+            println(responseText)
+         } else {
+            callback(false)
+            println("Response code: ${response.code()}")
+            println("Response message: ${response.message()}")
+            response.errorBody()?.let { errorBody ->
+               println("Error body: ${errorBody.string()}")
+            }
+         }
+      }
+
+      override fun onFailure(call: Call<String>, t: Throwable) {
+         println("Error: ${t.message}")
+         callback(false)
       }
    })
 }

@@ -1,5 +1,6 @@
 package com.example.compose.studyhub
 
+import InscripcionAsignaturaRequest
 import InscripcionCarreraRequest
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -19,6 +20,7 @@ import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.http.requests.getHorariosAsignaturaRequest
+import com.example.compose.studyhub.http.requests.inscripcionAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionCarreraRequest
 import com.example.compose.studyhub.ui.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
@@ -54,8 +56,6 @@ class MainActivity: AppCompatActivity() {
 @Composable
 fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
   val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
-  UserRepository.getToken()?.let { getHorariosAsignaturaRequest(1, it) {success->if(success!=null)println(success)} }
 
 
   NavHost(navController = navController, startDestination = "screenNovedades") {/*   composable("home") {
