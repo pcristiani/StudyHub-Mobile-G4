@@ -1,7 +1,5 @@
 package com.example.compose.studyhub
 
-import InscripcionAsignaturaRequest
-import InscripcionCarreraRequest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -16,13 +14,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.requests.getAsignaturasConExamenPendienteRequest
-import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
-import com.example.compose.studyhub.http.requests.getCarrerasRequest
-import com.example.compose.studyhub.http.requests.getHorariosAsignaturaRequest
-import com.example.compose.studyhub.http.requests.inscripcionAsignaturaRequest
-import com.example.compose.studyhub.http.requests.inscripcionCarreraRequest
 import com.example.compose.studyhub.ui.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.estudiante.InscripcionScreen
 import com.example.compose.studyhub.ui.estudiante.NovedadesScreen
@@ -57,8 +48,6 @@ class MainActivity: AppCompatActivity() {
 @Composable
 fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
   val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
-
 
   NavHost(navController = navController, startDestination = "screenNovedades") {
 
