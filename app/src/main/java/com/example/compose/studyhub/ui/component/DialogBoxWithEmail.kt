@@ -19,7 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.EmailState
-import com.example.compose.studyhub.ui.screen.Email
+import com.example.compose.studyhub.ui.component.loginRegisterEdit.Email
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 
 @OptIn(ExperimentalMaterial3Api::class)

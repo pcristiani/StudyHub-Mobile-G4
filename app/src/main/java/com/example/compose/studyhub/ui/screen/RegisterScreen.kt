@@ -27,6 +27,8 @@ import com.example.compose.studyhub.domain.TextFieldState
 import com.example.compose.studyhub.domain.datePicker
 import com.example.compose.studyhub.domain.formatDate
 import com.example.compose.studyhub.ui.component.loginRegisterEdit.Birthday
+import com.example.compose.studyhub.ui.component.loginRegisterEdit.Email
+import com.example.compose.studyhub.ui.component.loginRegisterEdit.Password
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen

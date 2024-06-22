@@ -1,6 +1,7 @@
 package com.example.compose.studyhub.ui.screen
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -54,6 +55,10 @@ fun InicioScreen(onLoginRegister: (email: String) -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 20.dp))
       }
+   }
+
+   BackHandler{
+      showLogoutDialog.value = true
    }
 }
 
