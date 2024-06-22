@@ -1,4 +1,4 @@
-package com.example.compose.studyhub.services
+package com.example.compose.studyhub.util.services
 
 import android.content.Context
 import android.content.SharedPreferences

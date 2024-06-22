@@ -45,7 +45,7 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
 import kotlinx.coroutines.launch
-import com.example.compose.studyhub.services.PushNotificationService
+import com.example.compose.studyhub.util.services.PushNotificationService
 import com.example.compose.studyhub.ui.component.AlertDialogBoxWithText
 import com.example.compose.studyhub.ui.component.loginRegisterEdit.Password
 import com.example.compose.studyhub.ui.route.RecoverPassRoute

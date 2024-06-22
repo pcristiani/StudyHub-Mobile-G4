@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -43,6 +44,8 @@ import com.example.compose.studyhub.util.supportWideScreen
 @Composable
 fun InicioScreen(onLoginRegister: (email: String) -> Unit) {
    var showLogoTitle by rememberSaveable { mutableStateOf(true) }
+   var context = LocalContext.current
+
 
    Scaffold(modifier = Modifier.supportWideScreen()) { innerPadding ->
       Column(modifier = Modifier
@@ -57,9 +60,10 @@ fun InicioScreen(onLoginRegister: (email: String) -> Unit) {
       }
    }
 
+   /*
    BackHandler{
-      showLogoutDialog.value = true
-   }
+      context.moveTaskToBack(true);
+   }*/
 }
 
 ///

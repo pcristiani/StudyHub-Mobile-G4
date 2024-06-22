@@ -12,7 +12,7 @@ import com.example.compose.studyhub.http.auth.decodeJWT
 import com.example.compose.studyhub.data.User
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.loginRequest
-import com.example.compose.studyhub.services.PushNotificationService
+import com.example.compose.studyhub.util.services.PushNotificationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
