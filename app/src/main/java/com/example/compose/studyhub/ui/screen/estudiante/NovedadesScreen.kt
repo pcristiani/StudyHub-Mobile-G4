@@ -36,6 +36,8 @@ import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 fun NovedadesScreen(navController: NavHostController): DrawerState {
    val showLogoutDialog = remember { mutableStateOf(false) }
 
+   val greetings = "Bienvenido, ${UserRepository.getNombre()}"
+
    Column(modifier = Modifier.fillMaxSize().padding(bottom=200.dp, start=0.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
       //Image(painter = painterResource(id = R.drawable.logotext), modifier = Modifier.size(220.dp), contentDescription = "Logo")
       //Text("Novedades", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
@@ -45,7 +47,7 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
             .size(240.dp)
             .padding(top = 76.dp))
 
-         Text(text = stringResource(id = R.string.app_title), style = MaterialTheme.typography.displayMedium, textAlign = TextAlign.Center, modifier = Modifier
+         Text(text = greetings, style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Center, modifier = Modifier
             .padding(top = 30.dp)
             .fillMaxWidth())
       }

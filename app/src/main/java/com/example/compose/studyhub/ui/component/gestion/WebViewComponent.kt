@@ -56,7 +56,7 @@ fun WebViewComponent(idCarrera: Int, modifier: Modifier): WebView? {
 
 
 
-    var webView: WebView? = null
+    val webView = remember { mutableStateOf<WebView?>(null) }
 
     AndroidView(
         modifier = modifier,
@@ -68,10 +68,12 @@ fun WebViewComponent(idCarrera: Int, modifier: Modifier): WebView? {
                 }
         },
     ) {
-        webView = it
+        webView.value = it
         it.webViewClient = WebViewClient()
         it.loadDataWithBaseURL(null, HTML, "text/html", "UTF-8", null)
+        println("Webview: $webView")
+
     }
 
-    return webView
+    return webView.value
 }

@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,9 +67,9 @@ fun GestionScreen(): DrawerState {
 @Composable
 fun Gestion(modifier: Modifier){
 
-   var webView:WebView? = null
-   val context = LocalContext.current
 
+   val context = LocalContext.current
+   val webView = remember { mutableStateOf<WebView?>(null) }
 
    Column(
       modifier = modifier.fillMaxWidth(),
@@ -103,14 +104,15 @@ fun Gestion(modifier: Modifier){
       println(carreraSelected.intValue)
 
 
-      WebViewComponent(carreraSelected.intValue,
+       webView.value = WebViewComponent(carreraSelected.intValue,
          modifier
             .fillMaxWidth()
             .weight(1f))
 
 
 
-      Button(onClick = {exportAsPdf(webView, context)}, modifier = Modifier
+
+      Button(onClick = {exportAsPdf(webView.value, context); println(webView.value)}, modifier = Modifier
          .fillMaxWidth()
          .padding(vertical = 16.dp)){
          Text(text = stringResource(id = R.string.download_resume))
