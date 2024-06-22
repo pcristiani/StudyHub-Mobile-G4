@@ -168,24 +168,6 @@ fun HeaderMenuLateral(topAppBarText: String, onNavUp: () -> Unit) {
 }
 
 
-@Composable
-fun LogoutBox(navController: NavHostController, onDismiss: () -> Unit) {
-   LogoutRoute(
-      onConfirmation = {
-         println("Acá estoy")
-         navController.navigate(Destinations.INICIO_ROUTE) {
-            popUpTo(navController.graph.startDestinationId) {
-               saveState = true
-            }
-            launchSingleTop = true
-            restoreState = true
-         }
-         
-         onDismiss()
-      }, dialogTitle = stringResource(id = R.string.Logout_title), dialogText = stringResource(id = R.string.Logout_question), onDismiss = onDismiss
-              )
-}
-
 
 @Preview
 @Composable
