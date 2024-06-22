@@ -54,9 +54,9 @@ import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.cerrarSesionRequest
 import com.example.compose.studyhub.ui.component.DialogBoxCreation
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuGestion
-//import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuInscripcion
+import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuInscripcion
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuNovedades
-//import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuPlanEstudios
+import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuPlanEstudios
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuSolicitudes
 import com.example.compose.studyhub.ui.navigation.NavRoutes.EditarPerfilScreen
 import com.example.compose.studyhub.ui.route.LogoutRoute
@@ -66,7 +66,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MenuLateral(navController: NavHostController, drawerState: DrawerState, contenido: @Composable () -> Unit) {
    val scope = rememberCoroutineScope()
-   val menuItems = listOf(ItemMenuNovedades, /*ItemMenuPlanEstudios, ItemMenuInscripcion,*/ ItemMenuSolicitudes, ItemMenuGestion)
+   val menuItems = listOf(ItemMenuNovedades, ItemMenuPlanEstudios, ItemMenuInscripcion, ItemMenuSolicitudes, ItemMenuGestion)
    val showLogoutDialog = remember { mutableStateOf(false) }
    
    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
