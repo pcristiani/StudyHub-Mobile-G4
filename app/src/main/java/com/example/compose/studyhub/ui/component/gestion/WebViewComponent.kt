@@ -59,22 +59,28 @@ fun WebViewComponent(carrera: CarreraRequest, modifier: Modifier): WebView? {
 
     val webView = remember { mutableStateOf<WebView?>(null) }
 
-    AndroidView(
-        modifier = modifier,
-        factory = { context ->
-            WebView(context)
-                .apply {
-                    webViewClient = WebViewClient()
-                    loadDataWithBaseURL(null, HTML, "text/html", "UTF-8", null)
-                }
-        },
-    ) {
-        webView.value = it
-        it.webViewClient = WebViewClient()
-        it.loadDataWithBaseURL(null, HTML, "text/html", "UTF-8", null)
-        println("Webview: $webView")
+    if(HTML!=""){
+        AndroidView(
+            modifier = modifier,
+            factory = { context ->
+                WebView(context)
+                    .apply {
+                        webViewClient = WebViewClient()
+                        loadDataWithBaseURL(null, HTML, "text/html", "UTF-8", null)
+                    }
+            },
+        ) {
+            webView.value = it
+            it.webViewClient = WebViewClient()
+            it.loadDataWithBaseURL(null, HTML, "text/html", "UTF-8", null)
+            println("Webview: $webView")
 
+        }
+        webView.value?.getSettings()?.useWideViewPort = true;
+        webView.value?.getSettings()?.loadWithOverviewMode = true;
+        return webView.value
+    }else{
+        return null
     }
 
-    return webView.value
 }

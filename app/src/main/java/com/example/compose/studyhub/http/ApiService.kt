@@ -156,11 +156,9 @@ data class Calificacion(val resultado: String, val calificacion: Int)
 
 data class CalificacionExamenRequest(val idAsignatura: Int, val asignatura: String, val idExamen: Int, val resultado: String, val calificacion: Int)
 
-
 data class CalificacionAsignaturaRequest(val idAsignatura: Int, val asignatura: String, val calificaciones: List<Calificacion>)
 
 data class HorariosAsignaturaRequest(val idHorarioAsignatura: Int, val idAsignatura: Int, val anio: Int, val dtHorarioDias: List<HorariosDias>)
-
 
 data class HorariosDias(val diaSemana: String, val horaInicio: String, val horaFin: String)
 

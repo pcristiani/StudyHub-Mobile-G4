@@ -54,7 +54,7 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
 
         }
     }
-    return createHTML().html {
+    val htmlCode = createHTML().html {
         head{
             title{+"Certificado de Escolaridad"}
             style{
@@ -67,14 +67,27 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
                                 .header, .section, .footer {
                             margin-bottom: 20px;
                         }
-                            .header {
-                                text-align: center;
+                            .flex {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
                             }
-                            .header h1 {
-                            font-size: 22px;
-                            font-weight: bold;
+                            .header .date {
+                                text-align: right;
+                            }
+                        .text-container {
+                            display: flex;
+                            flex-direction: column;
                         }
-                            .header p {
+                
+                        .text-container h1, .text-container p {
+                            margin: 0;
+                        }
+                
+                        .flex img {
+                            margin-left: auto;
+                        }
+                            .flex p {
                             font-size: 14px;
                         }
                             .section h2 {
@@ -102,10 +115,17 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
         }
         body{
             div("header"){
-                img{src="https://frontstudyhub.vercel.app/static/media/logo-text.1b43604a02cff559bc6a.png"; alt="Logo"; width="160"}
-                h1{+"Certificado de Escolaridad" }
-                p{+ "Resultados finales"}
-                p{+ "Emisión: $dateTime"}
+                p("date"){+ "Emisión: $dateTime"}
+                div("flex"){
+                    div("text-container"){
+                        h1{+"Certificado de Escolaridad" }
+                        p{+ "Resultados finales"}
+                    }
+                    img{src="https://frontstudyhub.vercel.app/static/media/logo-text.1b43604a02cff559bc6a.png"; alt="Logo"; width="160"}
+
+                }
+
+
             }
 
             div("section"){
@@ -175,11 +195,29 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
             div("footer"){
                 p{+"Cantidad cursadas: $cantCursadas"}
                 p{+"Cantidad exámenes: $cantExamenes"}
-                p{+"Total: ${cantCursadas!! + cantExamenes!!}"}
-                p{+"Promedio general: ${String.format("%.2f",promedio/(cantCursadas+cantExamenes))}"}
+                p{+"Total: ${cantCursadas + cantExamenes}"}
+                p{+"Promedio general: ${calculoPromedio(cantCursadas, cantExamenes, promedio)}"}
             }
 
         }
+    }
+
+    if((cantCursadas+cantExamenes) != 0){
+        return htmlCode
+
+    }else{
+        return ""
+    }
+
+}
+
+
+fun calculoPromedio(cantCursadas: Int, cantExamenes:Int, promedio: Double): String{
+    if((cantCursadas+cantExamenes)!=0){
+        return String.format("%.2f",promedio/(cantCursadas+cantExamenes))
+    }
+    else{
+        return "0"
     }
 }
 
@@ -187,11 +225,11 @@ fun exportAsPdf(webView: WebView?, context: Context) {
     if (webView != null) {
         val printManager = context.getSystemService(Context.PRINT_SERVICE) as PrintManager
         val printAdapter =
-            webView.createPrintDocumentAdapter("TestPDF")
+            webView.createPrintDocumentAdapter("Escolaridad")
         val printAttributes = PrintAttributes.Builder()
             .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
             .build()
-        printManager.print("TestPDF",
+        printManager.print("Escolaridad",
             printAdapter,
             printAttributes)
     }

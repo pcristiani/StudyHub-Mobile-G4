@@ -73,7 +73,7 @@ fun Gestion(modifier: Modifier){
 
    Column(
       modifier = modifier.fillMaxWidth(),
-      verticalArrangement = Arrangement.Center,
+      //verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally,
    ) {
 
@@ -109,18 +109,23 @@ fun Gestion(modifier: Modifier){
           WebViewComponent(
              it,
              modifier
-               .fillMaxWidth()
-               .weight(1f))
+                .fillMaxWidth()
+                .weight(1f))
+
+
        }
 
+      if(webView.value==null && carreraSelected.value!=null){
+         Text(text = "No hay datos de esta carrera")
+      }else if(webView.value!=null){
+            Button(onClick = {exportAsPdf(webView.value, context); println(webView.value)}, modifier = Modifier
+               .fillMaxWidth()
+               .padding(vertical = 16.dp)){
+               Text(text = stringResource(id = R.string.download_resume))
+            }
+         }
 
 
-
-      Button(onClick = {exportAsPdf(webView.value, context); println(webView.value)}, modifier = Modifier
-         .fillMaxWidth()
-         .padding(vertical = 16.dp)){
-         Text(text = stringResource(id = R.string.download_resume))
-      }
    }
 }
 
