@@ -161,7 +161,7 @@ fun firstLoad(checked: Boolean): List<AsignaturaRequest>? {
   return asignaturas
 }
 
-suspend fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<AsignaturaRequest>) {
+fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<AsignaturaRequest>) {
   val currentSize = asignaturasList.size
   val listLength = if ((asignaturas.size - currentSize) < 30) {
     (asignaturas.size - currentSize)

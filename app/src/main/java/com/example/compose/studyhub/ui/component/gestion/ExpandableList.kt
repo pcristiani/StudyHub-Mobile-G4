@@ -3,6 +3,7 @@ package com.example.compose.studyhub.ui.component.gestion
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,11 +11,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.List
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.material.icons.rounded.List
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -57,19 +61,34 @@ fun ExpandableList(modifier:Modifier, headerTitle: String, options: List<String>
 
 @Composable
 fun SectionItem(text: String, id: Int, onOptionClicked: (id: Int) -> Unit) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp)
-            .clickable{onOptionClicked(id)}
-    )
+
+    /*
+
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 16.dp)
+                .clickable{onOptionClicked(id)}
+        )
+    */
+
+    Button(onClick = {onOptionClicked(id)}, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(0.dp), colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.white), contentColor = colorResource(R.color.text_black)), border = BorderStroke(1.dp, colorResource(R.color.darker_gray))){
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 16.dp)
+        )
+    }
+
 }
 
 @Composable
 fun SectionHeader(text: String, isExpanded: Boolean, onHeaderClicked: () -> Unit) {
-    Row(modifier = Modifier
+    /*Row(modifier = Modifier
         .clickable { onHeaderClicked() }
         .background(Color.LightGray)
         .padding(vertical = 8.dp, horizontal = 16.dp),
@@ -86,11 +105,18 @@ fun SectionHeader(text: String, isExpanded: Boolean, onHeaderClicked: () -> Unit
             contentDescription = null,
             modifier = Modifier.weight(0.2f)
         )
-        if (isExpanded) {
-            Icons.AutoMirrored.Rounded.List
-        } else {
-            Icons.Rounded.ChevronLeft
-        }
+    }*/
+    Button(onClick = {onHeaderClicked()}, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(5.dp), colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.white), contentColor = colorResource(R.color.text_black)), border = BorderStroke(1.dp, colorResource(R.color.darker_gray))){
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1.0f)
+        )
+        Icon(
+            imageVector = Icons.Filled.ArrowDropDown,
+            contentDescription = null,
+            modifier = Modifier.weight(0.2f)
+        )
     }
 }
 

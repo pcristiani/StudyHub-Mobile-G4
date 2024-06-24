@@ -2,6 +2,7 @@ package com.example.compose.studyhub.ui.component.gestion
 
 import CalificacionAsignaturaRequest
 import CalificacionExamenRequest
+import CarreraRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.material3.Text
@@ -20,7 +21,7 @@ import com.example.compose.studyhub.util.HTMLTemplate
 
 
 @Composable
-fun WebViewComponent(idCarrera: Int, modifier: Modifier): WebView? {
+fun WebViewComponent(carrera: CarreraRequest, modifier: Modifier): WebView? {
 
 
 
@@ -30,19 +31,19 @@ fun WebViewComponent(idCarrera: Int, modifier: Modifier): WebView? {
 
 
     fun updateHTML(){
-        HTML = HTMLTemplate(listaCalificacionesAsignatura, listaCalificacionesExamen)
+        HTML = HTMLTemplate(carrera.nombre, listaCalificacionesAsignatura, listaCalificacionesExamen)
     }
 
-    LaunchedEffect(idCarrera) {
+    LaunchedEffect(carrera) {
         UserRepository.loggedInUser()?.let { idUsuario ->
             UserRepository.getToken()?.let { token ->
-                getCalificacionesAsignaturasRequest(idUsuario, idCarrera, token) { success ->
+                getCalificacionesAsignaturasRequest(idUsuario, carrera.idCarrera, token) { success ->
                     if (success != null) {
                         listaCalificacionesAsignatura = success
                         updateHTML()
                     }
                 }
-                getCalificacionesExamenesRequest(idUsuario, idCarrera, token) { success ->
+                getCalificacionesExamenesRequest(idUsuario, carrera.idCarrera, token) { success ->
                     if (success != null) {
                         listaCalificacionesExamen = success
                         updateHTML()

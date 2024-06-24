@@ -96,18 +96,22 @@ fun Gestion(modifier: Modifier){
             }
          } } }
 
-      var carreraSelected = remember { mutableIntStateOf(0) }
+      val carreraSelected = remember { mutableStateOf<CarreraRequest?>(null) }
 
 
-      ExpandableList(modifier=Modifier.padding(top = 20.dp, bottom = 5.dp), headerTitle = "Lista", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value = selectedId})
+      ExpandableList(modifier=Modifier.padding(top = 20.dp, bottom = 5.dp), headerTitle = "Lista", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
+         listaCarreras?.find {it.idCarrera ==selectedId }
+      })
 
-      println(carreraSelected.intValue)
 
 
-       webView.value = WebViewComponent(carreraSelected.intValue,
-         modifier
-            .fillMaxWidth()
-            .weight(1f))
+       webView.value = carreraSelected.value?.let {
+          WebViewComponent(
+             it,
+             modifier
+               .fillMaxWidth()
+               .weight(1f))
+       }
 
 
 
