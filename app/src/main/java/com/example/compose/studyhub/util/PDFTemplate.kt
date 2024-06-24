@@ -2,6 +2,7 @@ package com.example.compose.studyhub.util
 
 import CalificacionAsignaturaRequest
 import CalificacionExamenRequest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.print.PrintAttributes
 import android.print.PrintManager
@@ -32,6 +33,7 @@ import kotlinx.html.unsafe
 import okhttp3.internal.http2.Header
 
 
+@SuppressLint("DefaultLocale")
 fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<CalificacionAsignaturaRequest>?, listaCalificacionesExamen: List<CalificacionExamenRequest>?): String{
     val nombre: String? = UserRepository.getNombre()
     val apellido: String? = UserRepository.getApellido()
@@ -39,8 +41,9 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
     val ci: String? = UserRepository.getCI()
     val dateTime: String = getCurrentDateTime()
 
-    var cantCursadas: Int? = 0
-    var cantExamenes: Int? = 0
+    var cantCursadas = 0
+    var cantExamenes = 0
+    var promedio = 0.0
 
     if (listaCalificacionesAsignatura != null) {
         listaCalificacionesAsignatura.forEach { item->
@@ -117,18 +120,22 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
                 h2{+ "Cursos"}
                 if (listaCalificacionesAsignatura != null) {
                     listaCalificacionesAsignatura.forEach {item ->
-                        div("course-item"){
+
+                        div("course-item") {
 
                             span{+(item.asignatura)}
                             item.calificaciones.forEach{calificacion ->
                                 if(calificacion.calificacion!=0){
                                     span{+("Calificación: ${calificacion.calificacion.toString()}")}
                                     span{+(calificacion.resultado) }
+                                    cantCursadas += 1
+                                    promedio = promedio.plus(calificacion.calificacion)
                                 }
 
                             }
                         }
-                        cantCursadas = cantCursadas!! + 1
+
+
                     }
                 }else{
                     div("course-item"){
@@ -150,9 +157,9 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
                                 span{+(item.asignatura)}
                                 span{+("Calificación: ${item.calificacion}")}
                                 span{+(item.resultado)}
-
+                                promedio = promedio.plus(item.calificacion)
                             }
-                            cantExamenes = cantExamenes!! + 1
+                            cantExamenes += 1
                         }
                     }
                 }else{
@@ -169,7 +176,7 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
                 p{+"Cantidad cursadas: $cantCursadas"}
                 p{+"Cantidad exámenes: $cantExamenes"}
                 p{+"Total: ${cantCursadas!! + cantExamenes!!}"}
-                p{+"Promedio general: "}
+                p{+"Promedio general: ${String.format("%.2f",promedio/(cantCursadas+cantExamenes))}"}
             }
 
         }
