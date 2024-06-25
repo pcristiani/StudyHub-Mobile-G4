@@ -7,7 +7,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,19 +28,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.compose.studyhub.R
 import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.ui.component.Logo
 import com.example.compose.studyhub.ui.navigation.LogoutBox
-import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -55,7 +47,6 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
    val nombre = UserRepository.getNombre()?: ""
 
    val greetings = "Bienvenido, $nombre"
-
 
    var displayText by remember {mutableStateOf("")}
    val scope = rememberCoroutineScope()
@@ -77,15 +68,18 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
       )
 
       //Efecto para el texto
-      LaunchedEffect(greetings){
-         scope.launch{
-            val stringBuilder = StringBuilder()
-            for (letter in greetings){
-               stringBuilder.append(letter)
-               delay(70)
-               displayText = stringBuilder.toString()
+      LaunchedEffect(greetings) {
+         if(nombre!=""){
+            scope.launch {
+               val stringBuilder = StringBuilder()
+               for (letter in greetings) {
+                  stringBuilder.append(letter)
+                  delay(70)
+                  displayText = stringBuilder.toString()
+               }
             }
          }
+
       }
 
 
