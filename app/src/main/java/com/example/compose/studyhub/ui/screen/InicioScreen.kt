@@ -1,5 +1,6 @@
 package com.example.compose.studyhub.ui.screen
 
+import android.app.Activity
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -46,6 +47,7 @@ fun InicioScreen(onLoginRegister: (email: String) -> Unit) {
    var showLogoTitle by rememberSaveable { mutableStateOf(true) }
    var context = LocalContext.current
 
+   val activity = context as? Activity
 
    Scaffold(modifier = Modifier.supportWideScreen()) { innerPadding ->
       Column(modifier = Modifier
@@ -60,10 +62,10 @@ fun InicioScreen(onLoginRegister: (email: String) -> Unit) {
       }
    }
 
-   /*
+
    BackHandler{
-      context.moveTaskToBack(true);
-   }*/
+      activity?.moveTaskToBack(true);
+   }
 }
 
 ///
