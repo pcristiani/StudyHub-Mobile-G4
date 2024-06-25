@@ -103,6 +103,7 @@
 
     <string name="txt_error_login">Credenciales incorrectas</string>
     <string name="seleccionar_carrera">Seleccionar Carrera</string>
+    <string name="empty_carrera">No hay datos de esta carrera</string>
 
     <string name="asignatura1">Programacion I</string>
     <string name="asignatura2">Programacion II</string>

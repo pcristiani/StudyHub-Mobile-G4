@@ -6,6 +6,7 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -116,7 +117,11 @@ fun Gestion(modifier: Modifier){
        }
 
       if(webView.value==null && carreraSelected.value!=null){
-         Text(text = "No hay datos de esta carrera")
+         Row(verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,){
+            Text(text = stringResource(id = R.string.empty_carrera))
+         }
+         
       }else if(webView.value!=null){
             Button(onClick = {exportAsPdf(webView.value, context); println(webView.value)}, modifier = Modifier
                .fillMaxWidth()

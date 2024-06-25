@@ -101,7 +101,7 @@ fun Solicitudes(modifier: Modifier) {
     }
 
 
-    if (asignaturas != null) {
+    if (asignaturas != null && asignaturas!!.isNotEmpty()) {
       LazyColumn(state = listState, modifier = Modifier
          .weight(1f)
          .padding(bottom = 20.dp)) {
