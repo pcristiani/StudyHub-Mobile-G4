@@ -19,7 +19,8 @@ const val stronglyDeemphasizedAlpha = 0.6f
 const val slightlyDeemphasizedAlpha = 0.87f
 
 private val LightColors = lightColorScheme(
-    primary = md_theme_light_primary,
+    primary = md_theme_List,
+ //   primary = md_theme_light_primary,/*  */
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
     onPrimaryContainer = md_theme_light_onPrimaryContainer,

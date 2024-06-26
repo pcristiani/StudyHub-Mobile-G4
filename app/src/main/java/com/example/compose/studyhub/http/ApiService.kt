@@ -68,7 +68,10 @@ interface ApiService {
    fun getCarreras(@Header("Authorization") token: String): Call<String>
 
    @POST("/api/carrera/inscripcionCarrera")
-   fun inscripcionCarrera(@Header("Authorization") token: String, @Body inscripcionCarreraRequest: InscripcionCarreraRequest): Call<String>
+   fun inscripcionCarrera(
+      @Header("Authorization") token: String,
+      @Body inscripcionCarreraRequest: InscripcionCarreraRequest
+   ): Call<String>
 
    @GET("/api/carrera/getCarrerasInscripto/{idUsuario}")
    fun getCarrerasInscripto(@Path("idUsuario") idUsuario: Int, @Header("Authorization")token:String): Call<String>

@@ -2,6 +2,7 @@ package com.example.compose.studyhub.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,25 +28,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
+import com.example.compose.studyhub.ui.theme.md_theme_List
 
 @Composable
-fun CarreraCard(nombre: String) {
+fun CarreraCard(nombre: String, selected: Boolean = false, onHeaderClicked: () -> Unit) { // Column {
   Card(modifier = Modifier
     .fillMaxWidth()
-    .padding(horizontal = 25.dp, vertical = 5.dp), // elevation = 10.dp,
-    // backgroundColor = Color.White,
-    shape = RoundedCornerShape(10.dp)) {
-    Row(modifier = Modifier
-      .fillMaxWidth()
-      .padding(6.dp), verticalAlignment = Alignment.CenterVertically) {
-      Image(painter = painterResource(id = R.drawable.educacion), contentDescription = null, modifier = Modifier
-        .size(40.dp)
-        .clip(MaterialTheme.shapes.extraSmall)
-        .padding(start = 2.dp, end = 2.dp))
-      Spacer(Modifier.width(10.dp))
-
-      Text(nombre, Modifier.weight(0.1f), style = MaterialTheme.typography.bodyLarge)
-      Box(Modifier.padding(10.dp))
+    .clickable { onHeaderClicked() }
+    .padding(4.dp), // elevation = 4.dp,
+    border = BorderStroke(1.4.dp, md_theme_List.copy(alpha = 0.22f)), shape = MaterialTheme.shapes.large) {
+    Box(modifier = Modifier.padding(14.dp)) {
+      Text(text = nombre, style = MaterialTheme.typography.bodyLarge ) //   }
+      println("selected: $nombre")
     }
   }
 }
@@ -54,6 +48,6 @@ fun CarreraCard(nombre: String) {
 @Composable
 fun CarreraCardPreview() {
   ThemeStudyHub {
-    CarreraCard("Tecnologo Informatica")
+    CarreraCard("Tecnologo Informatica", selected = false, onHeaderClicked = {})
   }
 }

@@ -21,7 +21,9 @@ import com.example.compose.studyhub.ui.navigation.NavRoutes
 import com.example.compose.studyhub.ui.navigation.TopBar
 import com.example.compose.studyhub.ui.route.EditarPerfilRoute
 import com.example.compose.studyhub.ui.screen.estudiante.GestionScreen
-import com.example.compose.studyhub.ui.screen.estudiante.InscripcionScreen
+import com.example.compose.studyhub.ui.screen.estudiante.InscripcionCarreraScreen
+import com.example.compose.studyhub.ui.screen.estudiante.InscripcionAsignaturaScreen
+
 import com.example.compose.studyhub.ui.screen.estudiante.NovedadesScreen
 import com.example.compose.studyhub.ui.screen.estudiante.PlanEstudiosScreen
 import com.example.compose.studyhub.ui.screen.estudiante.SolicitudesScreen
@@ -71,6 +73,11 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
         ScreenInscripciones(drawerState)
       })
     }
+    composable(NavRoutes.InscripcionAsignaturaScreen) {
+      MenuLateral(navController, drawerState, contenido = {
+        ScreenInscripcionesAsignaturas(drawerState)
+      })
+    }
     composable(NavRoutes.SolicitudesScreen) {
       MenuLateral(navController, drawerState, contenido = {
         ScreenSolicitudes(drawerState)
@@ -107,12 +114,7 @@ fun ScreenEstudios(drawerState: DrawerState) {
   TopBar(drawerState)
   PlanEstudiosScreen()
 }
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun ScreenInscripciones(drawerState: DrawerState) {
-  TopBar(drawerState)
-  InscripcionScreen()
-}
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenSolicitudes(drawerState: DrawerState) {
@@ -148,12 +150,17 @@ fun PlanEstudiosScreenPreview() {
     TopBar(PlanEstudiosScreen())
   }
 }
-@Preview
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun InscripcionScreenPreview() {
-  ThemeStudyHub {
-    TopBar(InscripcionScreen())
-  }
+fun ScreenInscripciones(drawerState: DrawerState) {
+  TopBar(drawerState)
+  InscripcionCarreraScreen()
+}
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun ScreenInscripcionesAsignaturas(drawerState: DrawerState) {
+  TopBar(drawerState)
+  InscripcionAsignaturaScreen()
 }
 @Preview
 @Composable

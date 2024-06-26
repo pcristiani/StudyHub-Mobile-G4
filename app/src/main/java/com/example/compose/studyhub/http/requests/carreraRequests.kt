@@ -41,17 +41,11 @@ fun inscripcionesCarreraRequest(idUsuario: Int, token: String, callback: (List<C
 
 
 fun getCarrerasRequest(token: String, callback: (List<CarreraRequest>?) -> Unit) { // val registerRequest = getAsignaturasAprobadas(nombre, apellido, email, fechaNacimiento, ci, password)
-
-
     val completeToken = "Bearer " + token
 
     RetrofitClient.api.getCarreras(completeToken).enqueue(object: Callback<String> {
         override fun onResponse(call: Call<String>, response: Response<String>) {
-            val responseText = response.body() // Procesar la respuesta del login
-
-
-
-            println(responseText)
+            val responseText = response.body()
             if (response.isSuccessful) {
 
                 val cuttedResponseText = responseText?.substring(22, responseText.length-42)
@@ -60,7 +54,7 @@ fun getCarrerasRequest(token: String, callback: (List<CarreraRequest>?) -> Unit)
                 val gson = GsonBuilder().setLenient().create()
                 val listType = object: TypeToken<List<CarreraRequest>>() {}.type
                 val carreras: List<CarreraRequest> = gson.fromJson(jsonArrayText, listType)
-                callback(carreras) // println("Response: $responseText")
+                callback(carreras)
             } else {
                 callback(null)
                 println("Response code: ${response.code()}")
@@ -70,28 +64,26 @@ fun getCarrerasRequest(token: String, callback: (List<CarreraRequest>?) -> Unit)
                 }
             }
         }
-
         override fun onFailure(call: Call<String>, t: Throwable) {
             println("Error: ${t.message}")
             callback(null)
         }
     })
-
 }
 
 
-fun inscripcionCarreraRequest(token: String, inscripcionCarreraRequest: InscripcionCarreraRequest, callback: (Boolean) -> Unit){
-    val completeToken = "Bearer " + token
+fun inscripcionCarreraRequest(token: String, inscripcionCarrera: InscripcionCarreraRequest, callback: (Boolean, String?) -> Unit) {
+    val completeToken = "Bearer $token"
 
-    RetrofitClient.api.inscripcionCarrera(completeToken, inscripcionCarreraRequest).enqueue(object: Callback<String> {
+    RetrofitClient.api.inscripcionCarrera(completeToken, inscripcionCarrera).enqueue(object: Callback<String> {
         override fun onResponse(call: Call<String>, response: Response<String>) {
             val responseText = response.body()
 
             if (response.isSuccessful) {
-                callback(true)
+                callback(true,responseText)
                 println(responseText)
             } else {
-                callback(false)
+                callback(false,responseText)
                 println("Response code: ${response.code()}")
                 println("Response message: ${response.message()}")
                 response.errorBody()?.let { errorBody ->
@@ -99,30 +91,33 @@ fun inscripcionCarreraRequest(token: String, inscripcionCarreraRequest: Inscripc
                 }
             }
         }
-
         override fun onFailure(call: Call<String>, t: Throwable) {
             t.printStackTrace()
-            callback(false)
+            callback(false, t.message)
         }
-
     })
 }
 
-fun getAsignaturasDeCarreraRequest(idCarrera:Int, token: String, callback: (List<AsignaturaRequest>?) -> Unit){
-    val completeToken = "Bearer " + token
 
-    RetrofitClient.api.getAsignaturasDeCarrera(idCarrera, completeToken).enqueue(object: Callback<String> {
+fun getAsignaturasDeCarreraRequest(idCarrera: Int, token: String, callback: (List<AsignaturaRequest>?) -> Unit) {
+    val completeToken = "Bearer $token"
+
+    RetrofitClient.api.getAsignaturasDeCarrera(idCarrera, completeToken).enqueue(object : Callback<String> {
         override fun onResponse(call: Call<String>, response: Response<String>) {
-            val responseText = response.body() // Procesar la respuesta del login
+            val responseText = response.body()
 
-            println(responseText)
-            if (response.isSuccessful) {
-                val cuttedResponseText = responseText?.substring(22, responseText.length-42)
-                val jsonArrayText = """[$cuttedResponseText]"""
-                val gson = GsonBuilder().setLenient().create()
-                val listType = object: TypeToken<List<CarreraRequest>>() {}.type
-                val asignaturas: List<AsignaturaRequest> = gson.fromJson(jsonArrayText, listType)
-                callback(asignaturas) // println("Response: $responseText")
+            if (response.isSuccessful && responseText != null) {
+                try {
+                    val cuttedResponseText = responseText.substring(22, responseText.length - 42)
+                    val jsonArrayText = """[$cuttedResponseText]"""
+                    val gson = GsonBuilder().setLenient().create()
+                    val listType = object : TypeToken<List<AsignaturaRequest>>() {}.type
+                    val asignaturas: List<AsignaturaRequest> = gson.fromJson(jsonArrayText, listType)
+                    callback(asignaturas)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    callback(null)
+                }
             } else {
                 callback(null)
                 println("Response code: ${response.code()}")
@@ -137,7 +132,5 @@ fun getAsignaturasDeCarreraRequest(idCarrera:Int, token: String, callback: (List
             println("Error: ${t.message}")
             callback(null)
         }
-
-
     })
 }
