@@ -48,17 +48,13 @@ fun GestionScreen(): DrawerState {
    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
       /*Image(painter = painterResource(id = R.drawable.a19_dj_128), modifier = Modifier.size(120.dp), contentDescription = "Logo")
 
-
       Text("Gestion", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
        */
 
-      Column(modifier = Modifier.padding(top = 100.dp, bottom = 30.dp)) {
+      Column(modifier = Modifier.padding(top = 50.dp, bottom = 30.dp)) {
          Gestion(modifier = Modifier
             .weight(1f)
             .padding(top = 20.dp, start = 20.dp, end = 20.dp))
-
-
-
       }
    }
    return DrawerState(DrawerValue.Closed)
@@ -67,7 +63,6 @@ fun GestionScreen(): DrawerState {
 
 @Composable
 fun Gestion(modifier: Modifier){
-
 
    val context = LocalContext.current
    val webView = remember { mutableStateOf<WebView?>(null) }
@@ -100,10 +95,9 @@ fun Gestion(modifier: Modifier){
       val carreraSelected = remember { mutableStateOf<CarreraRequest?>(null) }
 
 
-      ExpandableList(modifier=Modifier.padding(top = 20.dp, bottom = 5.dp), headerTitle = "Lista", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
+      ExpandableList(modifier=Modifier.padding(top = 25.dp, bottom = 10.dp), headerTitle = "Seleccionar carrera", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
          listaCarreras?.find {it.idCarrera ==selectedId }
       })
-
 
 
        webView.value = carreraSelected.value?.let {
@@ -112,8 +106,6 @@ fun Gestion(modifier: Modifier){
              modifier
                 .fillMaxWidth()
                 .weight(1f))
-
-
        }
 
       if(webView.value==null && carreraSelected.value!=null){
@@ -129,8 +121,6 @@ fun Gestion(modifier: Modifier){
                Text(text = stringResource(id = R.string.download_resume))
             }
          }
-
-
    }
 }
 

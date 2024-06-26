@@ -35,10 +35,11 @@ fun CarreraCard(nombre: String, selected: Boolean = false, onHeaderClicked: () -
   Card(modifier = Modifier
     .fillMaxWidth()
     .clickable { onHeaderClicked() }
-    .padding(4.dp), // elevation = 4.dp,
-    border = BorderStroke(1.4.dp, md_theme_List.copy(alpha = 0.22f)), shape = MaterialTheme.shapes.large) {
-    Box(modifier = Modifier.padding(14.dp)) {
-      Text(text = nombre, style = MaterialTheme.typography.bodyLarge ) //   }
+  //  .padding(5.dp), // elevation = 4.dp,
+    .padding(horizontal = 15.dp, vertical = 3.dp),
+    border = BorderStroke(1.1.dp, md_theme_List.copy(alpha = 0.6f)), shape = MaterialTheme.shapes.large) {
+    Box(modifier = Modifier.padding(18.dp)) {
+      Text(text = nombre, style = MaterialTheme.typography.labelLarge ) //   }
       println("selected: $nombre")
     }
   }

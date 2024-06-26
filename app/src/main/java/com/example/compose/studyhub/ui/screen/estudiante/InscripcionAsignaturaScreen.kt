@@ -2,6 +2,7 @@ package com.example.compose.studyhub.ui.screen.estudiante
 
 import AsignaturaRequest
 import CarreraRequest
+import HorariosAsignaturaRequest
 import InscripcionCarreraRequest
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -20,14 +21,17 @@ import com.example.compose.studyhub.R
 import com.example.compose.studyhub.R.string.txt_inscripciones
 import com.example.compose.studyhub.R.string.txt_selectAsignatura
 import com.example.compose.studyhub.R.string.txt_selectCarrera
+import com.example.compose.studyhub.R.string.txt_selectHorario
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.data.UserRepository.user
 import com.example.compose.studyhub.domain.TextFieldState
 import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
+import com.example.compose.studyhub.http.requests.getHorariosAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionCarreraRequest
 import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
+import com.example.compose.studyhub.ui.component.HorarioCard
 import com.example.compose.studyhub.ui.screen.Name
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,6 +40,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun InscripcionAsignaturaScreen(): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
+  val remIdAsignatura= remember { mutableStateOf<Int?>(null) }
 
   Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
     if (remIdCarrera.value == null) {
@@ -45,18 +50,152 @@ fun InscripcionAsignaturaScreen(): DrawerState {
           println("Este remIdCarrera : ${remIdCarrera.value}")
         }
       })
-    } else {
+    } else if (remIdAsignatura.value == null) {
       Asigatura(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
         if (idC != null) {
-          remIdCarrera.value = idC
+          remIdAsignatura.value = idC
         }
       })
     //  AsignaturaScreen(carreraId = remIdCarrera.value !!)
+    } else {
+      AsigDeCarreras2(modifier = Modifier.fillMaxWidth(), onHeaderClicked = { idC: Int? ->
+        if (idC != null) {
+          remIdAsignatura.value = idC
+          println("Este remIdAsignatura : ${remIdAsignatura.value}")
+        }
+      })
+
+    /*   AsigDeCarreras2(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
+        if (idC != null) {
+          remIdAsignatura.value = idC
+          println("Este remIdAsignatura : ${remIdAsignatura.value}")
+          if (remIdAsignatura.value != null) {
+            UserRepository.loggedInUser()?.let { id ->
+              UserRepository.getToken()?.let { token ->
+                getHorariosAsignaturaRequest(1,token) { responde ->
+                  println(responde)
+                }
+              }
+            }
+          }
+        }
+      }) */
+      //CarrerasScreen2(carreraId = remIdCarrera.value !!)
     }
   }
   return DrawerState(DrawerValue.Closed)
 }
 
+
+ @Composable
+fun firstLoad32(checked: Boolean): List<HorariosAsignaturaRequest>? {
+  var carreras by remember { mutableStateOf<List<HorariosAsignaturaRequest>?>(null) }
+  LaunchedEffect(checked) {
+    UserRepository.loggedInUser()?.let { id ->
+      UserRepository.getToken()?.let { token ->
+        if (checked) {
+          println(id)
+          getHorariosAsignaturaRequest(1,token) { responde ->
+            println(responde)
+            carreras = responde
+          }
+
+        }
+      }
+    }
+  }
+  return carreras
+}
+
+@Composable
+fun AsigDeCarreras2(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
+  val nombreCarrerasList = remember { mutableStateListOf<HorariosAsignaturaRequest>() }
+  val isLoading = remember { mutableStateOf(false) }
+  val listState = rememberLazyListState()
+  val coroutineScope = rememberCoroutineScope()
+  var carreras by remember { mutableStateOf<List<HorariosAsignaturaRequest>?>(null) }
+  var checked by remember { mutableStateOf(true) }
+
+  carreras = firstLoad32(checked)
+  LaunchedEffect(carreras) {
+    nombreCarrerasList.clear()
+    carreras?.let {
+      loadMoreAsigDeCarrera2(nombreCarrerasList, it)
+    }
+  }
+
+  Column(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(top = 60.dp, bottom = 1.dp),
+    verticalArrangement = Arrangement.spacedBy(20.dp),
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Text(
+      text = stringResource(id = txt_selectHorario),
+      style = MaterialTheme.typography.headlineSmall,
+    )
+
+    if (carreras != null) {
+      LazyColumn(state = listState, modifier = Modifier
+        .weight(1f)
+        .padding(bottom = 20.dp)) {
+        items(nombreCarrerasList.size) { index ->
+          AsigDeCarreraItem2(user = nombreCarrerasList[index].dtHorarioDias[index].diaSemana + " de " +
+           nombreCarrerasList[index].dtHorarioDias[index].horaInicio + " a " +
+           nombreCarrerasList[index].dtHorarioDias[index].horaFin + "hs",
+            idC = nombreCarrerasList[index].idHorarioAsignatura) {
+            onHeaderClicked(it)
+          }
+        }
+        if (isLoading.value) {
+          item {
+            Box(modifier = Modifier
+              .fillMaxWidth()
+              .padding(16.dp)) { //   CircularProgressIndicator()
+            }
+          }
+        }
+      }
+      LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
+          if (index == nombreCarrerasList.size - 1 && ! isLoading.value && nombreCarrerasList.size <= carreras !!.size) {
+            isLoading.value = true
+            coroutineScope.launch {
+              delay(3000)
+              loadMoreAsigDeCarrera2(nombreCarrerasList, carreras !!)
+              isLoading.value = false
+            }
+          }
+        }
+      }
+    } else {
+      Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
+    }
+  }
+}
+
+fun loadMoreAsigDeCarrera2(carrerasList: MutableList<HorariosAsignaturaRequest>, carreras: List<HorariosAsignaturaRequest>) {
+  val currentSize = carrerasList.size
+  val listLength = if ((carreras.size - currentSize) < 30) {
+    (carreras.size - currentSize)
+  } else {
+    30
+  }
+  for (i in 0 until listLength) {
+    carrerasList.add(carreras[currentSize + i])
+  }
+}
+
+@Composable
+fun AsigDeCarreraItem2(user: String, idC: Int, onSelected: (Int) -> Unit) {
+  HorarioCard(nombre = user, onHeaderClicked = { onSelected(idC) })
+}
+
+
+////////////////////
+//////////////////
+///////////////
 
 
 @Composable
@@ -165,8 +304,6 @@ fun AsigDeCarreraItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
 ///////////////
 
 
-
-
 /*
 @Composable
 fun CarrerasScreen2(carreraId: Int) {
@@ -208,6 +345,7 @@ fun firstLoad22(checked: Boolean,idC: Int): List<AsignaturaRequest>? {
   }
   return listAsignaturas
 }
+
 
 @Composable
 fun Asigatura(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int) -> Unit) {
@@ -274,6 +412,7 @@ fun Asigatura(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int) -> Unit)
   }
 }
 
+
 fun loadMoreAsignatura(asignaturasList: MutableList<AsignaturaRequest>, asignaturas: List<AsignaturaRequest>) {
   val currentSize = asignaturasList.size
   val listLength = if ((asignaturas.size - currentSize) < 30) {
@@ -298,7 +437,6 @@ fun AsignaturaItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
 fun InscripcionAsignaturaScreenPreview() {
 
 InscripcionAsignaturaScreen()
-
   AsignaturaItem(user = "Tecnologo Informatica", idC = 1) {
     println("idC: $it")
   }
