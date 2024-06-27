@@ -42,17 +42,15 @@ import java.util.Locale
 fun Birthday(birthdayState: DatePickerState, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
   Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
     val showDatePicker = remember { mutableStateOf(false) }
-    val selectedDate =
-      remember { mutableStateOf<Date?>(null) } // this will store whatever date the user selects // Button to show the date picker dialog
-    val sdf = SimpleDateFormat("MMM dd,yyyy", Locale.getDefault())
-    val currentDate = Date(System.currentTimeMillis())
+    val selectedDate = remember { mutableStateOf<Date?>(null) } // this will store whatever date the user selects // Button to show the date picker dialog
+    val sdf = SimpleDateFormat("dd MMM,yyyy", Locale.getDefault())
 
-    var displayDate: String
+    //val currentDate = Date(System.currentTimeMillis())
 
-    if (UserRepository.user == User.NoUserLoggedIn) {
-      displayDate = selectedDate.value?.let { sdf.format(it) } ?:""
+    val displayDate: String = if (UserRepository.user == User.NoUserLoggedIn) {
+      selectedDate.value?.let { sdf.format(it) } ?:""
     } else {
-      displayDate = UserRepository.getFechaNacimiento()?.let { reformatDate(it) }?:""
+      UserRepository.getFechaNacimiento()?.let { reformatDate(it) }?:""
     }
 
 
