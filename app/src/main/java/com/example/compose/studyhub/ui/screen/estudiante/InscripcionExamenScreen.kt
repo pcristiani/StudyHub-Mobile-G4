@@ -2,9 +2,14 @@ package com.example.compose.studyhub.ui.screen.estudiante
 
 import AsignaturaRequest
 import CarreraRequest
+import ExamenRequest
 import HorariosAsignaturaRequest
 import InscripcionAsignaturaRequest
+import InscripcionCarreraRequest
+import InscripcionExamenRequest
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -22,20 +27,26 @@ import com.example.compose.studyhub.R.string.txt_selectAsignatura
 import com.example.compose.studyhub.R.string.txt_selectCarrera
 import com.example.compose.studyhub.R.string.txt_selectHorario
 import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.getAsignaturasConExamenPendienteRequest
 import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
+import com.example.compose.studyhub.http.requests.getExamenesAsignatura
 import com.example.compose.studyhub.http.requests.getHorariosAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionAsignaturaRequest
+import com.example.compose.studyhub.http.requests.inscripcionExamenRequest
 import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.ui.component.HorarioCard
 import com.example.compose.studyhub.ui.screen.Name
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun InscripcionAsignaturaScreen(): DrawerState {
+fun InscripcionExamenScreen(): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
   val remIdAsignatura= remember { mutableStateOf<Int?>(null) }
   val remIdHorario= remember { mutableStateOf<Int?>(null) }
@@ -49,13 +60,13 @@ fun InscripcionAsignaturaScreen(): DrawerState {
         }
       })
     } else if (remIdAsignatura.value == null) {
-      AsigaturaDeCarrera(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
+      AsigaturaConExamenPendiente(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdAsignatura.value = idC
         }
       })
     } else {
-      HorarioAsignatura(modifier = Modifier.fillMaxWidth(), asignaturaId = remIdAsignatura.value !!,onHeaderClicked = { idC: Int? ->
+      ExamenesDeAsignatura(modifier = Modifier.fillMaxWidth(), asignaturaId = remIdAsignatura.value !!,onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdHorario.value = idC
           println("Este remIdHorario : ${remIdHorario.value}")
@@ -65,7 +76,7 @@ fun InscripcionAsignaturaScreen(): DrawerState {
       })
     }
     if(remIdCarrera.value != null && remIdAsignatura.value != null && remIdHorario.value != null) {
-      InscripcionAsignatura(carreraId =remIdCarrera.value!!, horarioId =  remIdHorario.value !!,idAsig=remIdAsignatura.value !!)
+      InscripcionExamen(carreraId =remIdCarrera.value!!, horarioId =  remIdHorario.value !!,idAsig=remIdAsignatura.value !!)
     }
   }
   return DrawerState(DrawerValue.Closed)
@@ -73,7 +84,7 @@ fun InscripcionAsignaturaScreen(): DrawerState {
 
 
 @Composable
-fun InscripcionAsignatura(carreraId: Int,horarioId:Int,idAsig:Int) {
+fun InscripcionExamen(carreraId: Int,horarioId:Int,idAsig:Int) {
   val coroutineScope = rememberCoroutineScope()
   var checked by remember { mutableStateOf(true) }
   LaunchedEffect(horarioId) {
@@ -82,8 +93,8 @@ fun InscripcionAsignatura(carreraId: Int,horarioId:Int,idAsig:Int) {
         UserRepository.getToken()?.let { token ->
           println("INCRIPCIONS "+id+" "+idAsig+" "+horarioId)
           if (checked) {
-            inscripcionAsignaturaRequest(token, InscripcionAsignaturaRequest(id,idAsig , horarioId)) { success,responde ->
-              println("responde: ${responde}")
+        //  inscripcionExamenRequest(token, inscripcionExamenRequest(1,1)) { responde -> }
+            inscripcionExamenRequest(token, InscripcionExamenRequest(id, horarioId)) { success,responde ->
             }
           }
         }
@@ -91,129 +102,20 @@ fun InscripcionAsignatura(carreraId: Int,horarioId:Int,idAsig:Int) {
     }
   }
 }
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-
-// CARRERAS INSCRIPTO
-@Composable
-fun firstLoad3(checked: Boolean): List<CarreraRequest>? {
-  var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
-  LaunchedEffect(checked) {
-    UserRepository.loggedInUser()?.let { id ->
-      UserRepository.getToken()?.let { token ->
-        if (checked) {
-          println(id)
-          inscripcionesCarreraRequest(id,token) { id ->
-            carreras = id
-          }
-        }
-      }
-    }
-  }
-  return carreras
-}
-
-@Composable
-fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
-  val nombreCarrerasList = remember { mutableStateListOf<CarreraRequest>() }
-  val isLoading = remember { mutableStateOf(false) }
-  val listState = rememberLazyListState()
-  val coroutineScope = rememberCoroutineScope()
-  var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
-  var checked by remember { mutableStateOf(true) }
-
-  carreras = firstLoad3(checked)
-  LaunchedEffect(carreras) {
-    nombreCarrerasList.clear()
-    carreras?.let {
-      loadMoreAsigDeCarrera(nombreCarrerasList, it)
-    }
-  }
-
-  Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .padding(top = 60.dp, bottom = 1.dp),
-    verticalArrangement = Arrangement.spacedBy(20.dp),
-    horizontalAlignment = Alignment.CenterHorizontally,
-  ) {
-    Text(
-      text = stringResource(id = txt_selectCarrera),
-      style = MaterialTheme.typography.headlineSmall,
-    )
-
-    if (carreras != null) {
-      LazyColumn(state = listState, modifier = Modifier
-        .weight(1f)
-        .padding(bottom = 20.dp)) {
-        items(nombreCarrerasList.size) { index ->
-          AsigDeCarreraItem(user = nombreCarrerasList[index].nombre, idC = nombreCarrerasList[index].idCarrera) {
-            onHeaderClicked(it)
-          }
-        }
-        if (isLoading.value) {
-          item {
-            Box(modifier = Modifier
-              .fillMaxWidth()
-              .padding(16.dp)) {
-            }
-          }
-        }
-      }
-      LaunchedEffect(listState) {
-        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
-          if (index == nombreCarrerasList.size - 1 && ! isLoading.value && nombreCarrerasList.size <= carreras !!.size) {
-            isLoading.value = true
-            coroutineScope.launch {
-              delay(3000)
-              loadMoreAsigDeCarrera(nombreCarrerasList, carreras !!)
-              isLoading.value = false
-            }
-          }
-        }
-      }
-    } else {
-      Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
-    }
-  }
-}
-
-fun loadMoreAsigDeCarrera(carrerasList: MutableList<CarreraRequest>, carreras: List<CarreraRequest>) {
-  val currentSize = carrerasList.size
-  val listLength = if ((carreras.size - currentSize) < 30) {
-    (carreras.size - currentSize)
-  } else {
-    30
-  }
-  for (i in 0 until listLength) {
-    carrerasList.add(carreras[currentSize + i])
-  }
-}
-
-@Composable
-fun AsigDeCarreraItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
-  CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC) })
-}
-
 
 
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-// ASIGNATURA DE CARRERA
+// ASIGNATURA CON EXAMEN PENDIENTE
 @Composable
-fun firstLoad22(checked: Boolean,idC: Int): List<AsignaturaRequest>? {
+fun firstLoad4(checked: Boolean,idC: Int): List<AsignaturaRequest>? {
   var listAsignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
   LaunchedEffect(checked) {
-    UserRepository.loggedInUser()?.let { user ->
+    UserRepository.loggedInUser()?.let { id ->
       UserRepository.getToken()?.let { token ->
         if (checked) {
-          println("idc "+idC)
-          getAsignaturasDeCarreraRequest(idC,token) { success ->
+          getAsignaturasConExamenPendienteRequest(id,idC,token) { success ->
             listAsignaturas = success
           }
         }
@@ -225,7 +127,7 @@ fun firstLoad22(checked: Boolean,idC: Int): List<AsignaturaRequest>? {
 
 
 @Composable
-fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int) -> Unit) {
+fun AsigaturaConExamenPendiente(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int) -> Unit) {
   val nombreAsignaturaList = remember { mutableStateListOf<AsignaturaRequest>() }
   val isLoading = remember { mutableStateOf(false) }
   val listState = rememberLazyListState()
@@ -233,11 +135,11 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
   var asignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
   var checked by remember { mutableStateOf(true) }
 
-  asignaturas = firstLoad22(checked, carreraId)
+  asignaturas = firstLoad4(checked, carreraId)
   LaunchedEffect(asignaturas) {
     nombreAsignaturaList.clear()
     asignaturas?.let {
-      loadMoreAsignatura(nombreAsignaturaList, it)
+      loadMoreAsignaturaExamenPendiente(nombreAsignaturaList, it)
     }
   }
 
@@ -258,7 +160,7 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
         .weight(1f)
         .padding(bottom = 20.dp)) {
         items(nombreAsignaturaList.size) { index ->
-          AsignaturaItem(user = nombreAsignaturaList[index].nombre, idC = nombreAsignaturaList[index].idAsignatura) {
+          AsignaturaExamPendienteItem(user = nombreAsignaturaList[index].nombre, idC = nombreAsignaturaList[index].idAsignatura) {
             onHeaderClicked(it)
           }
         }
@@ -277,7 +179,7 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
             isLoading.value = true
             coroutineScope.launch {
               delay(3000)
-              loadMoreAsignatura(nombreAsignaturaList, asignaturas !!)
+              loadMoreAsignaturaExamenPendiente(nombreAsignaturaList, asignaturas !!)
               isLoading.value = false
             }
           }
@@ -290,7 +192,7 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
 }
 
 
-fun loadMoreAsignatura(asignaturasList: MutableList<AsignaturaRequest>, asignaturas: List<AsignaturaRequest>) {
+fun loadMoreAsignaturaExamenPendiente(asignaturasList: MutableList<AsignaturaRequest>, asignaturas: List<AsignaturaRequest>) {
   val currentSize = asignaturasList.size
   val listLength = if ((asignaturas.size - currentSize) < 30) {
     (asignaturas.size - currentSize)
@@ -303,23 +205,23 @@ fun loadMoreAsignatura(asignaturasList: MutableList<AsignaturaRequest>, asignatu
 }
 
 @Composable
-fun AsignaturaItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
+fun AsignaturaExamPendienteItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
   CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC) })
 }
 
 
 ////////////////////////////////////////////////////////////
 
-// HORARIO ASIGNATURA
+// EXAMENES DE ASIGNATURA
 @Composable
-fun firstLoad32(checked: Boolean,asignaturaId:Int): List<HorariosAsignaturaRequest>? {
-  var carreras by remember { mutableStateOf<List<HorariosAsignaturaRequest>?>(null) }
+fun firstLoad5(checked: Boolean,asignaturaId:Int): List<ExamenRequest>? {
+  var carreras by remember { mutableStateOf<List<ExamenRequest>?>(null) }
   LaunchedEffect(checked) {
     UserRepository.loggedInUser()?.let { id ->
       UserRepository.getToken()?.let { token ->
         if (checked) {
           println(id)
-          getHorariosAsignaturaRequest(asignaturaId,token) { responde ->
+          getExamenesAsignatura(asignaturaId,token) { responde ->
             println(responde)
             carreras = responde
           }
@@ -331,29 +233,28 @@ fun firstLoad32(checked: Boolean,asignaturaId:Int): List<HorariosAsignaturaReque
   return carreras
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HorarioAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (Int) -> Unit) {
-  val nombreCarrerasList = remember { mutableStateListOf<HorariosAsignaturaRequest>() }
+fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (Int) -> Unit) {
+  val nombreCarrerasList = remember { mutableStateListOf<ExamenRequest>() }
   val isLoading = remember { mutableStateOf(false) }
   val listState = rememberLazyListState()
   val coroutineScope = rememberCoroutineScope()
-  var carreras by remember { mutableStateOf<List<HorariosAsignaturaRequest>?>(null) }
+  var carreras by remember { mutableStateOf<List<ExamenRequest>?>(null) }
   var checked by remember { mutableStateOf(true) }
 
-  carreras = firstLoad32(checked,asignaturaId)
+  carreras = firstLoad5(checked,asignaturaId)
   LaunchedEffect(carreras) {
     nombreCarrerasList.clear()
     carreras?.let {
-      loadMoreAsigDeCarrera2(nombreCarrerasList, it)
+      loadMoreExamenesDeAsignatura(nombreCarrerasList, it)
     }
   }
 
   Column(
     modifier = modifier
       .fillMaxWidth()
-      .padding(top = 60.dp, bottom = 1.dp),
-    verticalArrangement = Arrangement.spacedBy(20.dp),
-    horizontalAlignment = Alignment.CenterHorizontally,
+      .padding(top = 60.dp, bottom = 1.dp), verticalArrangement = Arrangement.spacedBy(20.dp), horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(
       text = stringResource(id = txt_selectHorario),
@@ -365,10 +266,8 @@ fun HorarioAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (In
         .weight(1f)
         .padding(bottom = 20.dp)) {
         items(nombreCarrerasList.size) { index ->
-          AsigDeCarreraItem2(user = nombreCarrerasList[index].dtHorarioDias[index].diaSemana + " de " +
-           nombreCarrerasList[index].dtHorarioDias[index].horaInicio + " a " +
-           nombreCarrerasList[index].dtHorarioDias[index].horaFin + "hs",
-            idC = nombreCarrerasList[index].idHorarioAsignatura) {
+             ExamenesDeAsignaturaItem(user =  "Periodo " + nombreCarrerasList.get(index).periodoExamen + "   -   " + format(nombreCarrerasList.get(index).fechaHora),
+            idC = nombreCarrerasList[index].idExamen) {
             onHeaderClicked(it)
           }
         }
@@ -387,7 +286,7 @@ fun HorarioAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (In
             isLoading.value = true
             coroutineScope.launch {
               delay(3000)
-              loadMoreAsigDeCarrera2(nombreCarrerasList, carreras !!)
+              loadMoreExamenesDeAsignatura(nombreCarrerasList, carreras !!)
               isLoading.value = false
             }
           }
@@ -399,7 +298,7 @@ fun HorarioAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (In
   }
 }
 
-fun loadMoreAsigDeCarrera2(carrerasList: MutableList<HorariosAsignaturaRequest>, carreras: List<HorariosAsignaturaRequest>) {
+fun loadMoreExamenesDeAsignatura(carrerasList: MutableList<ExamenRequest>, carreras: List<ExamenRequest>) {
   val currentSize = carrerasList.size
   val listLength = if ((carreras.size - currentSize) < 30) {
     (carreras.size - currentSize)
@@ -411,7 +310,19 @@ fun loadMoreAsigDeCarrera2(carrerasList: MutableList<HorariosAsignaturaRequest>,
   }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
+fun format(fechaStr: String): String {
+  val formatterEntrada = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+  val fecha = LocalDateTime.parse(fechaStr, formatterEntrada)
+
+  val formatterSalida = DateTimeFormatter.ofPattern("dd/MM/yyyy'  'HH:mm")
+  val fechaFormateada = fecha.format(formatterSalida)
+
+  println(fechaFormateada)
+  return fechaFormateada + "hs"
+}
+
 @Composable
-fun AsigDeCarreraItem2(user: String, idC: Int, onSelected: (Int) -> Unit) {
+fun ExamenesDeAsignaturaItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
   HorarioCard(nombre = user, onHeaderClicked = { onSelected(idC) })
 }

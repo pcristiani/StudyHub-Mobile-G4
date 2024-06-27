@@ -21,10 +21,21 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.md_theme_List
 
 @Composable
-fun HorarioCard(nombre: String, selected: Boolean = false, onHeaderClicked: () -> Unit) {
+fun HorarioCard(nombre: String, selected: Boolean = false,  onHeaderClicked: () -> Unit) {
   Card(modifier = Modifier
     .fillMaxWidth()
     .clickable { onHeaderClicked() }
+    .padding(horizontal = 15.dp, vertical = 3.dp),
+    border = BorderStroke(1.dp, md_theme_List.copy(alpha = 0.5f)), shape = RoundedCornerShape(8.dp)) {
+    Box(modifier = Modifier.padding(18.dp)) {
+      Text(text = nombre, style = MaterialTheme.typography.labelLarge )
+    }
+  }
+
+ /*  Card(modifier = Modifier
+    .fillMaxWidth()
+    .clickable { onHeaderClicked() }
+
     .padding(horizontal = 22.dp, vertical = 3.dp),// elevation = 4.dp,
     border = BorderStroke(1.1.dp, md_theme_List.copy(alpha = 0.6f)), shape = MaterialTheme.shapes.large
     ) {
@@ -34,7 +45,7 @@ fun HorarioCard(nombre: String, selected: Boolean = false, onHeaderClicked: () -
       Text(text = nombre, style = MaterialTheme.typography.labelLarge, textAlign = MaterialTheme.typography.bodyLarge.textAlign)
       println("selected: $nombre")
     }
-  }
+  } */
 }
 
 @Preview

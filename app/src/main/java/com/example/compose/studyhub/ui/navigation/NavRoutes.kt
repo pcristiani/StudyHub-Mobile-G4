@@ -5,6 +5,7 @@ object NavRoutes {
    val EstudiosScreen = "screenEstudios"
    val InscripcionScreen = "screenInscripciones"
    val InscripcionAsignaturaScreen = "screenAsignaturaInscripciones"
+   val InscripcionExamenScreen = "screenExamenInscripciones"
    val SolicitudesScreen = "screenSolicitudes"
    val GestionScreen = "screenGestion"
    val EditarPerfilScreen = "editarPerfilScreen"

@@ -59,6 +59,7 @@ import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuNoved
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuPlanEstudios
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuSolicitudes
 import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuInscripcionAsignatura
+import com.example.compose.studyhub.ui.navigation.ItemsMenuLateral.ItemMenuInscripcionExamen
 import com.example.compose.studyhub.ui.navigation.NavRoutes.EditarPerfilScreen
 import com.example.compose.studyhub.ui.route.LogoutRoute
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
@@ -67,7 +68,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MenuLateral(navController: NavHostController, drawerState: DrawerState, contenido: @Composable () -> Unit) {
    val scope = rememberCoroutineScope()
-   val menuItems = listOf(ItemMenuNovedades, ItemMenuPlanEstudios, ItemMenuInscripcion, ItemMenuInscripcionAsignatura,ItemMenuSolicitudes, ItemMenuGestion)
+   val menuItems = listOf(ItemMenuNovedades, ItemMenuPlanEstudios, ItemMenuInscripcion, ItemMenuInscripcionAsignatura,ItemMenuInscripcionExamen,ItemMenuSolicitudes, ItemMenuGestion)
    val showLogoutDialog = remember { mutableStateOf(false) }
    
    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
@@ -84,7 +85,7 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                      drawerState.close()
                   }
                   try {
-                     navController.navigate(item.ruta) //  println(item.ruta)
+                     navController.navigate(item.ruta)
                   } catch (e: Exception) {
                      println("Error al navegar: ${e.message}")
                   }

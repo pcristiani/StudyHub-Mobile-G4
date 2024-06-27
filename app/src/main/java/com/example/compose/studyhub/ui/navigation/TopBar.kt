@@ -67,7 +67,7 @@ fun TopBar(drawerState: DrawerState) {
          androidx.compose.material.Icon(
             imageVector = Icons.Filled.AccountCircle,
             contentDescription = stringResource(R.string.txt_admin)
-                                       )
+       )
       }
    }
 } */

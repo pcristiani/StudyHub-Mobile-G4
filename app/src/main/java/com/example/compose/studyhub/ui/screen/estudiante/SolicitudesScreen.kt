@@ -88,7 +88,6 @@ fun Solicitudes(modifier: Modifier) {
         style = MaterialTheme.typography.bodySmall
       )
       /*Spacer(modifier = Modifier.padding(start = 10.dp))
-
       Box(
         modifier = Modifier
           .size(50.dp, 60.dp)

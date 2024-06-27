@@ -6,6 +6,8 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,6 +23,7 @@ import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.http.requests.inscripcionCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -28,20 +31,53 @@ import kotlinx.coroutines.launch
 @Composable
 fun InscripcionCarreraScreen(): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
-
+  val scope = rememberCoroutineScope()
+  val snackbarHostState = remember { SnackbarHostState() }
   Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
     if (remIdCarrera.value == null) {
-       Carreras(modifier = Modifier.fillMaxWidth(), onHeaderClicked = { idC: Int? ->
+       Carreras(modifier = Modifier.fillMaxWidth(), snackbarHostState,scope,onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdCarrera.value = idC
           println("Este remIdCarrera : ${remIdCarrera.value}")
         }
       })
     } else {
-      CarrerasScreen(carreraId = remIdCarrera.value !!)
+     //   CarrerasScreen(carreraId = remIdCarrera.value !!)
+      Carreras(modifier = Modifier.fillMaxWidth(), snackbarHostState,scope,onHeaderClicked = { idC: Int? ->
+        if (idC != null) {
+          remIdCarrera.value = idC
+          println("Este remIdCarrera : ${remIdCarrera.value}")
+        }
+      })
     }
   }
   return DrawerState(DrawerValue.Closed)
+}
+
+@Composable
+fun MySnackbar() {
+  val scope = rememberCoroutineScope()
+  val snackbarHostState = remember { SnackbarHostState() }
+  Scaffold(
+    snackbarHost = {
+      SnackbarHost(hostState = snackbarHostState)
+    },
+    floatingActionButton = {
+      ExtendedFloatingActionButton(
+        text = { Text("Mostrar Snackbar") },
+        icon = { Icon(Icons.Filled.Add, contentDescription = "") },
+        onClick = {
+          scope.launch {
+            snackbarHostState.showSnackbar(
+              "Esto es un Snackbar",
+              actionLabel = "Acción",
+              duration = SnackbarDuration.Indefinite
+            )
+          }
+        }
+      )
+    }
+  ) { }
 }
 
 
@@ -69,7 +105,6 @@ fun CarrerasScreen(carreraId: Int) {
 
 @Composable
 fun firstLoad2(checked: Boolean): List<CarreraRequest>? {
-  print("ACA ENTRAchecked: $checked")
   var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
   LaunchedEffect(checked) {
     UserRepository.loggedInUser()?.let { user ->
@@ -85,8 +120,9 @@ fun firstLoad2(checked: Boolean): List<CarreraRequest>? {
   return carreras
 }
 
+
 @Composable
-fun Carreras(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
+fun Carreras(modifier: Modifier,snackbarHostState:SnackbarHostState,scope: CoroutineScope, onHeaderClicked: (Int) -> Unit) {
   val nombreCarrerasList = remember { mutableStateListOf<CarreraRequest>() }
   val isLoading = remember { mutableStateOf(false) }
   val listState = rememberLazyListState()
@@ -113,25 +149,12 @@ fun Carreras(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
       text = stringResource(id = txt_selectCarrera),
       style = MaterialTheme.typography.headlineSmall,
     )
-
- /*  Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .padding(top = 60.dp, bottom = 1.dp),
-    verticalArrangement = Arrangement.spacedBy(20.dp),
-    horizontalAlignment = Alignment.CenterHorizontally,
-  ) {
-    Text(
-      text = stringResource(id = txt_inscripciones),
-      style = MaterialTheme.typography.headlineLarge,
-    ) */
-
     if (carreras != null) {
       LazyColumn(state = listState, modifier = Modifier
         .weight(1f)
         .padding(bottom = 20.dp)) {
         items(nombreCarrerasList.size) { index ->
-          CarreraItem(user = nombreCarrerasList[index].nombre, idC = nombreCarrerasList[index].idCarrera) {
+          CarreraItem(user = nombreCarrerasList[index].nombre, snackbarHostState,scope,idC = nombreCarrerasList[index].idCarrera) {
             onHeaderClicked(it)
           }
         }
@@ -175,8 +198,17 @@ fun loadMoreCarrera(carrerasList: MutableList<CarreraRequest>, carreras: List<Ca
 }
 
 @Composable
-fun CarreraItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
-  CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC) })
+fun CarreraItem(user: String, snackbarHostState:SnackbarHostState,scope:CoroutineScope,idC: Int, onSelected: (Int) -> Unit) {
+ // val scope = rememberCoroutineScope()
+//  val snackbarHostState = remember { SnackbarHostState() }
+  CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC); scope.launch {
+    snackbarHostState.showSnackbar(message = "segasc", actionLabel = "Cerrar", duration = SnackbarDuration.Short)
+  }
+
+  })
+
+
+
 }
 
 @Preview

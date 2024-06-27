@@ -71,7 +71,38 @@ fun getExamenesAsignatura(idAsignatura: Int, token: String, callback: (List<Exam
     })
 }
 
-fun inscripcionExamenRequest(token: String, inscripcionExamenRequest: InscripcionExamenRequest, callback: (Boolean) -> Unit){
+
+fun inscripcionExamenRequest(token: String, inscripcionExamenRequest: InscripcionExamenRequest, callback: (Boolean, String?) -> Unit) {
+    val completeToken = "Bearer $token"
+
+    RetrofitClient.api.inscripcionExamen(completeToken, inscripcionExamenRequest).enqueue(object : Callback<String> {
+        override fun onResponse(call: Call<String>, response: Response<String>) {
+            val responseText = response.body()
+
+            if (response.isSuccessful) {
+                callback(true, responseText)
+            } else {
+                val errorMessage = buildString {
+                    append("Response code: ${response.code()}\n")
+                    append("Response message: ${response.message()}\n")
+                    response.errorBody()?.let { errorBody ->
+                        append("Error body: ${errorBody.string()}")
+                    }
+                }
+                callback(false, errorMessage)
+            }
+        }
+
+        override fun onFailure(call: Call<String>, t: Throwable) {
+            val errorMessage = "Error: ${t.message}"
+            callback(false, errorMessage)
+        }
+    })
+}
+
+
+/*
+fun inscripcionExamenRequest(token: String, inscripcionExamenRequest: InscripcionExamenRequest, callback: (Boolean,String?) -> Unit){
     val completeToken= "Bearer " + token
 
     RetrofitClient.api.inscripcionExamen(completeToken, inscripcionExamenRequest).enqueue(object: Callback<String>{
@@ -96,4 +127,4 @@ fun inscripcionExamenRequest(token: String, inscripcionExamenRequest: Inscripcio
             callback(false)
         }
     })
-}
+}*/

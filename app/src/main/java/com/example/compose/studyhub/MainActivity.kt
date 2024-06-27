@@ -18,12 +18,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.util.services.PushNotificationService
 import com.example.compose.studyhub.ui.navigation.MenuLateral
 import com.example.compose.studyhub.ui.navigation.NavRoutes
+import com.example.compose.studyhub.ui.navigation.NavRoutes.InscripcionExamenScreen
 import com.example.compose.studyhub.ui.navigation.TopBar
 import com.example.compose.studyhub.ui.route.EditarPerfilRoute
 import com.example.compose.studyhub.ui.screen.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.screen.estudiante.InscripcionCarreraScreen
 import com.example.compose.studyhub.ui.screen.estudiante.InscripcionAsignaturaScreen
-
+import com.example.compose.studyhub.ui.screen.estudiante.InscripcionExamenScreen
 import com.example.compose.studyhub.ui.screen.estudiante.NovedadesScreen
 import com.example.compose.studyhub.ui.screen.estudiante.PlanEstudiosScreen
 import com.example.compose.studyhub.ui.screen.estudiante.SolicitudesScreen
@@ -76,6 +77,11 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
     composable(NavRoutes.InscripcionAsignaturaScreen) {
       MenuLateral(navController, drawerState, contenido = {
         ScreenInscripcionesAsignaturas(drawerState)
+      })
+    }
+    composable(NavRoutes.InscripcionExamenScreen) {
+      MenuLateral(navController, drawerState, contenido = {
+        ScreenInscripcionesExamen(drawerState)
       })
     }
     composable(NavRoutes.SolicitudesScreen) {
@@ -161,6 +167,12 @@ fun ScreenInscripciones(drawerState: DrawerState) {
 fun ScreenInscripcionesAsignaturas(drawerState: DrawerState) {
   TopBar(drawerState)
   InscripcionAsignaturaScreen()
+}
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun ScreenInscripcionesExamen(drawerState: DrawerState) {
+  TopBar(drawerState)
+  InscripcionExamenScreen()
 }
 @Preview
 @Composable
