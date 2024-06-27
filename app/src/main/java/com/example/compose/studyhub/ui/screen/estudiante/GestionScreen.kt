@@ -3,6 +3,7 @@ package com.example.compose.studyhub.ui.screen.estudiante
 import CarreraRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -95,7 +96,10 @@ fun Gestion(modifier: Modifier){
       val carreraSelected = remember { mutableStateOf<CarreraRequest?>(null) }
 
 
-      ExpandableList(modifier=Modifier.padding(top = 25.dp, bottom = 10.dp), headerTitle = "Seleccionar carrera", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
+      ExpandableList(modifier=Modifier.padding(top = 25.dp, bottom = 10.dp,start = 20.dp, end = 20.dp)
+         .size(300.dp, 300.dp)
+          .animateContentSize(),
+         headerTitle = "Seleccionar carrera", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
          listaCarreras?.find {it.idCarrera ==selectedId }
       })
 
@@ -129,5 +133,5 @@ fun Gestion(modifier: Modifier){
 @Composable
 fun GestionScreenPreview() {
    GestionScreen()
-   Gestion(modifier = Modifier.fillMaxWidth())
+ //  Gestion(modifier = Modifier.fillMaxWidth())
 }

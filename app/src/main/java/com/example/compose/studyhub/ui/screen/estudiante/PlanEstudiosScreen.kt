@@ -48,12 +48,15 @@ import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 fun PlanEstudiosScreen(): DrawerState {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
    
-   Column(
+   /* Column(
       modifier = Modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
+      verticalArrangement = Arrangement.spacedBy(50.dp, Alignment.Top),
       horizontalAlignment = Alignment.CenterHorizontally,
-         ) {
-
+         ) { */
+      Column(modifier = Modifier.padding(top = 50.dp, start = 30.dp, end = 30.dp),
+         verticalArrangement = Arrangement.Center,
+         horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
       var listaCarreras: List<CarreraRequest>? = null
       val nombresCarrera = remember { mutableStateListOf<String>() }
@@ -77,7 +80,8 @@ fun PlanEstudiosScreen(): DrawerState {
       var carreraSelected = remember { mutableIntStateOf(0) }
 
 
-      ExpandableList(modifier=Modifier.padding(top = 20.dp, bottom = 5.dp), headerTitle = "Lista", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value = selectedId})
+      ExpandableList(modifier=Modifier.padding(top = 50.dp, bottom = 5.dp), headerTitle = "Lista",
+       options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value = selectedId})
 
       /*
       Image(
@@ -92,7 +96,7 @@ fun PlanEstudiosScreen(): DrawerState {
 return DrawerState(DrawerValue.Closed)
 }
 
-fun DropdownMenuItem(text: @Composable () -> Unit, onClick: () -> Unit, leadingIcon: @Composable () -> Unit) {
+fun DropdownMenuItem(text: @Composable () -> Unit, onClick: () -> Unit, modifier: Modifier,leadingIcon: @Composable () -> Unit) {
 
 }
 
@@ -119,7 +123,7 @@ fun DropdownMenuExamples() {
    var selectedOption by remember { mutableStateOf(items[0]) }
    
    Column(
-      modifier = Modifier.padding(16.dp)
+      modifier = Modifier.padding(40.dp)
          ) {
       Button(
          onClick = { expanded = true },
@@ -129,12 +133,11 @@ fun DropdownMenuExamples() {
                                              ),
          modifier = Modifier
             .fillMaxWidth()
-            .height(54.dp)
+            .height(44.dp)
             ) {
          Text(
             text = selectedOption,
-            modifier = Modifier.weight(1f)
-             )
+            modifier = Modifier.weight(1f)             )
          Icon(
             imageVector = Icons.Filled.ArrowDropDown,
             contentDescription = null,
@@ -143,20 +146,16 @@ fun DropdownMenuExamples() {
       }
       DropdownMenuItem(
          text = { Text("Send Feedback") },
+         modifier = Modifier.weight(1f),
          onClick = { /* Handle send feedback! */ },
-         leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null) },
-     
-                      )
+         leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null) },)
    }
 }
 
 
 @Composable
 fun DropdownMenuItem(onClick: () -> Unit, interactionSource: @Composable () -> Unit) {
-   DropdownMenuExamples(
- 
-         )
-   
+   DropdownMenuExamples()
 }
 
 

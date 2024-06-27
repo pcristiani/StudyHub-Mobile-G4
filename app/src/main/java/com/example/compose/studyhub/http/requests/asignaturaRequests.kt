@@ -75,11 +75,9 @@ fun getAsignaturasNoAprobadasRequest(idUsuario: Int, token: String, callback: (L
 fun getCalificacionesAsignaturasRequest(idUsuario: Int, idCarrera: Int, token: String, callback: (List<CalificacionAsignaturaRequest>?) -> Unit) {
    val completeToken = "Bearer " + token
 
-
    RetrofitClient.api.getCalificacionesAsignatura(idUsuario, idCarrera, completeToken).enqueue(object: Callback<String>{
       override fun onResponse(call: Call<String>, response: Response<String>) {
          val responseText = response.body()
-
 
          if (response.isSuccessful) {
             val gson = Gson()
@@ -132,6 +130,39 @@ fun getHorariosAsignaturaRequest(idAsignatura:Int, token: String, callback: (Lis
    })
 }
 
+fun inscripcionAsignaturaRequest(
+   token: String,
+   inscripcionAsignaturaRequest: InscripcionAsignaturaRequest,
+   callback: (Boolean, String?) -> Unit
+) {
+   val completeToken = "Bearer $token"
+
+   RetrofitClient.api.inscripcionAsignatura(completeToken, inscripcionAsignaturaRequest).enqueue(object : Callback<String> {
+      override fun onResponse(call: Call<String>, response: Response<String>) {
+         val responseText = response.body()
+
+         if (response.isSuccessful) {
+            callback(true, responseText)
+         } else {
+            val errorMessage = buildString {
+               append("Response code: ${response.code()}\n")
+               append("Response message: ${response.message()}\n")
+               response.errorBody()?.let { errorBody ->
+                  append("Error body: ${errorBody.string()}")
+               }
+            }
+            callback(false, errorMessage)
+         }
+      }
+
+      override fun onFailure(call: Call<String>, t: Throwable) {
+         val errorMessage = "Error: ${t.message}"
+         callback(false, errorMessage)
+      }
+   })
+}
+/*
+
 fun inscripcionAsignaturaRequest(token:String, inscripcionAsignaturaRequest: InscripcionAsignaturaRequest, callback: (Boolean) -> Unit){
    val completeToken = "Bearer " + token
 
@@ -160,6 +191,7 @@ fun inscripcionAsignaturaRequest(token:String, inscripcionAsignaturaRequest: Ins
       }
    })
 }
+*/
 
 fun getAsignaturasConExamenPendienteRequest(idUsuario:Int, idCarrera:Int, token:String, callback: (List<AsignaturaRequest>?) -> Unit){
    val completeToken = "Bearer " + token

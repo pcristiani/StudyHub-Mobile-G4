@@ -90,6 +90,9 @@
     <string name="txt_inscripciones">Inscripciones</string>
     <string name="txt_solicitudes">Asignaturas</string>>
     <string name="txt_error_solicitudes">No se encontraron asignaturas</string>
+    <string name="txt_error_horario">No se encontraron horarios asignatura</string>
+    <string name="txt_error_inscripcion">No se pudo inscribir</string>
+    <string name="txt_error_solicitud">No se pudo solicitar</string>
     <string name="txt_tipo_inscripcion">Seleccionar tipo de inscripción</string>
     <string name="txt_tipo_solicitud">Seleccionar tipo de solicitud</string>
     <string name="txt_selectCarrera">Seleccionar carrera</string>
