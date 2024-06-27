@@ -24,7 +24,7 @@ fun AsignaturaCard(nombre: String, onClick: ()->Unit) {
       .fillMaxWidth()
       .clickable { onClick() }
       .padding(horizontal = 15.dp, vertical = 3.dp),
-    border = BorderStroke(1.1.dp, md_theme_List.copy(alpha = 0.6f)), shape = MaterialTheme.shapes.large) {
+    border = BorderStroke(1.dp, md_theme_List.copy(alpha = 0.5f)), shape = RoundedCornerShape(8.dp)) {
 
     Box(modifier = Modifier.padding(18.dp)) {
       Text(text = nombre, style = MaterialTheme.typography.labelLarge ) //   }

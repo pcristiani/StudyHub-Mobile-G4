@@ -49,7 +49,7 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
    val showLogoutDialog = remember { mutableStateOf(false) }
    val nombre = UserRepository.getNombre() ?: ""
 
-   val greetings = "Bienvenido, $nombre"
+   val greetings = "Bienvenido/a, $nombre"
 
    var displayText by remember { mutableStateOf("") }
    val scope = rememberCoroutineScope()

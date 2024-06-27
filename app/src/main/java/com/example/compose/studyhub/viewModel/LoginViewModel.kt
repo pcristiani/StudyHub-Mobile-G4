@@ -11,13 +11,11 @@ import com.example.compose.studyhub.http.requests.loginRequest
 class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
   private val _loginError = MutableLiveData<String?>(null)
   val loginError: LiveData<String?> get() = _loginError
-  var successfulLogin: Boolean = false
 
   fun login(ci: String, password: String, onLoginComplete: () -> Unit) {
     loginRequest(ci, password) { success, response ->
       if (success) {
         onLoginComplete()
-        successfulLogin = true
       }
       else{
         _loginError.value = response
@@ -25,11 +23,6 @@ class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
     }
 
 
-    if (successfulLogin == false) {
-      _loginError.value = "Credenciales incorrectas."
-      println("Credenciales incorrectas")
-    }
-    successfulLogin = false
   }
 
   fun clearLoginError() {

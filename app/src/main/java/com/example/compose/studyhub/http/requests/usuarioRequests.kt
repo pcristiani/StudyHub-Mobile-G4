@@ -35,7 +35,7 @@ fun loginRequest(ci: String, password: String, callback: (Boolean, String) -> Un
                         } else {
                            println("ACA ESTOY" + decodedResponse.rol)
                            
-                           callback(false, token)
+                           callback(false, "Este usuario no es un estudiante.")
                         }
                      }
                   }
