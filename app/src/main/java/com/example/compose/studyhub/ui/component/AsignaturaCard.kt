@@ -1,6 +1,7 @@
 package com.example.compose.studyhub.ui.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,10 +18,11 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.md_theme_List
 
 @Composable
-fun AsignaturaCard(nombre: String) {
+fun AsignaturaCard(nombre: String, onClick: ()->Unit) {
   Card(
     modifier = Modifier
       .fillMaxWidth()
+      .clickable { onClick() }
       .padding(horizontal = 15.dp, vertical = 3.dp),
     border = BorderStroke(1.1.dp, md_theme_List.copy(alpha = 0.6f)), shape = MaterialTheme.shapes.large) {
 
@@ -53,6 +55,6 @@ fun AsignaturaCard(nombre: String) {
 @Composable
 fun AsignaturaCardPreview() {
   ThemeStudyHub {
-    AsignaturaCard("Asignatura")
+    AsignaturaCard("Asignatura", {})
   }
 }

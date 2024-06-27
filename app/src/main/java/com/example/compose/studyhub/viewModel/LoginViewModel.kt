@@ -1,21 +1,11 @@
 package com.example.compose.studyhub.viewModel
 
-import LoginRequest
-import android.widget.Toast
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.compose.studyhub.R
-import com.example.compose.studyhub.http.auth.decodeJWT
-import com.example.compose.studyhub.data.User
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.loginRequest
-import com.example.compose.studyhub.util.services.PushNotificationService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 ///
 class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
@@ -24,10 +14,13 @@ class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
   var successfulLogin: Boolean = false
 
   fun login(ci: String, password: String, onLoginComplete: () -> Unit) {
-    loginRequest(ci, password) { success ->
+    loginRequest(ci, password) { success, response ->
       if (success) {
         onLoginComplete()
         successfulLogin = true
+      }
+      else{
+        _loginError.value = response
       }
     }
 

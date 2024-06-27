@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun loginRequest(ci: String, password: String, callback: (Boolean) -> Unit) {
+fun loginRequest(ci: String, password: String, callback: (Boolean, String) -> Unit) {
    val loginRequest = LoginRequest(ci, password)
    
    
@@ -31,25 +31,25 @@ fun loginRequest(ci: String, password: String, callback: (Boolean) -> Unit) {
                      decodedResponse.cedula?.let { ci ->
                         if (decodedResponse.rol == "E") {
                            UserRepository.login(token, idUsuario, ci)
-                           callback(true)
+                           callback(true, "")
                         } else {
                            println("ACA ESTOY" + decodedResponse.rol)
                            
-                           callback(false)
+                           callback(false, token)
                         }
                      }
                   }
                }
                
             } else {
-               callback(false)
+               callback(false, "")
             }
          }
       }
       
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
-         callback(false)
+         callback(false, t.message?:"")
       }
    })
    

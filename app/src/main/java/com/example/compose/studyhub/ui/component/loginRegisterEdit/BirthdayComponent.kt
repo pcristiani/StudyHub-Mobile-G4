@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -44,7 +45,7 @@ fun Birthday(birthdayState: DatePickerState, imeAction: ImeAction = ImeAction.Ne
     Button(onClick = { showDatePicker.value = true }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(5.dp), colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.white), contentColor = colorResource(R.color.text_black)), border = BorderStroke(1.dp, colorResource(R.color.darker_gray))) {
       if (UserRepository.user == User.NoUserLoggedIn) {
         val displayDate = selectedDate.value ?: currentDate
-        Text(text = sdf.format(displayDate), style = MaterialTheme.typography.bodyMedium)
+        Text(text = sdf.format(displayDate), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top=10.dp, bottom=10.dp))
       } else {
         val fechaNacimiento = UserRepository.getFechaNacimiento()
         if (fechaNacimiento != null) {

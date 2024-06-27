@@ -105,7 +105,13 @@ private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onFocus
       onFocusChange(ciState.isFocused)
 
       CI(ciState = ciState, imeAction = ImeAction.Done, onImeAction = onSubmit)
-      Button(onClick = onSubmit, modifier = Modifier
+      Button(onClick = {
+         if(ciState.text.isNotEmpty()){
+            onSubmit()
+         }
+      }
+
+      , modifier = Modifier
          .fillMaxWidth()
          .padding(top = 24.dp, bottom = 8.dp)) {
          Text(text = stringResource(id = R.string.next), style = MaterialTheme.typography.titleSmall)

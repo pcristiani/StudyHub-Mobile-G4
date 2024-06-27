@@ -1,18 +1,14 @@
 package com.example.compose.studyhub.ui.screen
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
@@ -21,7 +17,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,22 +30,15 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHost
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.EmailStateSaver
 import com.example.compose.studyhub.domain.PasswordState
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
-import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
 import kotlinx.coroutines.launch
-import com.example.compose.studyhub.util.services.PushNotificationService
-import com.example.compose.studyhub.ui.component.AlertDialogBoxWithText
 import com.example.compose.studyhub.ui.component.loginRegisterEdit.Password
 import com.example.compose.studyhub.ui.route.RecoverPassRoute
-import kotlinx.coroutines.GlobalScope
 
 ///
 @Composable
@@ -62,16 +51,9 @@ fun LoginScreen(
    onErrorDismissed: () -> Unit
                ) {
    val snackbarHostState = remember { SnackbarHostState() }
-   val scope = rememberCoroutineScope()
    val respuesta = stringResource(id = R.string.login_test)
    val snackbarActionLabel = stringResource(id = R.string.sign_in)
 
-/*
-   if(loginError != null){
-      ErrorSnackbar(message="Hola", snackbarHostState = snackbarHostState, onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }, modifier = Modifier)
-
-   }
-*/
    Scaffold(topBar = {
       LoginRegisterTopAppBar(topAppBarText = stringResource(id = R.string.sign_in), onNavUp = onNavUp)
    },
@@ -79,7 +61,7 @@ fun LoginScreen(
       content = { contentPadding ->
       LoginRegisterScreen(modifier = Modifier.supportWideScreen(), contentPadding = contentPadding) {
          Column(modifier = Modifier.fillMaxWidth()) {
-            LoginTest(ci = ci, onLoginSubmitted = onLoginSubmitted, onRegisterSubmitted = onNavigateToRegister)
+            LoginTest(ci = ci, onLoginSubmitted = onLoginSubmitted, onRegisterSubmitted = onNavigateToRegister, snackbarHostState = snackbarHostState, loginError = loginError)
             Spacer(modifier = Modifier.height(5.dp))
 
          }
@@ -102,13 +84,14 @@ fun LoginTest(
    ci: String?,
    onLoginSubmitted: (ci: String, password: String) -> Unit,
    onRegisterSubmitted: (ci: String) -> Unit,
+   snackbarHostState: SnackbarHostState,
+   loginError: String?
              ) {
-   val snackbarHostState = remember { SnackbarHostState() }
    val scope = rememberCoroutineScope()
    val respuesta = stringResource(id = R.string.login_test)
    val snackbarActionLabel = stringResource(id = R.string.sign_in)
    val showRecoverPassDialog = remember {mutableStateOf(false)}
-   val showSnackbar = remember {mutableStateOf(true)}
+   val showSnackbar = remember {mutableStateOf(false)}
    var snackbarMessage = remember {mutableStateOf("")}
 
 
@@ -141,7 +124,14 @@ fun LoginTest(
       Password(label = stringResource(id = R.string.password), passwordState = passwordState, modifier = Modifier.focusRequester(focusRequester), onImeAction = { onSubmit() })
       Spacer(modifier = Modifier.height(16.dp))
       
-      Button(onClick = { onSubmit() }, modifier = Modifier
+      Button(onClick = { onSubmit();
+         scope.launch {if(loginError!=null){
+            snackbarHostState.showSnackbar(message = loginError, actionLabel = "Cerrar", duration = SnackbarDuration.Short)
+         }
+
+         showSnackbar.value = true
+      }
+      }, modifier = Modifier
          .fillMaxWidth()
          .padding(top = 16.dp, bottom = 10.dp), enabled = ciState.isValid && passwordState.isValid) {
          Text(text = stringResource(id = R.string.sign_in))
@@ -149,11 +139,11 @@ fun LoginTest(
 
       TextButton(onClick = {
          showRecoverPassDialog.value = true
-         scope.launch {
+         /*scope.launch {
 
-            snackbarHostState.showSnackbar(message = respuesta, actionLabel = snackbarActionLabel)
+            //snackbarHostState.showSnackbar(message = respuesta, actionLabel = snackbarActionLabel)
 
-         }
+         }*/
 
       }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.forgot_password)) }
 
@@ -164,16 +154,17 @@ fun LoginTest(
       }
    }
 
-   if(showRecoverPassDialog.value == true){
+   if(showRecoverPassDialog.value){
       RecoverPassBox(onConfirmation = {snackbarMessage.value = it; showSnackbar.value = true}, onDismiss = {showRecoverPassDialog.value = false})
    }
 
+   /*
    if(showSnackbar.value){
       LaunchedEffect(showSnackbar.value) {
          scope.launch {
 
             snackbarHostState.showSnackbar(
-               message = "snackbarMessage.value",
+               message = snackbarMessage.value,
                actionLabel = "Cerrar",
                duration = SnackbarDuration.Short
             )
@@ -182,7 +173,7 @@ fun LoginTest(
          showSnackbar.value = false
       }
    }
-
+   */
 }
 
 
@@ -233,7 +224,7 @@ fun ErrorSnackbar(message: String, snackbarHostState: SnackbarHostState, modifie
 @Composable
 fun LoginPreview() {
    ThemeStudyHub {
-      LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onNavigateToRegister = {_, ->}, onNavUp = {}, "ERROR", onErrorDismissed = {})
+      LoginScreen(ci = null, onLoginSubmitted = { _, _ -> }, onNavigateToRegister = { _, ->}, onNavUp = {}, "ERROR", onErrorDismissed = {})
    }
 }
 

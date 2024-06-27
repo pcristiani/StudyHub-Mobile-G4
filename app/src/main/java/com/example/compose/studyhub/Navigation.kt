@@ -34,7 +34,9 @@ fun StudyHubNavHost(
    NavHost(navController = navController, startDestination = INICIO_ROUTE) {
       composable(INICIO_ROUTE) {
          InicioRoute(
-            onNavigateToLogin = { navController.navigate("login/$it") },
+            onNavigateToLogin = {
+
+               if(it.isNotEmpty()){navController.navigate("login/$it")} },
                     )
       }
       

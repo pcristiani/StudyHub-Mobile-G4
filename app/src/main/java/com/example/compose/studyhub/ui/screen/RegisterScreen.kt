@@ -95,7 +95,7 @@ fun RegisterContent(
 
       Spacer(modifier = Modifier.height(1.dp))
       val confirmPasswordState = remember { ConfirmPasswordState(passwordState = passwordState) }
-      Password(label = stringResource(id = R.string.confirm_password), passwordState = confirmPasswordState, onImeAction = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text,"05/12/2000", ciState.text, passwordState.text) }, modifier = Modifier.focusRequester(confirmationPasswordFocusRequest))
+      Password(label = stringResource(id = R.string.confirm_password), passwordState = confirmPasswordState, onImeAction = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text, formatDate(birthdayState), ciState.text, passwordState.text) }, modifier = Modifier.focusRequester(confirmationPasswordFocusRequest))
 
       Spacer(modifier = Modifier.height(15.dp))
 

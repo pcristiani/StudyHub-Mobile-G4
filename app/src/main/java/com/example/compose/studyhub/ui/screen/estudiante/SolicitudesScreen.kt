@@ -183,5 +183,6 @@ fun SolicitudesScreenPreview() {
 fun UserItem(user: String) {
   AsignaturaCard(
     nombre = user,
+    onClick = {}
   )
 }
