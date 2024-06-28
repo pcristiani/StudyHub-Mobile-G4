@@ -23,6 +23,7 @@ import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.domain.TextFieldState
 import com.example.compose.studyhub.domain.datePicker
 import com.example.compose.studyhub.domain.formatDate
+import com.example.compose.studyhub.ui.component.ConfirmDialogBox
 import com.example.compose.studyhub.ui.component.loginRegisterEdit.Birthday
 import com.example.compose.studyhub.ui.component.loginRegisterEdit.Email
 import com.example.compose.studyhub.ui.screen.LoginRegisterScreen
@@ -57,7 +58,7 @@ fun EditarPerfilScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditarPerfil(modifier: Modifier,onProfileEditSubmitted: (nombre: String, apellido: String, email: String, fechaNacimiento:String) -> Unit,){
-    val showEditPassDialog = remember { mutableStateOf(false) }
+    val showConfirmationDialog = remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxWidth()){
         val focusRequest = remember { FocusRequester() }
@@ -93,10 +94,16 @@ fun EditarPerfil(modifier: Modifier,onProfileEditSubmitted: (nombre: String, ape
         Spacer(modifier = Modifier.height(15.dp))
 
 
-        Button(onClick = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text,
-            formatDate(birthdayState)
-        ) }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.txt_editPerfil)) }
+        Button(onClick = { showConfirmationDialog.value = true
+         }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.txt_editPerfil)) }
+
+        if(showConfirmationDialog.value){
+            ConfirmDialogBox(onDismissRequest = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text,
+                formatDate(birthdayState)); showConfirmationDialog.value = false }, dialogTitle = "Perfil modificado con éxito")
+        }
     }
+
+
 }
 
 @Preview

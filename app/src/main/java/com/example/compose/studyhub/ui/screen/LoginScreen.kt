@@ -37,6 +37,8 @@ import com.example.compose.studyhub.R
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.EmailStateSaver
 import com.example.compose.studyhub.domain.PasswordState
+import com.example.compose.studyhub.ui.component.adviceSnackbar
+import com.example.compose.studyhub.ui.component.errorSnackbar
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.util.supportWideScreen
 import kotlinx.coroutines.launch
@@ -110,12 +112,12 @@ fun LoggingIn(
       Spacer(modifier = Modifier.height(16.dp))
 
       Button(onClick = { onSubmit();
-         scope.launch {if(loginError!=null){
-            snackbarHostState.showSnackbar(message = loginError, actionLabel = "Cerrar", duration = SnackbarDuration.Short)
+         if(loginError!=null){
+            errorSnackbar(loginError, snackbarHostState, scope)
          }
 
          showSnackbar.value = true
-      }
+
       }, modifier = Modifier
          .fillMaxWidth()
          .padding(top = 16.dp, bottom = 10.dp), enabled = ciState.isValid && passwordState.isValid) {
@@ -139,7 +141,7 @@ fun LoggingIn(
    }
 
    if(showRecoverPassDialog.value){
-      RecoverPassBox(onConfirmation = {snackbarMessage.value = it; showSnackbar.value = true}, onDismiss = {showRecoverPassDialog.value = false})
+      RecoverPassBox(onConfirmation = {adviceSnackbar(it, snackbarHostState, scope)}, onDismiss = {showRecoverPassDialog.value = false})
    }
 
 

@@ -172,7 +172,7 @@ fun ScreenInscripcionesAsignaturas(drawerState: DrawerState) {
 @Composable
 fun ScreenInscripcionesExamen(drawerState: DrawerState) {
   TopBar(drawerState)
-  InscripcionExamenScreen()
+  //InscripcionExamenScreen()
 }
 @Preview
 @Composable
