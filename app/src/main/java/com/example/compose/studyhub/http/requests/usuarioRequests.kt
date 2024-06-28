@@ -40,6 +40,9 @@ fun loginRequest(ci: String, password: String, callback: (Boolean, String) -> Un
                      }
                   }
                }
+               else{
+                  callback(false, token)
+               }
                
             } else {
                callback(false, "")
