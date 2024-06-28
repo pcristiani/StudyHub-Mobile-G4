@@ -27,14 +27,14 @@ fun CarreraCard(nombre: String, selected: Boolean = false, onHeaderClicked: () -
   val snackbarHostState = remember { SnackbarHostState() }
   Card(modifier = Modifier
     .fillMaxWidth()
-    .clickable { onHeaderClicked();
+    .clickable { onHeaderClicked()/* ;
       scope.launch {
         snackbarHostState.showSnackbar(
           "Esto es un Snackbar",
           actionLabel = "Acción",
           duration = SnackbarDuration.Indefinite
         )
-      }
+      } */
      }
     .padding(horizontal = 15.dp, vertical = 3.dp),
     border = BorderStroke(1.dp, md_theme_List.copy(alpha = 0.5f)), shape = RoundedCornerShape(8.dp)) {
@@ -49,6 +49,6 @@ fun CarreraCard(nombre: String, selected: Boolean = false, onHeaderClicked: () -
 @Composable
 fun CarreraCardPreview() {
   ThemeStudyHub {
-    CarreraCard("Tecnologo Informatica", selected = false, onHeaderClicked = {})
+    CarreraCard("Tecnologo Informatica", selected = true, onHeaderClicked = {})
   }
 }

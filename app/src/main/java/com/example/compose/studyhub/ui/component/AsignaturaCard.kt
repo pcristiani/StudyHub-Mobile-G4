@@ -30,24 +30,6 @@ fun AsignaturaCard(nombre: String, onClick: ()->Unit) {
       Text(text = nombre, style = MaterialTheme.typography.labelLarge ) //   }
       println("selected: $nombre")
     }
-    //elevation = 10.dp,
-    //backgroundColor = Color.White,
-/*     shape = RoundedCornerShape(10.dp) */
-     /*  Text(
-        text = nombre,
-        modifier = Modifier.padding(start= 20.dp, top = 15.dp, bottom = 15.dp),
-        style = MaterialTheme.typography.bodyLarge
-      ) */
-     // Text(text = nombre, style = MaterialTheme.typography.labelLarge )
-      /*Spacer(modifier = Modifier.padding(start = 100.dp))
-      Text(
-          text = nombre,
-          modifier = Modifier.padding(start= 20.dp, top = 15.dp, bottom = 15.dp),
-          style = MaterialTheme.typography.labelSmall,
-          textAlign = TextAlign.End
-      )*/
-    //}
-
   }
 }
 

@@ -15,7 +15,7 @@ sealed class ItemsMenuLateral(val icon: ImageVector, val title: String, val ruta
    object ItemMenuPlanEstudios: ItemsMenuLateral(icon = Icons.Outlined.Description, title = "Plan de estudios", ruta = NavRoutes.EstudiosScreen)
    object ItemMenuInscripcion: ItemsMenuLateral(icon = Icons.Outlined.CalendarMonth, title = "Inscripción carrera", ruta = NavRoutes.InscripcionScreen)
    object ItemMenuInscripcionAsignatura: ItemsMenuLateral(icon = Icons.Outlined.Today, title = "Inscripción asignatura", ruta = NavRoutes.InscripcionAsignaturaScreen)
-   object ItemMenuInscripcionExamen: ItemsMenuLateral(icon = Icons.Outlined.ContentPaste, title = "Inscripción examen", ruta = NavRoutes.InscripcionExamenScreen)
+   object ItemMenuInscripcionExamen: ItemsMenuLateral(icon = Icons.Outlined.Description, title = "Inscripción examen", ruta = NavRoutes.InscripcionExamenScreen)
    object ItemMenuSolicitudes: ItemsMenuLateral(icon = Icons.Outlined.AdsClick, title = "Asignaturas", ruta = NavRoutes.SolicitudesScreen)
    object ItemMenuGestion: ItemsMenuLateral(icon = Icons.Outlined.Book, title = "Escolaridad", ruta = NavRoutes.GestionScreen)
 }
