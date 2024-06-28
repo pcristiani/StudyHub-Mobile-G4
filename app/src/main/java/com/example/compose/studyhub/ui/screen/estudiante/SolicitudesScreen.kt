@@ -33,6 +33,7 @@ fun SolicitudesScreen(): DrawerState {
   }
   return DrawerState(DrawerValue.Closed)
 }
+
 @Composable
 fun Solicitudes(modifier: Modifier) {
   val asignaturasList = remember { mutableStateListOf<String>() }
@@ -137,6 +138,7 @@ fun Solicitudes(modifier: Modifier) {
     }
   }
 }
+
 @Composable
 fun firstLoad(checked: Boolean): List<AsignaturaRequest>? {
   var asignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
@@ -156,9 +158,9 @@ fun firstLoad(checked: Boolean): List<AsignaturaRequest>? {
       }
     }
   }
-
   return asignaturas
 }
+
 
 fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<AsignaturaRequest>) {
   val currentSize = asignaturasList.size
@@ -171,6 +173,7 @@ fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<
     asignaturasList.add(asignaturas[currentSize + i].nombre)
   }
 }
+
 @Preview
 @Composable
 fun SolicitudesScreenPreview() {
@@ -178,6 +181,7 @@ fun SolicitudesScreenPreview() {
     SolicitudesScreen()
   }
 }
+
 @Composable
 fun UserItem(user: String) {
   AsignaturaCard(

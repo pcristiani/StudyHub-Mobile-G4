@@ -1,7 +1,11 @@
 package com.example.compose.studyhub.domain
 
+import java.util.regex.Pattern
+
 // Formato ci "0.000.000-0"
-private const val CI_VALIDATION = "^\\d{1}\\.\\d{3}\\.\\d{3}-\\d{1}\$"
+
+//private const val CI_VALIDATION = "^\\d{8}\\.\\d{3}\\.\\d{3}-\\d{1}\$"
+private const val CI_VALIDATION = "^\\d{8}\$"
 
 ///
 class CIState(val ci: String? = null) : TextFieldState(validator = ::isCIValid, errorFor = ::ciValidationError) {
@@ -19,8 +23,8 @@ private fun ciValidationError(ci: String): String {
 
 ///
 private fun isCIValid(ci: String): Boolean {
-   return true
-} //return Pattern.matches(EMAIL_VALIDATION, email)
+   return Pattern.matches(CI_VALIDATION, ci)
+}
 
 ///
 val CIStateSaver = textFieldStateSaver(CIState()) // // // // "grupo4.proyecto2024@gmail.com" // val nombre: String? = "Mensaje Sebastian"

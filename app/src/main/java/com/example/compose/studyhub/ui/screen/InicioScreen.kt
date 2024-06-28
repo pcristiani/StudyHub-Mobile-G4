@@ -33,6 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.domain.CIState
+import com.example.compose.studyhub.domain.CIStateSaver
 import com.example.compose.studyhub.domain.EmailState
 import com.example.compose.studyhub.domain.EmailStateSaver
 import com.example.compose.studyhub.ui.component.Logo
@@ -91,7 +93,7 @@ private fun LogoTitle(modifier: Modifier = Modifier) {
 // ? Crear cuenta
 @Composable
 private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onFocusChange: (Boolean) -> Unit, modifier: Modifier = Modifier) { // ! Guardar y resturar un estado
-   val ciState by rememberSaveable(stateSaver = EmailStateSaver) { mutableStateOf(EmailState()) }
+   val ciState by rememberSaveable(stateSaver = CIStateSaver) { mutableStateOf(CIState()) }
 
    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
       Text(text = stringResource(id = R.string.sign_in_create_account), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), textAlign = TextAlign.Center, modifier = Modifier.padding(top = 100.dp, bottom = 6.dp))

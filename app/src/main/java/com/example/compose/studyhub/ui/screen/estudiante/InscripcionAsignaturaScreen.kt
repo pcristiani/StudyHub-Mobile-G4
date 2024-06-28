@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.R.string.txt_inscripciones
@@ -36,6 +35,7 @@ import com.example.compose.studyhub.ui.screen.Name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
@@ -112,7 +112,6 @@ fun InscripcionAsignatura(carreraId: Int, horarioId:Int, idAsig:Int) {
       }
     }
   }
-
   Scaffold(
     snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
   ) {
@@ -148,6 +147,7 @@ fun firstLoad3(checked: Boolean): List<CarreraRequest>? {
   }
   return carreras
 }
+
 
 @Composable
 fun CarrerasInscripto(modifier: Modifier, snackbarHostState:SnackbarHostState, scope: CoroutineScope, onHeaderClicked: (Int) -> Unit) {
@@ -348,6 +348,7 @@ fun AsignaturaItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
 }
 
 
+
 ////////////////////////////////////////////////////////////
 
 // HORARIO ASIGNATURA
@@ -370,6 +371,7 @@ fun firstLoad32(checked: Boolean,asignaturaId:Int): List<HorariosAsignaturaReque
   }
   return carreras
 }
+
 
 @Composable
 fun HorarioAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (Int) -> Unit) {
@@ -399,7 +401,6 @@ fun HorarioAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (In
       text = stringResource(id = txt_selectHorario),
       style = MaterialTheme.typography.headlineSmall,
     )
-
     if (carreras != null) {
       LazyColumn(state = listState, modifier = Modifier
         .weight(1f)
@@ -438,6 +439,7 @@ fun HorarioAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (In
     }
   }
 }
+
 
 fun loadMoreAsigDeCarrera2(carrerasList: MutableList<HorariosAsignaturaRequest>, carreras: List<HorariosAsignaturaRequest>) {
   val currentSize = carrerasList.size

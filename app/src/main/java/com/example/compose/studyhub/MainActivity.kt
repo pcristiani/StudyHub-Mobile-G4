@@ -18,7 +18,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.util.services.PushNotificationService
 import com.example.compose.studyhub.ui.navigation.MenuLateral
 import com.example.compose.studyhub.ui.navigation.NavRoutes
-import com.example.compose.studyhub.ui.navigation.NavRoutes.InscripcionExamenScreen
 import com.example.compose.studyhub.ui.navigation.TopBar
 import com.example.compose.studyhub.ui.route.EditarPerfilRoute
 import com.example.compose.studyhub.ui.screen.estudiante.GestionScreen
