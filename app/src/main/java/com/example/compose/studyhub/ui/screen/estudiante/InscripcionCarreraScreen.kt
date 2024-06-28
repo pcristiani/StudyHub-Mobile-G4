@@ -2,12 +2,11 @@ package com.example.compose.studyhub.ui.screen.estudiante
 
 import CarreraRequest
 import InscripcionCarreraRequest
+import alertDialogDoc2
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,8 +22,9 @@ import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.http.requests.inscripcionCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
+import com.example.compose.studyhub.ui.component.searchBar.LocalEmailsDataProvider
+import com.example.compose.studyhub.ui.component.searchBar.SearchBarScreen
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -33,56 +33,26 @@ fun InscripcionCarreraScreen(): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
   val scope = rememberCoroutineScope()
   val snackbarHostState = remember { SnackbarHostState() }
+  var respone by remember { mutableStateOf<String?>(null) }
+
   Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
     if (remIdCarrera.value == null) {
-       Carreras(modifier = Modifier.fillMaxWidth(), snackbarHostState,scope,onHeaderClicked = { idC: Int? ->
+      Carreras(modifier = Modifier.fillMaxWidth(), snackbarHostState, scope, onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdCarrera.value = idC
           println("Este remIdCarrera : ${remIdCarrera.value}")
         }
       })
     } else {
-     //   CarrerasScreen(carreraId = remIdCarrera.value !!)
-      Carreras(modifier = Modifier.fillMaxWidth(), snackbarHostState,scope,onHeaderClicked = { idC: Int? ->
-        if (idC != null) {
-          remIdCarrera.value = idC
-          println("Este remIdCarrera : ${remIdCarrera.value}")
-        }
-      })
+      CarrerasScreen(carreraId = remIdCarrera.value !!)
     }
   }
   return DrawerState(DrawerValue.Closed)
 }
 
+/*
 @Composable
-fun MySnackbar() {
-  val scope = rememberCoroutineScope()
-  val snackbarHostState = remember { SnackbarHostState() }
-  Scaffold(
-    snackbarHost = {
-      SnackbarHost(hostState = snackbarHostState)
-    },
-    floatingActionButton = {
-      ExtendedFloatingActionButton(
-        text = { Text("Mostrar Snackbar") },
-        icon = { Icon(Icons.Filled.Add, contentDescription = "") },
-        onClick = {
-          scope.launch {
-            snackbarHostState.showSnackbar(
-              "Esto es un Snackbar",
-              actionLabel = "Acción",
-              duration = SnackbarDuration.Indefinite
-            )
-          }
-        }
-      )
-    }
-  ) { }
-}
-
-
-@Composable
-fun CarrerasScreen(carreraId: Int) {
+fun CarrerasScreen(carreraId: Int): responde<String>? {
   val coroutineScope = rememberCoroutineScope()
   var checked by remember { mutableStateOf(true) }
 
@@ -100,7 +70,52 @@ fun CarrerasScreen(carreraId: Int) {
       }
     }
   }
+} */
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun CarrerasScreen(carreraId: Int) {
+  val coroutineScope = rememberCoroutineScope()
+  var checked by remember { mutableStateOf(true) }
+  val snackbarHostState = remember { SnackbarHostState() }
+  val scope = rememberCoroutineScope()
+  var responsse by remember { mutableStateOf<String?>(null) }
+
+  LaunchedEffect(carreraId) {
+    coroutineScope.launch {
+      UserRepository.loggedInUser()?.let { id ->
+        UserRepository.getToken()?.let { token ->
+          if (checked) {
+            inscripcionCarreraRequest(token, InscripcionCarreraRequest(carreraId, id, true)) { success, response ->
+              responsse = "$response"
+              if (success) {
+                scope.launch {
+                  snackbarHostState.showSnackbar("$response")
+                }
+              } else {
+                scope.launch {
+                  snackbarHostState.showSnackbar("$response")
+                  //responsse = response
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  Scaffold(
+    snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+  ) {
+    if (responsse != null) {
+      alertDialogDoc2(title = "Inscripción exitosa", text = responsse ?: "null",onDismiss = { responsse = null })
+    }
+    //alertDialogDoc2(title = responsse ?: "Carresras Screen", onDismiss = { responsse = null })
+
+  }
 }
+
 
 
 @Composable
@@ -122,7 +137,7 @@ fun firstLoad2(checked: Boolean): List<CarreraRequest>? {
 
 
 @Composable
-fun Carreras(modifier: Modifier,snackbarHostState:SnackbarHostState,scope: CoroutineScope, onHeaderClicked: (Int) -> Unit) {
+fun Carreras(modifier: Modifier, snackbarHostState:SnackbarHostState, scope: CoroutineScope, onHeaderClicked: (Int) -> Unit) {
   val nombreCarrerasList = remember { mutableStateListOf<CarreraRequest>() }
   val isLoading = remember { mutableStateOf(false) }
   val listState = rememberLazyListState()
@@ -141,20 +156,25 @@ fun Carreras(modifier: Modifier,snackbarHostState:SnackbarHostState,scope: Corou
   Column(
     modifier = modifier
       .fillMaxWidth()
-      .padding(top = 60.dp, bottom = 1.dp),
-    verticalArrangement = Arrangement.spacedBy(20.dp),
+      .padding(top = 28.dp, bottom = 1.dp),
+    verticalArrangement = Arrangement.spacedBy(10.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Text(
-      text = stringResource(id = txt_selectCarrera),
-      style = MaterialTheme.typography.headlineSmall,
+    SearchBarScreen(
+      emails = LocalEmailsDataProvider.allEmails,
+      modifier = Modifier,
+      navigateToDetail = { _, _ -> }
     )
+    /*    Text(
+         text = stringResource(id = txt_selectCarrera),
+         style = MaterialTheme.typography.headlineSmall,
+       ) */
     if (carreras != null) {
       LazyColumn(state = listState, modifier = Modifier
         .weight(1f)
         .padding(bottom = 20.dp)) {
         items(nombreCarrerasList.size) { index ->
-          CarreraItem(user = nombreCarrerasList[index].nombre, snackbarHostState,scope,idC = nombreCarrerasList[index].idCarrera) {
+          CarreraItem(user = nombreCarrerasList[index].nombre, snackbarHostState, scope, idC = nombreCarrerasList[index].idCarrera) {
             onHeaderClicked(it)
           }
         }
@@ -163,18 +183,6 @@ fun Carreras(modifier: Modifier,snackbarHostState:SnackbarHostState,scope: Corou
             Box(modifier = Modifier
               .fillMaxWidth()
               .padding(16.dp)) { //   CircularProgressIndicator()
-            }
-          }
-        }
-      }
-      LaunchedEffect(listState) {
-        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
-          if (index == nombreCarrerasList.size - 1 && ! isLoading.value && nombreCarrerasList.size <= carreras !!.size) {
-            isLoading.value = true
-            coroutineScope.launch {
-              delay(3000)
-              loadMoreCarrera(nombreCarrerasList, carreras !!)
-              isLoading.value = false
             }
           }
         }
@@ -198,17 +206,11 @@ fun loadMoreCarrera(carrerasList: MutableList<CarreraRequest>, carreras: List<Ca
 }
 
 @Composable
-fun CarreraItem(user: String, snackbarHostState:SnackbarHostState,scope:CoroutineScope,idC: Int, onSelected: (Int) -> Unit) {
- // val scope = rememberCoroutineScope()
-//  val snackbarHostState = remember { SnackbarHostState() }
+fun CarreraItem(user: String, snackbarHostState:SnackbarHostState, scope:CoroutineScope, idC: Int, onSelected: (Int) -> Unit) {
   CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC); scope.launch {
     snackbarHostState.showSnackbar(message = "segasc", actionLabel = "Cerrar", duration = SnackbarDuration.Short)
   }
-
   })
-
-
-
 }
 
 @Preview

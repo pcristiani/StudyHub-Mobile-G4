@@ -4,6 +4,7 @@ import AsignaturaRequest
 import CarreraRequest
 import HorariosAsignaturaRequest
 import InscripcionAsignaturaRequest
+import alertDialogDoc2
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,7 +30,10 @@ import com.example.compose.studyhub.http.requests.inscripcionAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.ui.component.HorarioCard
+import com.example.compose.studyhub.ui.component.searchBar.LocalEmailsDataProvider
+import com.example.compose.studyhub.ui.component.searchBar.SearchBarScreen
 import com.example.compose.studyhub.ui.screen.Name
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -39,16 +43,18 @@ fun InscripcionAsignaturaScreen(): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
   val remIdAsignatura= remember { mutableStateOf<Int?>(null) }
   val remIdHorario= remember { mutableStateOf<Int?>(null) }
+  val scope = rememberCoroutineScope()
+  val snackbarHostState = remember { SnackbarHostState() }
 
   Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
     if (remIdCarrera.value == null) {
-      CarrerasInscripto(modifier = Modifier.fillMaxWidth(), onHeaderClicked = { idC: Int? ->
+      CarrerasInscripto(modifier = Modifier.fillMaxWidth(), snackbarHostState, scope, onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdCarrera.value = idC
           println("Este remIdCarrera : ${remIdCarrera.value}")
         }
       })
-    } else if (remIdAsignatura.value == null) {
+    } else if (remIdAsignatura.value == null && remIdCarrera.value != null) {
       AsigaturaDeCarrera(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdAsignatura.value = idC
@@ -65,29 +71,55 @@ fun InscripcionAsignaturaScreen(): DrawerState {
       })
     }
     if(remIdCarrera.value != null && remIdAsignatura.value != null && remIdHorario.value != null) {
-      InscripcionAsignatura(carreraId =remIdCarrera.value!!, horarioId =  remIdHorario.value !!,idAsig=remIdAsignatura.value !!)
+      InscripcionAsignatura(carreraId =remIdCarrera.value!!, horarioId =  remIdHorario.value !!, idAsig=remIdAsignatura.value !!)
     }
   }
   return DrawerState(DrawerValue.Closed)
 }
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun InscripcionAsignatura(carreraId: Int,horarioId:Int,idAsig:Int) {
+fun InscripcionAsignatura(carreraId: Int, horarioId:Int, idAsig:Int) {
   val coroutineScope = rememberCoroutineScope()
   var checked by remember { mutableStateOf(true) }
+  val snackbarHostState = remember { SnackbarHostState() }
+  val scope = rememberCoroutineScope()
+  var responsse by remember { mutableStateOf<String?>(null) }
+
   LaunchedEffect(horarioId) {
     coroutineScope.launch {
       UserRepository.loggedInUser()?.let { id ->
         UserRepository.getToken()?.let { token ->
           println("INCRIPCIONS "+id+" "+idAsig+" "+horarioId)
           if (checked) {
-            inscripcionAsignaturaRequest(token, InscripcionAsignaturaRequest(id,idAsig , horarioId)) { success,responde ->
-              println("responde: ${responde}")
+            inscripcionAsignaturaRequest(token, InscripcionAsignaturaRequest(id, idAsig , horarioId)) { success, responde ->
+              responsse = "$responde"
+              println("responde: ${responsse}")
+              if (success) {
+                scope.launch {
+                  snackbarHostState.showSnackbar("$responde")
+                }
+              } else {
+                scope.launch {
+                  snackbarHostState.showSnackbar("$responde")
+                  //responsse = response
+                }
+              }
             }
           }
         }
       }
+    }
+  }
+
+  Scaffold(
+    snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+  ) {
+    if (responsse != null) {
+      alertDialogDoc2(title = "¡Inscripción exitosa!", text = responsse ?: "null",onDismiss = { responsse = null })
+    }else{
+      alertDialogDoc2(title = "¡Advertencia!", text = "null",onDismiss = { responsse = null })
     }
   }
 }
@@ -107,8 +139,8 @@ fun firstLoad3(checked: Boolean): List<CarreraRequest>? {
       UserRepository.getToken()?.let { token ->
         if (checked) {
           println(id)
-          inscripcionesCarreraRequest(id,token) { id ->
-            carreras = id
+          inscripcionesCarreraRequest(id,token) { success ->
+            carreras = success
           }
         }
       }
@@ -118,7 +150,7 @@ fun firstLoad3(checked: Boolean): List<CarreraRequest>? {
 }
 
 @Composable
-fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
+fun CarrerasInscripto(modifier: Modifier, snackbarHostState:SnackbarHostState, scope: CoroutineScope, onHeaderClicked: (Int) -> Unit) {
   val nombreCarrerasList = remember { mutableStateListOf<CarreraRequest>() }
   val isLoading = remember { mutableStateOf(false) }
   val listState = rememberLazyListState()
@@ -141,6 +173,11 @@ fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
     verticalArrangement = Arrangement.spacedBy(20.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
+    SearchBarScreen(
+      emails = LocalEmailsDataProvider.allEmails,
+      modifier = Modifier,
+      navigateToDetail = { _, _ -> }
+    )
     Text(
       text = stringResource(id = txt_selectCarrera),
       style = MaterialTheme.typography.headlineSmall,
@@ -151,7 +188,7 @@ fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
         .weight(1f)
         .padding(bottom = 20.dp)) {
         items(nombreCarrerasList.size) { index ->
-          AsigDeCarreraItem(user = nombreCarrerasList[index].nombre, idC = nombreCarrerasList[index].idCarrera) {
+          AsigDeCarreraItem(user = nombreCarrerasList[index].nombre, snackbarHostState, scope, idC = nombreCarrerasList[index].idCarrera) {
             onHeaderClicked(it)
           }
         }
@@ -195,8 +232,11 @@ fun loadMoreAsigDeCarrera(carrerasList: MutableList<CarreraRequest>, carreras: L
 }
 
 @Composable
-fun AsigDeCarreraItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
-  CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC) })
+fun AsigDeCarreraItem(user: String, snackbarHostState:SnackbarHostState, scope:CoroutineScope, idC: Int, onSelected: (Int) -> Unit) {
+  CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC) ; scope.launch {
+    snackbarHostState.showSnackbar(message = "segasc", actionLabel = "Cerrar", duration = SnackbarDuration.Short)
+  }
+  })
 }
 
 
@@ -413,5 +453,5 @@ fun loadMoreAsigDeCarrera2(carrerasList: MutableList<HorariosAsignaturaRequest>,
 
 @Composable
 fun AsigDeCarreraItem2(user: String, idC: Int, onSelected: (Int) -> Unit) {
-  HorarioCard(nombre = user, onHeaderClicked = { onSelected(idC) })
+  CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC) })
 }

@@ -55,7 +55,6 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
   val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
   PushNotificationService.requestNewToken(context = LocalContext.current)
-
   NavHost(navController = navController, startDestination = "screenNovedades") {
 
 
@@ -66,32 +65,32 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
     }
     composable(NavRoutes.EstudiosScreen) {
       MenuLateral(navController, drawerState, contenido = {
-        ScreenEstudios(drawerState)
+        ScreenEstudios(drawerState, navController)
       })
     }
     composable(NavRoutes.InscripcionScreen) {
       MenuLateral(navController, drawerState, contenido = {
-        ScreenInscripciones(drawerState)
+        ScreenInscripciones(drawerState, navController)
       })
     }
     composable(NavRoutes.InscripcionAsignaturaScreen) {
       MenuLateral(navController, drawerState, contenido = {
-        ScreenInscripcionesAsignaturas(drawerState)
+        ScreenInscripcionesAsignaturas(drawerState, navController)
       })
     }
     composable(NavRoutes.InscripcionExamenScreen) {
       MenuLateral(navController, drawerState, contenido = {
-        ScreenInscripcionesExamen(drawerState)
+        ScreenInscripcionesExamen(drawerState, navController)
       })
     }
     composable(NavRoutes.SolicitudesScreen) {
       MenuLateral(navController, drawerState, contenido = {
-        ScreenSolicitudes(drawerState)
+        ScreenSolicitudes(drawerState, navController)
       })
     }
     composable(NavRoutes.GestionScreen) {
       MenuLateral(navController, drawerState, contenido = {
-        ScreenGestion(drawerState)
+        ScreenGestion(drawerState, navController)
       })
     }
 
@@ -101,46 +100,83 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
       })
     }
 
-
     composable(NavRoutes.InicioScreen) {
       val navController = rememberNavController()
-      StudyHubNavHost(navController)
+      StudyHubNavHost()
     }
   }
 }
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenNovedades(drawerState: DrawerState, navController: NavHostController) {
-  TopBar(drawerState)
+  TopBar(navController,drawerState)
   NovedadesScreen(navController)
 }
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenEstudios(drawerState: DrawerState) {
-  TopBar(drawerState)
+fun ScreenEstudios(drawerState: DrawerState, navController: NavHostController) {
+  TopBar(navController,drawerState)
   PlanEstudiosScreen()
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenSolicitudes(drawerState: DrawerState) {
-  TopBar(drawerState)
+fun ScreenSolicitudes(drawerState: DrawerState, navController: NavHostController) {
+  TopBar(navController,drawerState)
   SolicitudesScreen()
 }
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenGestion(drawerState: DrawerState) {
-  TopBar(drawerState)
+fun ScreenGestion(drawerState: DrawerState ,navController: NavHostController) {
+  TopBar(navController,drawerState)
   GestionScreen()
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenEditarPerfil(navController: NavHostController, drawerState: DrawerState) {
-  TopBar(drawerState)
+  TopBar(navController,drawerState)
   EditarPerfilRoute(
     onProfileEditSubmitted = { navController.navigate(NavRoutes.NovedadesScreen) },
     onNavUp = navController::navigateUp,
   )
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun ScreenInscripciones(drawerState: DrawerState,navController: NavHostController) {
+  TopBar(navController,drawerState)
+  InscripcionCarreraScreen()
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun ScreenInscripcionesAsignaturas(drawerState: DrawerState,navController: NavHostController) {
+  TopBar(navController,drawerState)
+  InscripcionAsignaturaScreen()
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun ScreenInscripcionesExamen(drawerState: DrawerState,navController: NavHostController) {
+  TopBar(navController,drawerState)
+  InscripcionExamenScreen()
+}
+
+
+/* @Preview
+@Composable
+fun SolicitudesScreenPreview() {
+  ThemeStudyHub {
+    TopBar(SolicitudesScreen())
+  }
+}
+@Preview
+@Composable
+fun GestionScreenPreview() {
+  ThemeStudyHub {
+    TopBar(GestionScreen())
+  }
 }
 @Preview
 @Composable
@@ -155,39 +191,10 @@ fun PlanEstudiosScreenPreview() {
   ThemeStudyHub {
     TopBar(PlanEstudiosScreen())
   }
-}
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun ScreenInscripciones(drawerState: DrawerState) {
-  TopBar(drawerState)
-  InscripcionCarreraScreen()
-}
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun ScreenInscripcionesAsignaturas(drawerState: DrawerState) {
-  TopBar(drawerState)
-  InscripcionAsignaturaScreen()
-}
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun ScreenInscripcionesExamen(drawerState: DrawerState) {
-  TopBar(drawerState)
-  //InscripcionExamenScreen()
-}
-@Preview
-@Composable
-fun SolicitudesScreenPreview() {
-  ThemeStudyHub {
-    TopBar(SolicitudesScreen())
-  }
-}
-@Preview
-@Composable
-fun GestionScreenPreview() {
-  ThemeStudyHub {
-    TopBar(GestionScreen())
-  }
-}/*
+} */
+
+
+/*
    private fun createNotificationChannel() {
       // Create the NotificationChannel, but only on API 26+ because
       // the NotificationChannel class is not in the Support Library.

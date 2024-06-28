@@ -31,6 +31,7 @@ import com.example.compose.studyhub.http.requests.getAsignaturasConExamenPendien
 import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.http.requests.getExamenesAsignatura
+
 import com.example.compose.studyhub.http.requests.getHorariosAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionExamenRequest
@@ -50,10 +51,12 @@ fun InscripcionExamenScreen(): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
   val remIdAsignatura= remember { mutableStateOf<Int?>(null) }
   val remIdHorario= remember { mutableStateOf<Int?>(null) }
+  val scope = rememberCoroutineScope()
+  val snackbarHostState = remember { SnackbarHostState() }
 
   Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
     if (remIdCarrera.value == null) {
-      CarrerasInscripto(modifier = Modifier.fillMaxWidth(), onHeaderClicked = { idC: Int? ->
+      CarrerasInscripto(modifier = Modifier.fillMaxWidth(),snackbarHostState, scope, onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdCarrera.value = idC
           println("Este remIdCarrera : ${remIdCarrera.value}")

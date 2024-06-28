@@ -68,17 +68,17 @@ import kotlinx.coroutines.launch
 @Composable
 fun MenuLateral(navController: NavHostController, drawerState: DrawerState, contenido: @Composable () -> Unit) {
    val scope = rememberCoroutineScope()
-   val menuItems = listOf(ItemMenuNovedades, ItemMenuPlanEstudios, ItemMenuInscripcion, ItemMenuInscripcionAsignatura,ItemMenuInscripcionExamen,ItemMenuSolicitudes, ItemMenuGestion)
+   val menuItems = listOf(ItemMenuNovedades, ItemMenuInscripcion, ItemMenuInscripcionAsignatura,ItemMenuInscripcionExamen,ItemMenuSolicitudes, ItemMenuGestion)
    val showLogoutDialog = remember { mutableStateOf(false) }
    
    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
       ModalDrawerSheet { //  Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
          Column(modifier = Modifier.padding(end = 5.dp, top = 5.dp, bottom = 5.dp)) {
-            HeaderMenuLateral(topAppBarText = stringResource(id = R.string.app_name), onNavUp = {
+            HeaderMenuLateral(navController = navController, topAppBarText = stringResource(id = R.string.app_name), onNavUp = {
                scope.launch {
                   drawerState.close()
                }
-            })/*   Image(painter = painterResource(id = R.drawable.logotext), contentDescription = "Logo", modifier = Modifier.size(150.dp), alignment = Alignment.Center)*/
+            })
             menuItems.forEach { item ->
                NavigationDrawerItem(icon = { Icon(item.icon, null) }, label = { Text(text = item.title) }, selected = currentRoute(navController) == item.ruta, onClick = {
                   scope.launch {
@@ -114,30 +114,7 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                   }
                }
                
-               Box(
-                  modifier = Modifier
-                     .size(50.dp, 50.dp)
-                     .padding(bottom = 10.dp, start = 20.dp)
-                  ) {
-                  IconButton(
-                     onClick = {
-                        scope.launch {
-                           drawerState.close()
-                        }
-                        try {
-                           navController.navigate(NavRoutes.EditarPerfilScreen) //  println(item.ruta)
-                        } catch (e: Exception) {
-                           println("Error al navegar: ${e.message}")
-                        }
-                     }, modifier = Modifier.align(Alignment.CenterStart)
-                            ) {
-                     Icon(
-                        imageVector = Icons.Filled.Build, contentDescription = "Settings", modifier = Modifier.size(60.dp, 60.dp), tint = colorResource(
-                           id = R.color.darker_gray
-                                                                                                                                                       )
-                         )
-                  }
-               }
+
             }
             if (showLogoutDialog.value) {
                LogoutBox(navController = navController, onDismiss = { showLogoutDialog.value = false })
@@ -150,7 +127,7 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HeaderMenuLateral(topAppBarText: String, onNavUp: () -> Unit) {
+fun HeaderMenuLateral(navController: NavHostController, topAppBarText: String, contenido: @Composable () -> Unit = {}, onNavUp: () -> Unit){
    CenterAlignedTopAppBar(title = {
       Text(
          text = topAppBarText, modifier = Modifier
@@ -158,10 +135,25 @@ fun HeaderMenuLateral(topAppBarText: String, onNavUp: () -> Unit) {
             .wrapContentSize(Alignment.Center)
           )
    }, actions = {
-      val navController = rememberNavController()
-      IconButton(onClick = onNavUp) {
-         Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = stringResource(id = R.string.strprueba), tint = MaterialTheme.colorScheme.secondary)
+
+      val drawerState = remember { DrawerState(DrawerValue.Open) }
+      val scope = rememberCoroutineScope()
+      IconButton(
+         onClick = {
+            scope.launch {
+               drawerState.close()
+            }
+            try {
+               navController.navigate(NavRoutes.EditarPerfilScreen) //  println(item.ruta)
+            } catch (e: Exception) {
+               println("Error al navegar: ${e.message}")
+            }
+         }, modifier = Modifier
+      ) {
+
       }
+         //Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = stringResource(id = R.string.strprueba), tint = MaterialTheme.colorScheme.secondary)
+
    }, navigationIcon = {
       IconButton(onClick = onNavUp) {
          Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.back), tint = MaterialTheme.colorScheme.secondary)

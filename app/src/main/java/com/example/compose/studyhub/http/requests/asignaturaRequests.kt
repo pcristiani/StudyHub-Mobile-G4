@@ -133,22 +133,20 @@ fun getHorariosAsignaturaRequest(idAsignatura:Int, token: String, callback: (Lis
 fun inscripcionAsignaturaRequest(
    token: String,
    inscripcionAsignaturaRequest: InscripcionAsignaturaRequest,
-   callback: (Boolean, String?) -> Unit
-) {
+   callback: (Boolean, String?) -> Unit) {
    val completeToken = "Bearer $token"
 
    RetrofitClient.api.inscripcionAsignatura(completeToken, inscripcionAsignaturaRequest).enqueue(object : Callback<String> {
       override fun onResponse(call: Call<String>, response: Response<String>) {
          val responseText = response.body()
-
          if (response.isSuccessful) {
             callback(true, responseText)
          } else {
             val errorMessage = buildString {
-               append("Response code: ${response.code()}\n")
-               append("Response message: ${response.message()}\n")
+               //append("Response code: ${response.code()}\n")
+               append("${response.body()}\n")
                response.errorBody()?.let { errorBody ->
-                  append("Error body: ${errorBody.string()}")
+                  append("${errorBody.string()}")
                }
             }
             callback(false, errorMessage)
@@ -161,37 +159,7 @@ fun inscripcionAsignaturaRequest(
       }
    })
 }
-/*
 
-fun inscripcionAsignaturaRequest(token:String, inscripcionAsignaturaRequest: InscripcionAsignaturaRequest, callback: (Boolean) -> Unit){
-   val completeToken = "Bearer " + token
-
-   RetrofitClient.api.inscripcionAsignatura(completeToken, inscripcionAsignaturaRequest).enqueue(object: Callback<String>{
-      override fun onResponse(call: Call<String>, response: Response<String>) {
-         val responseText = response.body()
-
-         println(responseText)
-
-         if (response.isSuccessful) {
-            callback(true)
-            println(responseText)
-         } else {
-            callback(false)
-            println("Response code: ${response.code()}")
-            println("Response message: ${response.message()}")
-            response.errorBody()?.let { errorBody ->
-               println("Error body: ${errorBody.string()}")
-            }
-         }
-      }
-
-      override fun onFailure(call: Call<String>, t: Throwable) {
-         println("Error: ${t.message}")
-         callback(false)
-      }
-   })
-}
-*/
 
 fun getAsignaturasConExamenPendienteRequest(idUsuario:Int, idCarrera:Int, token:String, callback: (List<AsignaturaRequest>?) -> Unit){
    val completeToken = "Bearer " + token

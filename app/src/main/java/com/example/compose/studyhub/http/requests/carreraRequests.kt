@@ -25,10 +25,10 @@ fun inscripcionesCarreraRequest(idUsuario: Int, token: String, callback: (List<C
                 callback(carreras) // println("Response: $responseText")
             } else {
                 callback(null)
-                println("Response code: ${response.code()}")
-                println("Response message: ${response.message()}")
+            //    println("Response code: ${response.code()}")
+              //  println("Response message: ${response.message()}")
                 response.errorBody()?.let { errorBody ->
-                    println("Error body: ${errorBody.string()}")
+                    println("${errorBody.string()}")
                 }
         }}
         override fun onFailure(call: Call<String>, t: Throwable) {
@@ -78,7 +78,6 @@ fun inscripcionCarreraRequest(token: String, inscripcionCarrera: InscripcionCarr
     RetrofitClient.api.inscripcionCarrera(completeToken, inscripcionCarrera).enqueue(object: Callback<String> {
         override fun onResponse(call: Call<String>, response: Response<String>) {
             val responseText = response.body()
-
             if (response.isSuccessful) {
                 callback(true,responseText)
                 println(responseText)

@@ -118,5 +118,10 @@
     <string name="asignatura4">Programacion Avanzada</string>
     <string name="asignatura5">Programacion Aplicaciones</string>
 
-
+    <string name="back_button">Atras</string>
+    <string name="profile">Profile</string>
+    <string name="search">Buscar</string>
+    <string name="search_emails">Buscar...</string>
+    <string name="no_item_found">No se encontró ningún artículo</string>
+    <string name="no_search_history">Sin historial de búsqueda</string>
 </resources>
