@@ -29,7 +29,12 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun InscripcionCarreraScreen(): DrawerState {
+fun InscripcionCarreraScreen(
+
+  onInscripcionCarreraSubmitted: (idCarrera: Int) -> Unit,
+  onNavUp: () -> Unit,
+
+): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
   val scope = rememberCoroutineScope()
   val snackbarHostState = remember { SnackbarHostState() }
@@ -40,11 +45,12 @@ fun InscripcionCarreraScreen(): DrawerState {
       Carreras(modifier = Modifier.fillMaxWidth(), snackbarHostState, scope, onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdCarrera.value = idC
+          onInscripcionCarreraSubmitted(remIdCarrera.value!!)
           println("Este remIdCarrera : ${remIdCarrera.value}")
         }
       })
     } else {
-      CarrerasScreen(carreraId = remIdCarrera.value !!)
+      //CarrerasScreen(carreraId = remIdCarrera.value !!)
     }
   }
   return DrawerState(DrawerValue.Closed)
@@ -72,9 +78,11 @@ fun CarrerasScreen(carreraId: Int): responde<String>? {
   }
 } */
 
+
+/*
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CarrerasScreen(carreraId: Int) {
+fun CarrerasScreen(carreraId: Int, ) {
   val coroutineScope = rememberCoroutineScope()
   var checked by remember { mutableStateOf(true) }
   val snackbarHostState = remember { SnackbarHostState() }
@@ -115,7 +123,7 @@ fun CarrerasScreen(carreraId: Int) {
 
   }
 }
-
+*/
 
 
 @Composable
@@ -216,6 +224,6 @@ fun CarreraItem(user: String, snackbarHostState:SnackbarHostState, scope:Corouti
 @Preview
 @Composable
 fun InscripcionScreenPreview() { // Carreras(modifier = Modifier.fillMaxWidth(), onHeaderClicked = {})
-  InscripcionCarreraScreen()
+  InscripcionCarreraScreen(onInscripcionCarreraSubmitted = {}, onNavUp= {})
 }
 

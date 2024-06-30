@@ -20,6 +20,7 @@ import com.example.compose.studyhub.ui.navigation.MenuLateral
 import com.example.compose.studyhub.ui.navigation.NavRoutes
 import com.example.compose.studyhub.ui.navigation.TopBar
 import com.example.compose.studyhub.ui.route.EditarPerfilRoute
+import com.example.compose.studyhub.ui.route.InscripcionCarreraRoute
 import com.example.compose.studyhub.ui.screen.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.screen.estudiante.InscripcionCarreraScreen
 import com.example.compose.studyhub.ui.screen.estudiante.InscripcionAsignaturaScreen
@@ -145,7 +146,10 @@ fun ScreenEditarPerfil(navController: NavHostController, drawerState: DrawerStat
 @Composable
 fun ScreenInscripciones(drawerState: DrawerState,navController: NavHostController) {
   TopBar(navController,drawerState)
-  InscripcionCarreraScreen()
+  InscripcionCarreraRoute(
+    onInscripcionCarreraSubmitted = { navController.navigate(NavRoutes.NovedadesScreen) },
+    onNavUp = navController::navigateUp,
+    )
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

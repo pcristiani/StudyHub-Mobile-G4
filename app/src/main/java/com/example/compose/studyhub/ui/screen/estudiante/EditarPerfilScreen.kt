@@ -45,7 +45,6 @@ fun EditarPerfilScreen(
             topAppBarText = stringResource(id = R.string.txt_editPerfil),
             onNavUp = onNavUp
         )
-
         }, content = {contentPadding -> LoginRegisterScreen(contentPadding = contentPadding, modifier = Modifier.supportWideScreen()){
         Column{
             EditarPerfil(modifier = Modifier.weight(1f), onProfileEditSubmitted = onProfileEditSubmitted)

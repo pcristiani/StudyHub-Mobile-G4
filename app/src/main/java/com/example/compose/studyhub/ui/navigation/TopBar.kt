@@ -104,6 +104,9 @@ fun TasksTopAppBar(navController: NavHostController,
    drawerState: DrawerState,
    openDrawer: () -> Unit, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit
 ) {
+
+   val showLogoutDialog = remember { mutableStateOf(false) }
+
    TopAppBar(
       title = { Text(text = stringResource(id = R.string.app_name)) },
       navigationIcon = {
@@ -113,15 +116,23 @@ fun TasksTopAppBar(navController: NavHostController,
 
       },
       actions = {
-         MoreTasksMenu(navController,drawerState, onClearCompletedTasks, onRefresh)
+         MoreTasksMenu(navController,drawerState, onClearCompletedTasks, onRefresh) {
+            showLogoutDialog.value = true
+         }
       },
       modifier = Modifier.fillMaxWidth()
    )
+
+   if (showLogoutDialog.value) {
+      LogoutBox(navController = navController, onDismiss = { showLogoutDialog.value = false })
+   }
 }
 
 @Composable
 fun MoreTasksMenu(
-   navController: NavController, drawerState:DrawerState, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit
+   navController: NavController, drawerState:DrawerState, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit,
+   logoutMenu:()->Unit
+
 ) {
    val scope = rememberCoroutineScope()
    val showLogoutDialog = remember { mutableStateOf(false) }
@@ -146,12 +157,14 @@ fun MoreTasksMenu(
             scope.launch {
                drawerState.close()
             }
-            showLogoutDialog.value = true
+            logoutMenu()
          }, modifier = Modifier
       ) {
          Text(text = stringResource(id = R.string.logout))
       }
    }
+
+
 }
 
 
