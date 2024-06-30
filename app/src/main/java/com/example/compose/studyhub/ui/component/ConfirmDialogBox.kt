@@ -23,7 +23,7 @@ fun ConfirmDialogBox(
     AlertDialog(
         title = {
             Box(modifier = Modifier.padding(start=10.dp, top=10.dp)){
-                //Text(text = dialogTitle, style= MaterialTheme.typography.bodyMedium)
+                Text(text = dialogTitle, style= MaterialTheme.typography.body1)
 
             }
         },

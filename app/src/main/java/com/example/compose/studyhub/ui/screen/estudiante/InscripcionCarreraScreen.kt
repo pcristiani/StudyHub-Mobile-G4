@@ -36,7 +36,8 @@ fun InscripcionCarreraScreen(
   onInscripcionCarreraSubmitted: (idCarrera: Int) -> Unit,
   onInscripcionCarreraConfirmed: () -> Unit,
   onNavUp: () -> Unit,
-  onError: String?
+  onError: String? = null,
+  onSuccess: String? = null
 
 ): DrawerState {
     val remIdCarrera = remember { mutableStateOf<Int?>(null) }
@@ -45,6 +46,18 @@ fun InscripcionCarreraScreen(
     var respone by remember { mutableStateOf<String?>(null) }
     val showConfirmationDialog = remember { mutableStateOf(false) }
     val showErrorDialog = remember { mutableStateOf(false) }
+
+    LaunchedEffect(onError){
+        if(onError!=null){
+            println("On error: $onError")
+            if(onError==""){
+                showConfirmationDialog.value = true
+            }
+            else{
+                showErrorDialog.value = true
+            }
+        }
+    }
 
     Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
         if (remIdCarrera.value == null) {
@@ -56,12 +69,6 @@ fun InscripcionCarreraScreen(
                     if (idC != null) {
                         remIdCarrera.value = idC
                         onInscripcionCarreraSubmitted(remIdCarrera.value!!)
-                        if(onError==null){
-                            showConfirmationDialog.value = true
-                        }
-                        else{
-                            showErrorDialog.value = true
-                        }
                         println("Este remIdCarrera : ${remIdCarrera.value}")
                     }
 
@@ -71,15 +78,15 @@ fun InscripcionCarreraScreen(
         }
         if(showConfirmationDialog.value){
             ConfirmDialogBox(onDismissRequest = { onInscripcionCarreraConfirmed()
-            ; showConfirmationDialog.value = false }, dialogTitle = "Inscripcion confirmada")
+            ; showConfirmationDialog.value = false }, dialogTitle = onSuccess?:"")
         }
         if(showErrorDialog.value){
             ConfirmDialogBox(onDismissRequest = {
-                showConfirmationDialog.value = false }, dialogTitle = onError?:"")
+                showErrorDialog.value = false }, dialogTitle = onError?:"")
         }
-        }
-        return DrawerState(DrawerValue.Closed)
     }
+    return DrawerState(DrawerValue.Closed)
+}
 
 
 

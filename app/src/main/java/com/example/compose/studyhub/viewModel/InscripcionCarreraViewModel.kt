@@ -17,7 +17,7 @@ class InscripcionCarreraViewModel(private val userRepository: UserRepository): V
 
 
   // Considere todos los registros exitosos
-  fun inscripcionCarrera(idCarrera: Int, onInscripcionCarreraSubmitted: () -> Unit) {
+  fun inscripcionCarrera(idCarrera: Int, onInscripcionCarreraSubmitted: (String) -> Unit, onInscripcionCarreraError: (String)->Unit) {
     val modifyProfileRequest = UserRepository.getToken()?.let { token ->
       UserRepository.loggedInUser()?.let { idUsuario ->
 
@@ -27,10 +27,10 @@ class InscripcionCarreraViewModel(private val userRepository: UserRepository): V
           InscripcionCarreraRequest(idCarrera, idUsuario, true)
         ) { success, response ->
           if (success) {
-            onInscripcionCarreraSubmitted()
+            onInscripcionCarreraSubmitted(response?:"")
 
           } else {
-            _inscripcionCarreraError.value = response
+            onInscripcionCarreraError(response?:"")
 
           }
         }

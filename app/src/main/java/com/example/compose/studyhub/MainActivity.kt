@@ -154,7 +154,7 @@ fun ScreenInscripciones(drawerState: DrawerState,navController: NavHostControlle
 
   TopBar(navController,drawerState)
   InscripcionCarreraRoute(
-    onInscripcionCarreraSubmitted = { navController.navigate(NavRoutes.NovedadesScreen) },
+    onInscripcionCarreraConfirmed = { navController.navigate(NavRoutes.NovedadesScreen) },
     onNavUp = navController::navigateUp,
     )
 }

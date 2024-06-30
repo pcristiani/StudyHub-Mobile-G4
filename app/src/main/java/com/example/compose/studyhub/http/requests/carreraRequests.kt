@@ -81,11 +81,12 @@ fun inscripcionCarreraRequest(token: String, inscripcionCarrera: InscripcionCarr
                 callback(true,responseText)
               //  println(responseText)
             } else {
-                callback(false,responseText)
+                callback(false, response.errorBody()?.string())
               //  println("Response code: ${response.code()}")
              //   println("Response message: ${response.message()}")
                 response.errorBody()?.let { errorBody ->
-                    println("Error body: ${errorBody.string()}")
+                    println("Error body: ${errorBody.string()}"
+                    )
                 }
             }
         }
