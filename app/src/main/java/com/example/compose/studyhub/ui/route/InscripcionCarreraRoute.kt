@@ -6,6 +6,8 @@ import com.example.compose.studyhub.viewModel.EditarPerfilViewModel
 import com.example.compose.studyhub.viewModel.EditarPerfilViewModelFactory
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.compose.studyhub.ui.screen.RegisterScreen
@@ -23,13 +25,20 @@ fun InscripcionCarreraRoute(
     onNavUp: () -> Unit,
 ) {
     val inscripcionCarreraViewModel: InscripcionCarreraViewModel = viewModel(factory = InscripcionCarreraViewModelFactory())
+    val inscripcionCarreraError by inscripcionCarreraViewModel.inscripcionCarreraError.observeAsState()
+
+
+
     InscripcionCarreraScreen(
 
         onInscripcionCarreraSubmitted = {idCarrera->
-            inscripcionCarreraViewModel.inscripcionCarrera(idCarrera,  onInscripcionCarreraSubmitted)
+            inscripcionCarreraViewModel.inscripcionCarrera(idCarrera
+            ){}
 
 
-                                        },
+        },
+        onInscripcionCarreraConfirmed = onInscripcionCarreraSubmitted,
+        onError = inscripcionCarreraError,
         onNavUp = onNavUp,
     )
 

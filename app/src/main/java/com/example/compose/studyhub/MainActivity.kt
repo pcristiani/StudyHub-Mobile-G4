@@ -11,6 +11,10 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -146,6 +150,8 @@ fun ScreenEditarPerfil(navController: NavHostController, drawerState: DrawerStat
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenInscripciones(drawerState: DrawerState,navController: NavHostController) {
+
+
   TopBar(navController,drawerState)
   InscripcionCarreraRoute(
     onInscripcionCarreraSubmitted = { navController.navigate(NavRoutes.NovedadesScreen) },
