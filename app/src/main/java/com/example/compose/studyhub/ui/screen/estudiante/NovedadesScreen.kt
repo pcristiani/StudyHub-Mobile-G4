@@ -76,7 +76,6 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
          ), label = ""
       )
 
-      //Efecto para el texto
       LaunchedEffect(greetings) {
          if (nombre != "") {
             scope.launch {
@@ -107,13 +106,11 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
       Column(modifier = Modifier.wrapContentHeight(align = Alignment.CenterVertically)) {
          Logo(
             modifier = Modifier
-               .align(Alignment.CenterHorizontally)
-               .size(240.dp)
-               .scale(animatedScale)
-               .padding(top = 76.dp)
+              .align(Alignment.CenterHorizontally)
+              .size(240.dp)
+              .scale(animatedScale)
+              .padding(top = 76.dp)
          )
-
-
 
 
          Row(verticalAlignment = Alignment.CenterVertically,
@@ -134,8 +131,6 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
             )
          }
 
-
-
          BackHandler {
             showLogoutDialog.value = true
          }
@@ -143,9 +138,6 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
          if (showLogoutDialog.value) {
             LogoutBox(navController = navController, onDismiss = { showLogoutDialog.value = false })
          }
-
-
-
       }
    }
    return DrawerState(DrawerValue.Closed)

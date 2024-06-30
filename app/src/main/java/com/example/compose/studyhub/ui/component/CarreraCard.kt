@@ -23,8 +23,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CarreraCard(nombre: String, selected: Boolean = false, onHeaderClicked: () -> Unit) {
-  val scope = rememberCoroutineScope()
-  val snackbarHostState = remember { SnackbarHostState() }
+
   Card(modifier = Modifier
     .fillMaxWidth()
     .clickable { onHeaderClicked()/* ;

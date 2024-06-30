@@ -42,11 +42,12 @@ import com.example.compose.studyhub.R
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 import com.example.compose.studyhub.ui.component.gestion.ExpandableList
+
 import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 
 @Composable
 fun PlanEstudiosScreen(): DrawerState {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+  //  val drawerState = rememberDrawerState(DrawerValue.Closed)
    
    /* Column(
       modifier = Modifier.fillMaxSize(),
@@ -80,7 +81,7 @@ fun PlanEstudiosScreen(): DrawerState {
       var carreraSelected = remember { mutableIntStateOf(0) }
 
 
-      ExpandableList(modifier=Modifier.padding(top = 50.dp, bottom = 5.dp), headerTitle = "Lista",
+      ExpandableList(modifier=Modifier.padding(top = 10.dp, bottom = 1.dp), headerTitle = "Lista",
        options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value = selectedId})
 
       /*
