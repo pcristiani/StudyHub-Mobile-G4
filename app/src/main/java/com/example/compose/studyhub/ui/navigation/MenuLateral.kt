@@ -98,7 +98,7 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                      .size(50.dp, 50.dp)
                      .padding(bottom = 10.dp, start = 20.dp)
                   ) {
-                  IconButton(
+             /*     IconButton(
                      onClick = {
                         scope.launch {
                            drawerState.close()
@@ -110,8 +110,8 @@ fun MenuLateral(navController: NavHostController, drawerState: DrawerState, cont
                         imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "Settings", modifier = Modifier.size(40.dp, 50.dp), tint = colorResource(
                            id = R.color.darker_gray
                                                                                                                                                                      )
-                         )
-                  }
+                         )*/
+                //  }
                }
                
 

@@ -1,8 +1,10 @@
 package com.example.compose.studyhub.ui.component
 
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.SnackbarResult
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -25,3 +27,4 @@ fun successSnackbar(error: String, snackbarHostState: SnackbarHostState, scope: 
         snackbarHostState.showSnackbar(message = error, actionLabel = "Cerrar", duration = SnackbarDuration.Short)
     }
 }
+

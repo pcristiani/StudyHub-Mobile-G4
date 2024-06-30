@@ -12,10 +12,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -163,7 +163,7 @@ fun RecoverPassBox(onConfirmation: (String) -> Unit, onDismiss: () -> Unit){
 }
 
 
-@Composable
+/*@Composable
 fun ErrorSnackbar(message: String, snackbarHostState: SnackbarHostState, modifier: Modifier = Modifier, onDismiss: () -> Unit = {}) {
    SnackbarHost(hostState = snackbarHostState, snackbar = { data ->
       println("Hello")
@@ -179,7 +179,7 @@ fun ErrorSnackbar(message: String, snackbarHostState: SnackbarHostState, modifie
    }, modifier = modifier
       .fillMaxWidth()
       .wrapContentHeight(Alignment.Bottom))
-}
+}*/
 
 
 

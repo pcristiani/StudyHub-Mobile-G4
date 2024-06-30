@@ -1,7 +1,9 @@
 package com.example.compose.studyhub.ui.component.searchBar
 
+import CarreraRequest
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,9 +15,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,37 +30,37 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.data.Account
 import com.example.compose.studyhub.data.Email
-
+import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.getCarrerasRequest
+import com.example.compose.studyhub.ui.navigation.ReplyProfileImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchList(
-    emails: List<Email>,
-    onSearchItemSelected: (Email) -> Unit,
+    emails: List<Account>,
+  //  carreras: List<CarreraRequest>,
+    onSearchItemSelected: (Account) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var query by remember { mutableStateOf("") }
     var active by remember { mutableStateOf(false) }
-    val searchResults = remember { mutableStateListOf<Email>() }
+    val searchResults = remember { mutableStateListOf<Account>() }
 
     LaunchedEffect(query) {
         searchResults.clear()
         if (query.isNotEmpty()) {
             searchResults.addAll(
                 emails.filter {
-                    it.sender.fullName.startsWith(
-                        prefix = query,
-                        ignoreCase = true
-                    ) || it.sender.fullName.startsWith(
-                        prefix =
-                        query,
-                        ignoreCase = true
-                    )
+                    it.nombre.startsWith(query, ignoreCase = true) ||
+                        it.fullName.startsWith(query, ignoreCase = true)
                 }
             )
         }
@@ -61,6 +68,7 @@ fun SearchList(
 
     DockedSearchBar(
         modifier = modifier,
+
             query = query,
         onQueryChange = {
             query = it
@@ -71,6 +79,7 @@ fun SearchList(
             active = it
         },
         placeholder = { Text(text = stringResource(id = R.string.search_emails)) },
+
         leadingIcon = {
             if (active) {
                 Icon(
@@ -90,57 +99,64 @@ fun SearchList(
                     modifier = Modifier.padding(start = 16.dp),
                 )
             }
+
         },
-       /*   trailingIcon = {
+         /*trailingIcon = {
             ReplyProfileImage(
-                drawableResource = R.drawable.a3_graduated_128,
+                drawableResource = R.drawable.graduado2,
                 description = stringResource(id = R.string.profile),
                 modifier = Modifier
                     .padding(12.dp)
                     .size(32.dp)
             )
-        }, */
+        },*/
     ) {
         if (searchResults.isNotEmpty()) {
             LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(14.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)
+
             ) {
-                items(items = searchResults, key = { it.id }) { email ->
-                    ListItem(
-                        headlineContent = { Text(email.sender.fullName) },
-                        supportingContent = { Text(email.sender.email) },
-                       // leadingContent = {
-                            /*  ReplyProfileImage(
-                                drawableResource = email.sender.avatar,
-                                description = stringResource(id = R.string.profile),
-                                modifier = Modifier
-                                    .size(32.dp)
-                            ) */
-                      //  },
-                        modifier = Modifier.clickable {
-                            onSearchItemSelected.invoke(email)
-                            query = ""
-                            active = false
-                        }
-                    )
+                items(items = searchResults, key = { it.idCarrera }) { email ->
+                    ListItem(headlineContent = { Text(email.fullName) }, supportingContent = { Text(email.descripcion) }, leadingContent = {
+                      /*  ReplyProfileImage(drawableResource = email.avatar, description = stringResource(id = R.string.profile), modifier = Modifier.size(32.dp)                        )*/
+                    }, modifier = Modifier.clickable {
+                        onSearchItemSelected.invoke(email)
+                        query = ""
+                        active = false
+                        println("${email.fullName}")
+                    })
                 }
             }
         } else if (query.isNotEmpty()) {
             Text(
-                text = stringResource(id = R.string.no_item_found),
-                modifier = Modifier.padding(16.dp)
+                text = stringResource(id = R.string.no_item_found), modifier = Modifier.padding(16.dp)
             )
-        } else
-            Text(
-                text = stringResource(id = R.string.no_search_history),
-                modifier = Modifier.padding(16.dp)
-            )
+        } else Text(
+            text = stringResource(id = R.string.no_search_history), modifier = Modifier.padding(16.dp)
+        )
     }
 }
 
-/* @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun firstLoad21(checked: Boolean): List<CarreraRequest>? {
+    var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
+    LaunchedEffect(checked) {
+        UserRepository.loggedInUser()?.let { user ->
+            UserRepository.getToken()?.let { token ->
+                if (checked) {
+                    getCarrerasRequest(token) { success ->
+                        carreras = success
+                    }
+                }
+            }
+        }
+    }
+    return carreras
+}
+
+
+/*
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailDetailAppBar(
     email: Email,
@@ -151,7 +167,7 @@ fun EmailDetailAppBar(
     TopAppBar(
         modifier = modifier,
         colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.inverseOnSurface
+            containerColor = MaterialTheme.colorScheme.onPrimary
         ),
         title = {
             Column(
@@ -165,8 +181,8 @@ fun EmailDetailAppBar(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    modifier = Modifier.padding(top = 4.dp),
-                    text = "${email.threads.size} ${stringResource(id = R.string.messages)}",
+                    modifier = Modifier.padding(top = 3.dp),
+                    text = "${email.threads.size} ${stringResource(id = R.string.txt_btn_invitado)}",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -192,14 +208,18 @@ fun EmailDetailAppBar(
         },
         actions = {
             IconButton(
-                onClick = {  *//*TODO*//*  },
+                onClick = {  println("2seba ${email.sender.fullName}")},
             ) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
-                    contentDescription = stringResource(id = R.string.more_options_button),
+                    contentDescription = stringResource(id = R.string.txt_btn_invitado),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
     )
-} */
+}
+*/
+
+
+

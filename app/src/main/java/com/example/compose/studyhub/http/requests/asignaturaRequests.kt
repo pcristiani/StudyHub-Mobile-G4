@@ -144,7 +144,7 @@ fun inscripcionAsignaturaRequest(
          } else {
             val errorMessage = buildString {
                //append("Response code: ${response.code()}\n")
-               append("${response.body()}\n")
+              // append("${response.body()}\n")
                response.errorBody()?.let { errorBody ->
                   append("${errorBody.string()}")
                }

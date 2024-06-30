@@ -3,9 +3,6 @@ package com.example.compose.studyhub.ui.screen.estudiante
 import AsignaturaRequest
 import CarreraRequest
 import ExamenRequest
-import HorariosAsignaturaRequest
-import InscripcionAsignaturaRequest
-import InscripcionCarreraRequest
 import InscripcionExamenRequest
 import android.annotation.SuppressLint
 import android.os.Build
@@ -28,21 +25,15 @@ import com.example.compose.studyhub.R.string.txt_selectCarrera
 import com.example.compose.studyhub.R.string.txt_selectHorario
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getAsignaturasConExamenPendienteRequest
-import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
-import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.http.requests.getExamenesAsignatura
-
-import com.example.compose.studyhub.http.requests.getHorariosAsignaturaRequest
-import com.example.compose.studyhub.http.requests.inscripcionAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionExamenRequest
-import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.ui.component.HorarioCard
-import com.example.compose.studyhub.ui.screen.Name
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -87,7 +78,7 @@ fun InscripcionExamenScreen(): DrawerState {
 
 
 @Composable
-fun InscripcionExamen(carreraId: Int,horarioId:Int,idAsig:Int) {
+fun InscripcionExamen(carreraId: Int, horarioId:Int, idAsig:Int) {
   val coroutineScope = rememberCoroutineScope()
   var checked by remember { mutableStateOf(true) }
   LaunchedEffect(horarioId) {
@@ -95,6 +86,7 @@ fun InscripcionExamen(carreraId: Int,horarioId:Int,idAsig:Int) {
       UserRepository.loggedInUser()?.let { id ->
         UserRepository.getToken()?.let { token ->
           println("INCRIPCIONS "+id+" "+idAsig+" "+horarioId)
+
           if (checked) {
         //  inscripcionExamenRequest(token, inscripcionExamenRequest(1,1)) { responde -> }
             inscripcionExamenRequest(token, InscripcionExamenRequest(id, horarioId)) { success,responde ->
@@ -108,7 +100,10 @@ fun InscripcionExamen(carreraId: Int,horarioId:Int,idAsig:Int) {
 
 
 
+
+
 //////////////////////////////////////////////////////////////////////////////////////
+
 
 // ASIGNATURA CON EXAMEN PENDIENTE
 @Composable
@@ -176,7 +171,7 @@ fun AsigaturaConExamenPendiente(modifier: Modifier, carreraId:Int, onHeaderClick
           }
         }
       }
-      LaunchedEffect(listState) {
+     /* LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
           if (index == nombreAsignaturaList.size - 1 && ! isLoading.value && nombreAsignaturaList.size <= asignaturas !!.size) {
             isLoading.value = true
@@ -187,7 +182,7 @@ fun AsigaturaConExamenPendiente(modifier: Modifier, carreraId:Int, onHeaderClick
             }
           }
         }
-      }
+      }*/
     } else {
       Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
     }
@@ -213,7 +208,10 @@ fun AsignaturaExamPendienteItem(user: String, idC: Int, onSelected: (Int) -> Uni
 }
 
 
+
+
 ////////////////////////////////////////////////////////////
+
 
 // EXAMENES DE ASIGNATURA
 @Composable
@@ -228,7 +226,6 @@ fun firstLoad5(checked: Boolean,asignaturaId:Int): List<ExamenRequest>? {
             println(responde)
             carreras = responde
           }
-
         }
       }
     }
@@ -283,7 +280,7 @@ fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: 
           }
         }
       }
-      LaunchedEffect(listState) {
+     /* LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
           if (index == nombreCarrerasList.size - 1 && ! isLoading.value && nombreCarrerasList.size <= carreras !!.size) {
             isLoading.value = true
@@ -294,7 +291,7 @@ fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: 
             }
           }
         }
-      }
+      }*/
     } else {
       Text(text = stringResource(id = R.string.txt_error_horario), textAlign = TextAlign.Center)
     }
@@ -317,7 +314,6 @@ fun loadMoreExamenesDeAsignatura(carrerasList: MutableList<ExamenRequest>, carre
 fun format(fechaStr: String): String {
   val formatterEntrada = DateTimeFormatter.ISO_LOCAL_DATE_TIME
   val fecha = LocalDateTime.parse(fechaStr, formatterEntrada)
-
   val formatterSalida = DateTimeFormatter.ofPattern("dd/MM/yyyy'  'HH:mm")
   val fechaFormateada = fecha.format(formatterSalida)
 

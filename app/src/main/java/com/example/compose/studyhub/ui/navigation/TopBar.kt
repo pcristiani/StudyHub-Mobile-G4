@@ -15,6 +15,7 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.SupervisorAccount
@@ -23,6 +24,8 @@ import androidx.compose.material.icons.rounded.AccountBox
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.SwitchAccount
+import androidx.compose.material.icons.sharp.AccountCircle
+import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
@@ -76,16 +79,29 @@ fun TopBar(navController: NavHostController,drawerState: DrawerState) {
       onClearCompletedTasks = {},
       onRefresh = {}
    )
-   //TopAppBarSample()
-   /*  TasksTopAppBar(
-       openDrawer = {
-          scope.launch {
-             drawerState.open()
-          }
-       },
-       onClearCompletedTasks = {},
-       onRefresh = {}
-    ) */
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TasksTopAppBar(navController: NavHostController, drawerState: DrawerState, openDrawer: () -> Unit, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
+    val showLogoutDialog = remember { mutableStateOf(false) }
+
+    TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) }, navigationIcon = {
+        IconButton(onClick = openDrawer) {
+            Icon(Icons.Filled.Menu, contentDescription = stringResource(id = R.string.txt_admin))
+        }
+
+    }, actions = {
+        MoreTasksMenu(navController, drawerState, onClearCompletedTasks, onRefresh) {
+            showLogoutDialog.value = true
+        }
+    }, modifier = Modifier.fillMaxWidth()
+    )
+
+    if (showLogoutDialog.value) {
+        LogoutBox(navController = navController, onDismiss = { showLogoutDialog.value = false })
+    }
 }
 
 @Composable
@@ -93,20 +109,69 @@ fun ReplyProfileImage(drawableResource: Int, description: String, modifier: Modi
    Icon(
       modifier = modifier
          .size(32.dp),
-      imageVector = Icons.Outlined.AccountCircle,
+      imageVector = Icons.Sharp.AccountCircle,
       contentDescription = description
    )
 }
 
+
+@Composable
+fun MoreTasksMenu(
+    navController: NavController, drawerState:DrawerState, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit,
+    logoutMenu:()->Unit
+
+) {
+    val scope = rememberCoroutineScope()
+    val showLogoutDialog = remember { mutableStateOf(false) }
+    TopAppBarDropdownMenu(
+        iconContent = {
+            ReplyProfileImage(drawableResource = R.drawable.account_circle_32, description = stringResource(id = R.string.txt_close))
+        }
+    ) { closeMenu ->
+        DropdownMenuItem(onClick = {
+            onClearCompletedTasks()
+            closeMenu()
+            try {
+                navController.navigate(NavRoutes.EditarPerfilScreen)
+            } catch (e: Exception) {
+                println("Error al navegar: ${e.message}")
+            }
+        }) {
+            Text(text = stringResource(id = R.string.txt_editPerfil))
+        }
+        DropdownMenuItem(
+            onClick = {
+                scope.launch {
+                    drawerState.close()
+                }
+                logoutMenu()
+            }, modifier = Modifier
+        ) {
+            Text(text = stringResource(id = R.string.logout))
+        }
+    }
+
+
+}/*
+
+//TopAppBarSample()
+/*  TasksTopAppBar(
+    openDrawer = {
+       scope.launch {
+          drawerState.open()
+       }
+    },
+    onClearCompletedTasks = {},
+    onRefresh = {}
+ ) */
+
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TasksTopAppBar(navController: NavHostController,
    drawerState: DrawerState,
    openDrawer: () -> Unit, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit
 ) {
-
-   val showLogoutDialog = remember { mutableStateOf(false) }
-
    TopAppBar(
       title = { Text(text = stringResource(id = R.string.app_name)) },
       navigationIcon = {
@@ -116,23 +181,14 @@ fun TasksTopAppBar(navController: NavHostController,
 
       },
       actions = {
-         MoreTasksMenu(navController,drawerState, onClearCompletedTasks, onRefresh) {
-            showLogoutDialog.value = true
-         }
+         MoreTasksMenu(navController,drawerState, onClearCompletedTasks, onRefresh)
       },
       modifier = Modifier.fillMaxWidth()
    )
-
-   if (showLogoutDialog.value) {
-      LogoutBox(navController = navController, onDismiss = { showLogoutDialog.value = false })
-   }
-}
-
+}*/
 @Composable
 fun MoreTasksMenu(
-   navController: NavController, drawerState:DrawerState, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit,
-   logoutMenu:()->Unit
-
+   navController: NavController, drawerState:DrawerState, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit
 ) {
    val scope = rememberCoroutineScope()
    val showLogoutDialog = remember { mutableStateOf(false) }
@@ -152,20 +208,21 @@ fun MoreTasksMenu(
       }) {
          Text(text = stringResource(id = R.string.txt_editPerfil))
       }
+      // LogoutBox(navController = navController, onDismiss = { showLogoutDialog.value = false })
       DropdownMenuItem(
          onClick = {
             scope.launch {
                drawerState.close()
             }
-            logoutMenu()
+
+            showLogoutDialog.value = true
          }, modifier = Modifier
-      ) {
+      )
+      {
          Text(text = stringResource(id = R.string.logout))
       }
    }
-
-
-}
+}*/
 
 
 @Composable

@@ -25,8 +25,8 @@ fun inscripcionesCarreraRequest(idUsuario: Int, token: String, callback: (List<C
                 callback(carreras) // println("Response: $responseText")
             } else {
                 callback(null)
-            //    println("Response code: ${response.code()}")
-              //  println("Response message: ${response.message()}")
+                // println("Response code: ${response.code()}")
+                // println("Response message: ${response.message()}")
                 response.errorBody()?.let { errorBody ->
                     println("${errorBody.string()}")
                 }
@@ -47,7 +47,6 @@ fun getCarrerasRequest(token: String, callback: (List<CarreraRequest>?) -> Unit)
         override fun onResponse(call: Call<String>, response: Response<String>) {
             val responseText = response.body()
             if (response.isSuccessful) {
-
                 val cuttedResponseText = responseText?.substring(22, responseText.length-42)
                 val jsonArrayText = """[$cuttedResponseText]"""
 
@@ -57,8 +56,8 @@ fun getCarrerasRequest(token: String, callback: (List<CarreraRequest>?) -> Unit)
                 callback(carreras)
             } else {
                 callback(null)
-                println("Response code: ${response.code()}")
-                println("Response message: ${response.message()}")
+                // println("Response code: ${response.code()}")
+                // println("Response message: ${response.message()}")
                 response.errorBody()?.let { errorBody ->
                     println("Error body: ${errorBody.string()}")
                 }
@@ -80,11 +79,11 @@ fun inscripcionCarreraRequest(token: String, inscripcionCarrera: InscripcionCarr
             val responseText = response.body()
             if (response.isSuccessful) {
                 callback(true,responseText)
-                println(responseText)
+              //  println(responseText)
             } else {
                 callback(false,responseText)
-                println("Response code: ${response.code()}")
-                println("Response message: ${response.message()}")
+              //  println("Response code: ${response.code()}")
+             //   println("Response message: ${response.message()}")
                 response.errorBody()?.let { errorBody ->
                     println("Error body: ${errorBody.string()}")
                 }
@@ -119,8 +118,8 @@ fun getAsignaturasDeCarreraRequest(idCarrera: Int, token: String, callback: (Lis
                 }
             } else {
                 callback(null)
-                println("Response code: ${response.code()}")
-                println("Response message: ${response.message()}")
+             //   println("Response code: ${response.code()}")
+               // println("Response message: ${response.message()}")
                 response.errorBody()?.let { errorBody ->
                     println("Error body: ${errorBody.string()}")
                 }

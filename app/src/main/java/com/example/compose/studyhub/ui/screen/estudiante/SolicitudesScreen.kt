@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SolicitudesScreen(): DrawerState {
-  Column(modifier = Modifier.padding(top = 100.dp, bottom = 1.dp)) {
+  Column(modifier = Modifier.padding(top = 110.dp, bottom = 1.dp)) {
     Solicitudes(modifier = Modifier.fillMaxWidth())
      //  .weight(1f)
       // .padding(top = 20.dp, start = 20.dp, end = 20.dp))
@@ -54,10 +54,13 @@ fun Solicitudes(modifier: Modifier) {
   Column(
     modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
   ) {
-    Text(
+      Text(
       text = stringResource(id = R.string.txt_solicitudes),
-      style = MaterialTheme.typography.headlineSmall,
+      style = MaterialTheme.typography.headlineLarge,
     )
+      Box(modifier = Modifier.padding(20.dp)) {
+      }
+
 
     Row(modifier = Modifier
        .fillMaxWidth()

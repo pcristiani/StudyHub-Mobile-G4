@@ -28,10 +28,8 @@ import com.example.compose.studyhub.http.requests.getHorariosAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
-import com.example.compose.studyhub.ui.component.HorarioCard
-import com.example.compose.studyhub.ui.component.searchBar.LocalEmailsDataProvider
+import com.example.compose.studyhub.ui.component.searchBar.LocalAccountsDataProvider
 import com.example.compose.studyhub.ui.component.searchBar.SearchBarScreen
-import com.example.compose.studyhub.ui.screen.Name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -65,8 +63,6 @@ fun InscripcionAsignaturaScreen(): DrawerState {
         if (idC != null) {
           remIdHorario.value = idC
           println("Este remIdHorario : ${remIdHorario.value}")
-        }else{
-          println("Este remIdHorario : ${remIdHorario.value}")
         }
       })
     }
@@ -91,19 +87,19 @@ fun InscripcionAsignatura(carreraId: Int, horarioId:Int, idAsig:Int) {
     coroutineScope.launch {
       UserRepository.loggedInUser()?.let { id ->
         UserRepository.getToken()?.let { token ->
-          println("INCRIPCIONS "+id+" "+idAsig+" "+horarioId)
+          println("INCRIPCIONS " + id + " " + idAsig + " " + horarioId)
+
           if (checked) {
             inscripcionAsignaturaRequest(token, InscripcionAsignaturaRequest(id, idAsig , horarioId)) { success, responde ->
-              responsse = "$responde"
-              println("responde: ${responsse}")
               if (success) {
                 scope.launch {
-                  snackbarHostState.showSnackbar("$responde")
+                    snackbarHostState.showSnackbar("$responde")
+                    responsse = "$responde"
                 }
               } else {
                 scope.launch {
-                  snackbarHostState.showSnackbar("$responde")
-                  //responsse = response
+                    snackbarHostState.showSnackbar("$responde")
+                    responsse = "$responde"
                 }
               }
             }
@@ -115,10 +111,10 @@ fun InscripcionAsignatura(carreraId: Int, horarioId:Int, idAsig:Int) {
   Scaffold(
     snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
   ) {
-    if (responsse != null) {
-      alertDialogDoc2(title = "¡Inscripción exitosa!", text = responsse ?: "null",onDismiss = { responsse = null })
-    }else{
-      alertDialogDoc2(title = "¡Advertencia!", text = "null",onDismiss = { responsse = null })
+    if (responsse != null && responsse != "null") {
+      println("---------"+responsse)
+      alertDialogDoc2(title = "¡Inscripción exitosa!", text = responsse ?: "",onHeaderClicked = { responsse = null })
+    }else{  //    alertDialogDoc2(title = "¡Advertencia!", text = responsse ?: "",onHeaderClicked = { responsse = null })
     }
   }
 }
@@ -174,7 +170,7 @@ fun CarrerasInscripto(modifier: Modifier, snackbarHostState:SnackbarHostState, s
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     SearchBarScreen(
-      emails = LocalEmailsDataProvider.allEmails,
+      emails = LocalAccountsDataProvider.allUserAccounts,
       modifier = Modifier,
       navigateToDetail = { _, _ -> }
     )
@@ -201,23 +197,24 @@ fun CarrerasInscripto(modifier: Modifier, snackbarHostState:SnackbarHostState, s
           }
         }
       }
-      LaunchedEffect(listState) {
+    /*  LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
           if (index == nombreCarrerasList.size - 1 && ! isLoading.value && nombreCarrerasList.size <= carreras !!.size) {
             isLoading.value = true
             coroutineScope.launch {
-              delay(3000)
+              delay(10)
               loadMoreAsigDeCarrera(nombreCarrerasList, carreras !!)
               isLoading.value = false
             }
           }
         }
-      }
+      }*/
     } else {
       Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
     }
   }
 }
+
 
 fun loadMoreAsigDeCarrera(carrerasList: MutableList<CarreraRequest>, carreras: List<CarreraRequest>) {
   val currentSize = carrerasList.size
@@ -230,6 +227,7 @@ fun loadMoreAsigDeCarrera(carrerasList: MutableList<CarreraRequest>, carreras: L
     carrerasList.add(carreras[currentSize + i])
   }
 }
+
 
 @Composable
 fun AsigDeCarreraItem(user: String, snackbarHostState:SnackbarHostState, scope:CoroutineScope, idC: Int, onSelected: (Int) -> Unit) {
@@ -252,7 +250,7 @@ fun firstLoad22(checked: Boolean,idC: Int): List<AsignaturaRequest>? {
     UserRepository.loggedInUser()?.let { user ->
       UserRepository.getToken()?.let { token ->
         if (checked) {
-          println("idc "+idC)
+          println("idc " + idC)
           getAsignaturasDeCarreraRequest(idC,token) { success ->
             listAsignaturas = success
           }
@@ -311,7 +309,7 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
           }
         }
       }
-      LaunchedEffect(listState) {
+    /*  LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
           if (index == nombreAsignaturaList.size - 1 && ! isLoading.value && nombreAsignaturaList.size <= asignaturas !!.size) {
             isLoading.value = true
@@ -322,7 +320,7 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
             }
           }
         }
-      }
+      }*/
     } else {
       Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
     }
@@ -342,6 +340,7 @@ fun loadMoreAsignatura(asignaturasList: MutableList<AsignaturaRequest>, asignatu
   }
 }
 
+
 @Composable
 fun AsignaturaItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
   CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC) })
@@ -349,7 +348,9 @@ fun AsignaturaItem(user: String, idC: Int, onSelected: (Int) -> Unit) {
 
 
 
+
 ////////////////////////////////////////////////////////////
+
 
 // HORARIO ASIGNATURA
 @Composable
@@ -358,10 +359,10 @@ fun firstLoad32(checked: Boolean,asignaturaId:Int): List<HorariosAsignaturaReque
   LaunchedEffect(checked) {
     UserRepository.loggedInUser()?.let { id ->
       UserRepository.getToken()?.let { token ->
+
         if (checked) {
           println(id)
           getHorariosAsignaturaRequest(asignaturaId,token) { responde ->
-            println(responde)
             carreras = responde
           }
 
@@ -422,7 +423,7 @@ fun HorarioAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (In
           }
         }
       }
-      LaunchedEffect(listState) {
+     /* LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
           if (index == nombreCarrerasList.size - 1 && ! isLoading.value && nombreCarrerasList.size <= carreras !!.size) {
             isLoading.value = true
@@ -433,7 +434,7 @@ fun HorarioAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (In
             }
           }
         }
-      }
+      }*/
     } else {
       Text(text = stringResource(id = R.string.txt_error_horario), textAlign = TextAlign.Center)
     }
@@ -452,6 +453,7 @@ fun loadMoreAsigDeCarrera2(carrerasList: MutableList<HorariosAsignaturaRequest>,
     carrerasList.add(carreras[currentSize + i])
   }
 }
+
 
 @Composable
 fun AsigDeCarreraItem2(user: String, idC: Int, onSelected: (Int) -> Unit) {

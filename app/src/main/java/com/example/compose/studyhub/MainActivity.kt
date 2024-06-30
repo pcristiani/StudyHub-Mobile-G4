@@ -1,9 +1,11 @@
 package com.example.compose.studyhub
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -32,8 +34,7 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.google.firebase.FirebaseApp
 
 ///
-// * MainActivity --> Clase principal de la aplicación.
-// * AppCompatActivity --> Clase base para actividades.
+
 class MainActivity: AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
@@ -50,13 +51,13 @@ class MainActivity: AppCompatActivity() {
     }
   }
 }
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
   val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
   PushNotificationService.requestNewToken(context = LocalContext.current)
   NavHost(navController = navController, startDestination = "screenNovedades") {
-
 
     composable(NavRoutes.NovedadesScreen) {
       MenuLateral(navController, drawerState, contenido = {
@@ -159,6 +160,7 @@ fun ScreenInscripcionesAsignaturas(drawerState: DrawerState,navController: NavHo
   InscripcionAsignaturaScreen()
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenInscripcionesExamen(drawerState: DrawerState,navController: NavHostController) {
@@ -195,41 +197,4 @@ fun PlanEstudiosScreenPreview() {
     TopBar(PlanEstudiosScreen())
   }
 } */
-
-
-/*
-   private fun createNotificationChannel() {
-      // Create the NotificationChannel, but only on API 26+ because
-      // the NotificationChannel class is not in the Support Library.
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-         val name = R.string.channel_name.toString()
-         val descriptionText = R.string.channel_description.toString()
-         val importance = NotificationManager.IMPORTANCE_DEFAULT
-
-         val channel = NotificationChannel("1", name, importance).apply {
-            description = descriptionText
-         }
-         // Register the channel with the system.
-         val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-         notificationManager.createNotificationChannel(channel)
-      }
-   }
-
-
-  
-   private fun sendNotification() {
-      val builder = NotificationCompat.Builder(this, "1")
-         .setSmallIcon(R.drawable.a)
-         .setContentTitle(getString(R.string.app_title))
-         .setContentText("Test")
-         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-      with(NotificationManagerCompat.from(this)) {
-         notify(1, builder.build())
-      }
-   }
-
-   
- */
 
