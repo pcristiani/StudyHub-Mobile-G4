@@ -99,7 +99,7 @@ fun Gestion(modifier: Modifier){
       ExpandableList(modifier=Modifier.padding(top = 25.dp, bottom = 10.dp,start = 20.dp, end = 20.dp)
          .size(300.dp, 300.dp)
           .animateContentSize(),
-         headerTitle = "Seleccionar carrera", options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
+         headerTitle = carreraSelected.value?.nombre ?: stringResource(id = R.string.txt_selectCarrera), options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
          listaCarreras?.find {it.idCarrera ==selectedId }
       })
 

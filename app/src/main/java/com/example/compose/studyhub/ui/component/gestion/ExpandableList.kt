@@ -31,49 +31,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 
 @Composable
 fun ExpandableList(modifier:Modifier, headerTitle: String, options: List<String>, optionIds: List<Int>, onOptionSelected: (Int) -> Unit) {
-
     val data = SectionData(headerTitle, options, optionIds)
-
     val isExpandedMap = remember { mutableStateOf(false) }
-
 
     LazyColumn(
         modifier = modifier,
         content = {
-                Section(
-                    sectionData = data,
-                    isExpanded = isExpandedMap.value,
-                    onHeaderClick = {
-                        isExpandedMap.value = !(isExpandedMap.value)
-                    },
-                    onOptionClicked = onOptionSelected
-                )
-            }
+            Section(
+                sectionData = data,
+                isExpanded = isExpandedMap.value,
+                onHeaderClick = {
+                    isExpandedMap.value = !(isExpandedMap.value)
+                },
+                onOptionClicked = {p1 ->
+                    onOptionSelected(p1)
+                    isExpandedMap.value = false
+                }
+            )
+        }
     )
 }
 
-
-
 @Composable
 fun SectionItem(text: String, id: Int, onOptionClicked: (id: Int) -> Unit) {
-
-    /*
-
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 16.dp)
-                .clickable{onOptionClicked(id)}
-        )
-    */
-
     Button(onClick = {onOptionClicked(id)}, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(0.dp), colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.white), contentColor = colorResource(R.color.text_black)), border = BorderStroke(1.dp, colorResource(R.color.darker_gray))){
         Text(
             text = text,
@@ -83,33 +69,16 @@ fun SectionItem(text: String, id: Int, onOptionClicked: (id: Int) -> Unit) {
                 .padding(vertical = 8.dp, horizontal = 16.dp)
         )
     }
-
 }
 
 @Composable
 fun SectionHeader(text: String, isExpanded: Boolean, onHeaderClicked: () -> Unit) {
-    /*Row(modifier = Modifier
-        .clickable { onHeaderClicked() }
-        .background(Color.LightGray)
-        .padding(vertical = 8.dp, horizontal = 16.dp),
-
-
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.weight(1.0f)
-        )
-        Icon(
-            imageVector = Icons.Filled.ArrowDropDown,
-            contentDescription = null,
-            modifier = Modifier.weight(0.2f)
-        )
-    }*/
     Button(onClick = {onHeaderClicked()}, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(5.dp), colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.white), contentColor = colorResource(R.color.text_black)), border = BorderStroke(1.dp, colorResource(R.color.darker_gray))){
         Text(
             text = text,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1.0f)
         )
         Icon(
@@ -126,8 +95,6 @@ fun LazyListScope.Section(
     onHeaderClick: () -> Unit,
     onOptionClicked: (id: Int) -> Unit
 ) {
-
-
     item {
         SectionHeader(
             text = sectionData.headerText,
