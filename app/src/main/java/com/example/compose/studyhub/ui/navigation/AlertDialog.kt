@@ -36,7 +36,6 @@ fun alertDialogDoc() {
     }
 }
 
-
 @Composable
 fun alertDialogDoc2(title: String, text: String,onHeaderClicked: () -> Unit) {
     val openDialog = remember { mutableStateOf(true) }
@@ -44,24 +43,21 @@ fun alertDialogDoc2(title: String, text: String,onHeaderClicked: () -> Unit) {
     if (openDialog.value) {
         AlertDialog(onDismissRequest = {
            openDialog.value = false
-           // println()
-         //  onHeaderClicked()
-               // navController.navigate(NavRoutes.EditarPerfilScreen)
         }, title = {
-            androidx.compose.material3.Text(text = title)
+            Text(text = title)
         }, text = {
-            androidx.compose.material3.Text(text)
+            Text(text)
         }, confirmButton = {
             TextButton(onClick = {
                 openDialog.value = false
             }) {
-                androidx.compose.material3.Text("Confirmar")
+                Text("Confirmar")
             }
         }, dismissButton = {
             TextButton(onClick = {
                 openDialog.value = false
             }) {
-                androidx.compose.material3.Text("Cancelar")
+                Text("Cancelar")
             }
         })
     }

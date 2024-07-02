@@ -19,7 +19,6 @@ fun LogoutBox(navController: NavHostController, onDismiss: () -> Unit) {
                 launchSingleTop = true
                 restoreState = true
             }
-
             onDismiss()
         }, dialogTitle = stringResource(id = R.string.Logout_title), dialogText = stringResource(id = R.string.Logout_question), onDismiss = onDismiss
     )

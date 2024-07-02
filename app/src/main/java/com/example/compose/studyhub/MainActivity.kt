@@ -42,7 +42,6 @@ class MainActivity: AppCompatActivity() {
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
     FirebaseApp.initializeApp(this)
-
     setContent {
       ThemeStudyHub {
         StudyHubNavHost()
@@ -50,6 +49,7 @@ class MainActivity: AppCompatActivity() {
     }
   }
 }
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = compositionLocalOf<NavBackStackEntry?> { null }
@@ -57,7 +57,6 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
 
   PushNotificationService.requestNewToken(context = LocalContext.current)
   NavHost(navController = navController, startDestination = "screenNovedades") {
-
     composable(NavRoutes.NovedadesScreen) {
       MenuLateral(navController, drawerState, contenido = {
         ScreenNovedades(drawerState, navController)
@@ -93,25 +92,24 @@ fun SetupNavGraph(navController: NavHostController) { // val backStackEntry = co
         ScreenGestion(drawerState, navController)
       })
     }
-
     composable(NavRoutes.EditarPerfilScreen) {
       MenuLateral(navController, drawerState, contenido = {
         ScreenEditarPerfil(navController, drawerState)
       })
     }
-
     composable(NavRoutes.InicioScreen) {
-      val navController = rememberNavController()
       StudyHubNavHost()
     }
   }
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenNovedades(drawerState: DrawerState, navController: NavHostController) {
   TopBar(navController,drawerState)
   NovedadesScreen(navController)
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenEstudios(drawerState: DrawerState, navController: NavHostController) {
@@ -125,6 +123,7 @@ fun ScreenSolicitudes(drawerState: DrawerState, navController: NavHostController
   TopBar(navController,drawerState)
   SolicitudesScreen()
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenGestion(drawerState: DrawerState ,navController: NavHostController) {
@@ -145,8 +144,6 @@ fun ScreenEditarPerfil(navController: NavHostController, drawerState: DrawerStat
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenInscripciones(drawerState: DrawerState,navController: NavHostController) {
-
-
   TopBar(navController,drawerState)
   InscripcionCarreraRoute(
     onInscripcionCarreraConfirmed = { navController.navigate(NavRoutes.NovedadesScreen) },
@@ -168,7 +165,6 @@ fun ScreenInscripcionesExamen(drawerState: DrawerState,navController: NavHostCon
   TopBar(navController,drawerState)
   InscripcionExamenScreen()
 }
-
 
 /* @Preview
 @Composable
