@@ -14,6 +14,5 @@ fun LoginRoute(ci: String?, onLoginSubmitted: () -> Unit, onNavigateToRegister: 
    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory())
    val loginError by loginViewModel.loginError.observeAsState()
 
-
    LoginScreen(ci = ci, onLoginSubmitted = { ci, password -> loginViewModel.login(ci, password, onLoginSubmitted) }, onNavigateToRegister = {onNavigateToRegister(ci)}, onNavUp = onNavUp, loginError = loginError, onErrorDismissed = {loginViewModel.clearLoginError()})
 }

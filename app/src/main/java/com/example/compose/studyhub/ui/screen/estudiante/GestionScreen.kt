@@ -47,11 +47,6 @@ import com.rajat.pdfviewer.compose.PdfRendererViewCompose
 @Composable
 fun GestionScreen(): DrawerState {
    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-      /*Image(painter = painterResource(id = R.drawable.a19_dj_128), modifier = Modifier.size(120.dp), contentDescription = "Logo")
-
-      Text("Gestion", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
-       */
-
       Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
          Gestion(modifier = Modifier
             .weight(1f)
@@ -61,23 +56,21 @@ fun GestionScreen(): DrawerState {
    return DrawerState(DrawerValue.Closed)
 }
 
-
 @Composable
 fun Gestion(modifier: Modifier){
-
    val context = LocalContext.current
    val webView = remember { mutableStateOf<WebView?>(null) }
 
    Column(
       modifier = modifier.fillMaxWidth(),
-      //verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally,
    ) {
-
       var listaCarreras: List<CarreraRequest>? = null
       val nombresCarrera = remember { mutableStateListOf<String>() }
       val idsCarrera = remember { mutableStateListOf<Int>() }
+      val carreraSelected = remember { mutableStateOf<CarreraRequest?>(null) }
 
+      //Retornar todas las carreras a las que el usuario está inscripto en las listas listaCarreras, nombresCarrera e idsCarrera
       UserRepository.loggedInUser()?.let {idUsuario -> UserRepository.getToken()
          ?.let {token -> inscripcionesCarreraRequest(idUsuario, token){success->
             if(success!=null){
@@ -93,16 +86,13 @@ fun Gestion(modifier: Modifier){
             }
          } } }
 
-      val carreraSelected = remember { mutableStateOf<CarreraRequest?>(null) }
-
-
+      //Lista expandible con todas las carreras a las que el usuario está inscripto
       ExpandableList(modifier=Modifier.padding(top = 25.dp, bottom = 10.dp,start = 20.dp, end = 20.dp)
          .size(300.dp, 300.dp)
           .animateContentSize(),
          headerTitle = carreraSelected.value?.nombre ?: stringResource(id = R.string.txt_selectCarrera), options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
          listaCarreras?.find {it.idCarrera ==selectedId }
       })
-
 
        webView.value = carreraSelected.value?.let {
           WebViewComponent(
@@ -133,5 +123,4 @@ fun Gestion(modifier: Modifier){
 @Composable
 fun GestionScreenPreview() {
    GestionScreen()
- //  Gestion(modifier = Modifier.fillMaxWidth())
 }

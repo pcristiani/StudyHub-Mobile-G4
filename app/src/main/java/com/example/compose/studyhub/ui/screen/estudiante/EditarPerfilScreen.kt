@@ -61,26 +61,28 @@ fun EditarPerfil(modifier: Modifier,onProfileEditSubmitted: (nombre: String, ape
 
     Column(modifier = Modifier.fillMaxWidth()){
         val focusRequest = remember { FocusRequester() }
-
-
         val nombre = UserRepository.getNombre()
         val apellido = UserRepository.getApellido()
         val email = UserRepository.getEmail()
 
-
-        val nameState = remember { val textFieldState = TextFieldState()
+        val nameState = remember {
+            val textFieldState = TextFieldState()
             textFieldState.text = nombre ?: ""
-            textFieldState }
+            textFieldState
+        }
         Name(nameState, onImeAction = { focusRequest.requestFocus() })
 
         Spacer(modifier = Modifier.height(16.dp))
-        val surNameState = remember { val textFieldState = TextFieldState()
+        val surNameState = remember {
+            val textFieldState = TextFieldState()
             textFieldState.text = apellido ?: ""
-            textFieldState }
+            textFieldState
+        }
         SurName(surNameState, onImeAction = { focusRequest.requestFocus() })
 
         Spacer(modifier = Modifier.height(16.dp))
-        val emailState = remember{ val textFieldState = TextFieldState()
+        val emailState = remember{
+            val textFieldState = TextFieldState()
             textFieldState.text = email ?: ""
             textFieldState }
         Email(emailState, onImeAction = { focusRequest.requestFocus() })
@@ -89,20 +91,15 @@ fun EditarPerfil(modifier: Modifier,onProfileEditSubmitted: (nombre: String, ape
         val birthdayState = datePicker()
         Birthday(birthdayState, onImeAction = { focusRequest.requestFocus() })
 
-
         Spacer(modifier = Modifier.height(15.dp))
-
-
         Button(onClick = { showConfirmationDialog.value = true
          }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.txt_editPerfil)) }
 
         if(showConfirmationDialog.value){
-            ConfirmDialogBox(onDismissRequest = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text,
-                formatDate(birthdayState)); showConfirmationDialog.value = false }, dialogTitle = "Perfil modificado con éxito")
+            ConfirmDialogBox(onDismissRequest = { onProfileEditSubmitted(nameState.text, surNameState.text, emailState.text, formatDate(birthdayState));
+                showConfirmationDialog.value = false }, dialogTitle = "Perfil modificado con éxito")
         }
     }
-
-
 }
 
 @Preview

@@ -15,18 +15,13 @@ import com.example.compose.studyhub.viewModel.RegisterViewModelFactory
 ///
 @Composable
 fun EditarPerfilRoute(
-
     onProfileEditSubmitted: () -> Unit,
     onNavUp: () -> Unit,
 ) {
     val EditarPerfilViewModel: EditarPerfilViewModel = viewModel(factory = EditarPerfilViewModelFactory())
     EditarPerfilScreen(
-
         onProfileEditSubmitted = { nombre, apellido, email, fechaNacimiento ->
             EditarPerfilViewModel.modifyProfile(nombre,apellido,email,fechaNacimiento, onProfileEditSubmitted)
-
-
-
     },
         onNavUp = onNavUp,
     )

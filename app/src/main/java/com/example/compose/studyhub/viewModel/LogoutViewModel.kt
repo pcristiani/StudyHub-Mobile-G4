@@ -6,18 +6,14 @@ import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.cerrarSesionRequest
 
 class LogoutViewModel(private val userRepository: UserRepository) : ViewModel() {
-
     fun logout(token: String, onLogoffComplete: () -> Unit) {
-        
         cerrarSesionRequest(token) {success ->
             if(success){
                 UserRepository.logout()
                 onLogoffComplete()
             }
         }
-
     }
-
 }
 
 class LogoutViewModelFactory : ViewModelProvider.Factory {

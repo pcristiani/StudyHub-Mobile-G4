@@ -5,7 +5,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 fun getPreviaturasGrafoRequest(idCarrera:Int, token:String, callback: (String?) -> Unit){
-    val completeToken = "Bearer " + token
+    val completeToken = "Bearer $token"
 
     RetrofitClient.api.getPreviaturasGrafo(idCarrera, completeToken).enqueue(object: Callback<String> {
         override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -23,7 +23,6 @@ fun getPreviaturasGrafoRequest(idCarrera:Int, token:String, callback: (String?) 
                 }
             }
         }
-
         override fun onFailure(call: Call<String>, t: Throwable) {
             println("Error: ${t.message}")
             callback(null)

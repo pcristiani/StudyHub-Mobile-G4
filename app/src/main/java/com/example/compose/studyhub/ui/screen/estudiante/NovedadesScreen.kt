@@ -48,9 +48,7 @@ import kotlinx.coroutines.launch
 fun NovedadesScreen(navController: NavHostController): DrawerState {
    val showLogoutDialog = remember { mutableStateOf(false) }
    val nombre = UserRepository.getNombre() ?: ""
-
    val greetings = "Bienvenido/a, $nombre"
-
    var displayText by remember { mutableStateOf("") }
    val scope = rememberCoroutineScope()
    var done by remember { mutableStateOf(false) }
@@ -61,10 +59,6 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally
    ) {
-      //Image(painter = painterResource(id = R.drawable.logotext), modifier = Modifier.size(220.dp), contentDescription = "Logo")
-      //Text("Novedades", style = MaterialTheme.typography.titleMedium, color = md_theme_dark_text)
-
-
       //Efecto para el logo
       val transition = rememberInfiniteTransition(label = "")
       val animatedScale by transition.animateFloat(
@@ -88,8 +82,6 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
                done = true
             }
          }
-
-
       }
 
       LaunchedEffect(done) {
@@ -102,7 +94,6 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
          }
       }
 
-
       Column(modifier = Modifier.wrapContentHeight(align = Alignment.CenterVertically)) {
          Logo(
             modifier = Modifier
@@ -111,7 +102,6 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
               .scale(animatedScale)
               .padding(top = 76.dp)
          )
-
 
          Row(verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -142,8 +132,6 @@ fun NovedadesScreen(navController: NavHostController): DrawerState {
    }
    return DrawerState(DrawerValue.Closed)
 }
-
-
 
 @Preview
 @Composable

@@ -7,10 +7,7 @@ import com.example.compose.studyhub.http.requests.cerrarSesionRequest
 import com.example.compose.studyhub.http.requests.forgotPasswordRequest
 
 class RecoverPassViewModel(userRepository: UserRepository) : ViewModel() {
-
     fun recoverPass(email: String, onRecoverPasswordComplete: (String) -> Unit, onRecoverPasswordFail:(String)-> Unit ) {
-
-
         forgotPasswordRequest(email) {state, response ->
             if(state){
                 onRecoverPasswordComplete(response)
@@ -19,9 +16,7 @@ class RecoverPassViewModel(userRepository: UserRepository) : ViewModel() {
                 onRecoverPasswordFail(response)
             }
         }
-
     }
-
 }
 
 class RecoverPassViewModelFactory : ViewModelProvider.Factory {

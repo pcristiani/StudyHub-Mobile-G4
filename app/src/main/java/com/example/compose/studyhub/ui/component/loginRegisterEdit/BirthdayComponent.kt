@@ -45,21 +45,16 @@ fun Birthday(birthdayState: DatePickerState, imeAction: ImeAction = ImeAction.Ne
     val selectedDate = remember { mutableStateOf<Date?>(null) } // this will store whatever date the user selects // Button to show the date picker dialog
     val sdf = SimpleDateFormat("dd MMM,yyyy", Locale.getDefault())
 
-    //val currentDate = Date(System.currentTimeMillis())
-
     val displayDate: String = if (UserRepository.user == User.NoUserLoggedIn) {
       selectedDate.value?.let { sdf.format(it) } ?:""
     } else {
       UserRepository.getFechaNacimiento()?.let { reformatDate(it) }?:""
     }
 
-
-
     OutlinedTextField(value = displayDate, onValueChange={}, readOnly= true, label = {
       Text(text = stringResource(id = R.string.birthday), style = MaterialTheme.typography.bodyMedium)
 
     }, modifier = Modifier.fillMaxWidth().onFocusChanged { focusState -> if(focusState.isFocused){showDatePicker.value = true } })
-
 
     if (showDatePicker.value) {
       DatePickerDialog(onDismissRequest = { showDatePicker.value = false }, confirmButton = {

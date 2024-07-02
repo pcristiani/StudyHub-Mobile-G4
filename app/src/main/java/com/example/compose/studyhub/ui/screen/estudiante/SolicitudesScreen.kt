@@ -74,7 +74,7 @@ fun Solicitudes(modifier: Modifier) {
     loadMoreAsignaturas(asignaturasList, asignaturas)
   }
 
-  //Retornar todas las carreras a las que el usuario está inscripto en las listas listaCarreras, nombresCarrera y idsCarrera
+  //Retornar todas las carreras a las que el usuario está inscripto en las listas listaCarreras, nombresCarrera e idsCarrera
   UserRepository.loggedInUser()?.let {idUsuario -> UserRepository.getToken()
     ?.let {token -> inscripcionesCarreraRequest(idUsuario, token){success->
       if(success!=null){
@@ -173,6 +173,7 @@ fun Solicitudes(modifier: Modifier) {
       }
     }
 
+    //Si el usuario pincha en una asignatura, se despliega una box con los datos de ésta
     if(showAsignaturaInfo){
       val asignatura: AsignaturaRequest? = asignaturasList.find{it.idAsignatura == idAsignaturaSelected}
 

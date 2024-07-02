@@ -6,7 +6,6 @@ import com.example.compose.studyhub.ui.screen.RegisterScreen
 import com.example.compose.studyhub.viewModel.RegisterViewModel
 import com.example.compose.studyhub.viewModel.RegisterViewModelFactory
 
-///
 @Composable
 fun RegisterRoute(
     ci: String?,
@@ -18,7 +17,6 @@ fun RegisterRoute(
         ci = ci,
         onRegisterSubmitted = { nombre, apellido, email, fechaNacimiento, ci, password ->
             signUpViewModel.signUp(nombre, apellido, email, fechaNacimiento, ci, password,onRegisterSubmitted)
-
         },
         onNavUp = onNavUp,
     )

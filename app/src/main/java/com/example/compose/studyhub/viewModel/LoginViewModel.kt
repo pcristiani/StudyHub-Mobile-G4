@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.loginRequest
 
-///
 class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
   private val _loginError = MutableLiveData<String?>(null)
   val loginError: LiveData<String?> get() = _loginError
@@ -23,7 +22,6 @@ class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
       }
     }
 
-
   }
 
   fun clearLoginError() {
@@ -35,7 +33,7 @@ class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
     onLoginComplete()
   }
 }
-///
+
 class LoginViewModelFactory: ViewModelProvider.Factory {
   @Suppress("UNCHECKED_CAST")
   override fun <T: ViewModel> create(modelClass: Class<T>): T {

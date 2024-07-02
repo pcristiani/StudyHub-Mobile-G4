@@ -13,8 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 fun getCalificacionesExamenesRequest(idUsuario: Int, idCarrera: Int, token: String, callback: (List<CalificacionExamenRequest>?) -> Unit) {
-    val completeToken = "Bearer " + token
-
+    val completeToken = "Bearer $token"
 
     RetrofitClient.api.getCalificacionesExamenes(idUsuario, idCarrera, completeToken).enqueue(object: Callback<String>{
         override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -34,7 +33,6 @@ fun getCalificacionesExamenesRequest(idUsuario: Int, idCarrera: Int, token: Stri
                 }
             }
         }
-
         override fun onFailure(call: Call<String>, t: Throwable) {
             println("Error: ${t.message}")
             callback(null)
@@ -43,7 +41,7 @@ fun getCalificacionesExamenesRequest(idUsuario: Int, idCarrera: Int, token: Stri
 }
 
 fun getExamenesAsignatura(idAsignatura: Int, token: String, callback: (List<ExamenRequest>?) -> Unit){
-    val completeToken = "Bearer " + token
+    val completeToken = "Bearer $token"
 
     RetrofitClient.api.getExamenesAsignatura(idAsignatura, completeToken).enqueue(object: Callback<String>{
         override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -63,7 +61,6 @@ fun getExamenesAsignatura(idAsignatura: Int, token: String, callback: (List<Exam
                 }
             }
         }
-
         override fun onFailure(call: Call<String>, t: Throwable) {
             println("Error: ${t.message}")
             callback(null)

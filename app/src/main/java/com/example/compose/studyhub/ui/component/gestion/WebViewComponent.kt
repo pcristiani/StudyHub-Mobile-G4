@@ -22,13 +22,10 @@ import com.example.compose.studyhub.util.HTMLTemplate
 
 @Composable
 fun WebViewComponent(carrera: CarreraRequest, modifier: Modifier): WebView? {
-
-
-
     var listaCalificacionesAsignatura: List<CalificacionAsignaturaRequest>? = null
     var listaCalificacionesExamen: List<CalificacionExamenRequest>? = null
     var HTML by remember { mutableStateOf("") }
-
+    val webView = remember { mutableStateOf<WebView?>(null) }
 
     fun updateHTML(){
         HTML = HTMLTemplate(carrera.nombre, listaCalificacionesAsignatura, listaCalificacionesExamen)
@@ -52,12 +49,6 @@ fun WebViewComponent(carrera: CarreraRequest, modifier: Modifier): WebView? {
             }
         }
     }
-
-
-
-
-
-    val webView = remember { mutableStateOf<WebView?>(null) }
 
     if(HTML!=""){
         AndroidView(

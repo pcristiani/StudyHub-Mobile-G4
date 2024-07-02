@@ -13,14 +13,13 @@ import com.example.compose.studyhub.viewModel.LogoutViewModelFactory
 import com.example.compose.studyhub.viewModel.RecoverPassViewModel
 import com.example.compose.studyhub.viewModel.RecoverPassViewModelFactory
 
-///
 @Composable
 fun RecoverPassRoute(onConfirmation: (String) -> Unit, dialogTitle: String, onDismiss: () -> Unit, onFail: (String) -> Unit) {
    val recoverPassViewModel: RecoverPassViewModel = viewModel(factory = RecoverPassViewModelFactory())
-
 
    DialogBoxWithTextCreation(
       onDismissRequest = onDismiss,
       onConfirmation = {
          recoverPassViewModel.recoverPass(email = it, onRecoverPasswordComplete = onConfirmation, onRecoverPasswordFail = onFail)
-   }, dialogTitle = dialogTitle) }
+   }, dialogTitle = dialogTitle)
+}

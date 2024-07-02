@@ -13,13 +13,6 @@ import com.google.firebase.messaging.RemoteMessage
 class PushNotificationService: FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-
-
-/*
-        UserRepository.loggedInUser()?.let { registerTokenRequest(it, token) }
-        println(token)
-
-*/
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
@@ -56,7 +49,6 @@ class PushNotificationService: FirebaseMessagingService() {
         fun getToken(context: Context): String?{
             return context.getSharedPreferences("_", MODE_PRIVATE).getString("fb", "empty")
         }
-
         fun requestNewToken(context: Context) {
             FirebaseMessaging.getInstance().token
                 .addOnCompleteListener { task ->
@@ -74,7 +66,5 @@ class PushNotificationService: FirebaseMessagingService() {
                     }
                 }
         }
-
-
     }
 }

@@ -51,7 +51,6 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
             calificaciones.forEach{
                 item2-> println(item2.calificacion)
             }
-
         }
     }
     val htmlCode = createHTML().html {
@@ -122,10 +121,7 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
                         p{+ "Resultados finales"}
                     }
                     img{src="https://frontstudyhub.vercel.app/static/media/logo-text.1b43604a02cff559bc6a.png"; alt="Logo"; width="160"}
-
                 }
-
-
             }
 
             div("section"){
@@ -140,9 +136,7 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
                 h2{+ "Cursos"}
                 if (listaCalificacionesAsignatura != null) {
                     listaCalificacionesAsignatura.forEach {item ->
-
                         div("course-item") {
-
                             span{+(item.asignatura)}
                             item.calificaciones.forEach{calificacion ->
                                 if(calificacion.calificacion!=0){
@@ -151,22 +145,17 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
                                     cantCursadas += 1
                                     promedio = promedio.plus(calificacion.calificacion)
                                 }
-
                             }
                         }
-
-
                     }
                 }else{
                     div("course-item"){
                         span{+"No hay materias aprobadas."}
-
                     }
                 }
             }
 
             div("divider"){}
-
             div("section exam-list"){
                 h2{+ "Exámenes"}
                 if (listaCalificacionesExamen != null) {
@@ -185,32 +174,25 @@ fun HTMLTemplate(nombreCarrera:String, listaCalificacionesAsignatura: List<Calif
                 }else{
                     div("exam-item"){
                         span{+"No hay exámenes aprobados."}
-
                     }
                 }
             }
 
             div("divider"){}
-
             div("footer"){
                 p{+"Cantidad cursadas: $cantCursadas"}
                 p{+"Cantidad exámenes: $cantExamenes"}
                 p{+"Total: ${cantCursadas + cantExamenes}"}
                 p{+"Promedio general: ${calculoPromedio(cantCursadas, cantExamenes, promedio)}"}
             }
-
         }
     }
-
     if((cantCursadas+cantExamenes) != 0){
         return htmlCode
-
     }else{
         return ""
     }
-
 }
-
 
 fun calculoPromedio(cantCursadas: Int, cantExamenes:Int, promedio: Double): String{
     if((cantCursadas+cantExamenes)!=0){

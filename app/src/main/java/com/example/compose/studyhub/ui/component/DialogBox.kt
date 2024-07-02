@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AlertDialogBox(
     onDismissRequest: () -> Unit,
@@ -49,7 +48,6 @@ fun AlertDialogBox(
     )
 }
 
-
 @Composable
 fun DialogBoxCreation(onConfirmation: () -> Unit, dialogTitle: String, dialogText: String, onDismissRequest: () -> Unit) {
     val openAlertDialog = remember { mutableStateOf(true) }
@@ -69,7 +67,6 @@ fun DialogBoxCreation(onConfirmation: () -> Unit, dialogTitle: String, dialogTex
         }
     }
 }
-
 
 @Preview
 /*@Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_YES)*/

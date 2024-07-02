@@ -13,7 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 fun getAsignaturasAprobadasRequest(idUsuario: Int, token: String, callback: (List<AsignaturaRequest>?) -> Unit) { // val registerRequest = getAsignaturasAprobadas(nombre, apellido, email, fechaNacimiento, ci, password)
-   val completeToken = "Bearer " + token
+   val completeToken = "Bearer $token"
    
    RetrofitClient.api.getAsignaturasAprobadas(idUsuario, completeToken).enqueue(object: Callback<String> {
       override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -23,7 +23,7 @@ fun getAsignaturasAprobadasRequest(idUsuario: Int, token: String, callback: (Lis
             val gson = Gson()
             val listType = object: TypeToken<List<AsignaturaRequest>>() {}.type
             val asignaturas: List<AsignaturaRequest> = gson.fromJson(responseText, listType)
-            callback(asignaturas) // println("Response: $responseText")
+            callback(asignaturas)
          } else {
             callback(null)
             println("Response code: ${response.code()}")
@@ -33,17 +33,15 @@ fun getAsignaturasAprobadasRequest(idUsuario: Int, token: String, callback: (Lis
             }
          }
       }
-      
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          callback(null)
       }
    })
-   
 }
 
 fun getAsignaturasNoAprobadasRequest(idUsuario: Int, token: String, callback: (List<AsignaturaRequest>?) -> Unit) { // val registerRequest = getAsignaturasAprobadas(nombre, apellido, email, fechaNacimiento, ci, password)
-   val completeToken = "Bearer " + token
+   val completeToken = "Bearer $token"
    
    RetrofitClient.api.getAsignaturasNoAprobadas(idUsuario, completeToken).enqueue(object: Callback<String> {
       override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -53,7 +51,7 @@ fun getAsignaturasNoAprobadasRequest(idUsuario: Int, token: String, callback: (L
             val gson = Gson()
             val listType = object: TypeToken<List<AsignaturaRequest>>() {}.type
             val asignaturas: List<AsignaturaRequest> = gson.fromJson(responseText, listType)
-            callback(asignaturas) // println("Response: $responseText")
+            callback(asignaturas)
          } else {
             callback(null)
             println("Response code: ${response.code()}")
@@ -63,17 +61,15 @@ fun getAsignaturasNoAprobadasRequest(idUsuario: Int, token: String, callback: (L
             }
          }
       }
-      
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          callback(null)
       }
    })
-   
 }
 
 fun getCalificacionesAsignaturasRequest(idUsuario: Int, idCarrera: Int, token: String, callback: (List<CalificacionAsignaturaRequest>?) -> Unit) {
-   val completeToken = "Bearer " + token
+   val completeToken = "Bearer $token"
 
    RetrofitClient.api.getCalificacionesAsignatura(idUsuario, idCarrera, completeToken).enqueue(object: Callback<String>{
       override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -93,7 +89,6 @@ fun getCalificacionesAsignaturasRequest(idUsuario: Int, idCarrera: Int, token: S
             }
          }
       }
-
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          callback(null)
@@ -102,7 +97,7 @@ fun getCalificacionesAsignaturasRequest(idUsuario: Int, idCarrera: Int, token: S
 }
 
 fun getHorariosAsignaturaRequest(idAsignatura:Int, token: String, callback: (List<HorariosAsignaturaRequest>?) -> Unit){
-   val completeToken = "Bearer " + token
+   val completeToken = "Bearer $token"
 
    RetrofitClient.api.getHorariosAsignatura(idAsignatura, completeToken).enqueue(object: Callback<String>{
       override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -122,7 +117,6 @@ fun getHorariosAsignaturaRequest(idAsignatura:Int, token: String, callback: (Lis
             }
          }
       }
-
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          callback(null)
@@ -143,16 +137,13 @@ fun inscripcionAsignaturaRequest(
             callback(true, responseText)
          } else {
             val errorMessage = buildString {
-               //append("Response code: ${response.code()}\n")
-              // append("${response.body()}\n")
                response.errorBody()?.let { errorBody ->
-                  append("${errorBody.string()}")
+                  append(errorBody.string())
                }
             }
             callback(false, errorMessage)
          }
       }
-
       override fun onFailure(call: Call<String>, t: Throwable) {
          val errorMessage = "Error: ${t.message}"
          callback(false, errorMessage)
@@ -162,7 +153,7 @@ fun inscripcionAsignaturaRequest(
 
 
 fun getAsignaturasConExamenPendienteRequest(idUsuario:Int, idCarrera:Int, token:String, callback: (List<AsignaturaRequest>?) -> Unit){
-   val completeToken = "Bearer " + token
+   val completeToken = "Bearer $token"
 
    RetrofitClient.api.getAsignaturasConExamenPendiente(idUsuario,idCarrera,completeToken).enqueue(object: Callback<String>{
       override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -172,7 +163,7 @@ fun getAsignaturasConExamenPendienteRequest(idUsuario:Int, idCarrera:Int, token:
             val gson = Gson()
             val listType = object: TypeToken<List<AsignaturaRequest>>() {}.type
             val asignaturas: List<AsignaturaRequest> = gson.fromJson(responseText, listType)
-            callback(asignaturas) // println("Response: $responseText")
+            callback(asignaturas)
          } else {
             callback(null)
             println("Response code: ${response.code()}")
@@ -182,7 +173,6 @@ fun getAsignaturasConExamenPendienteRequest(idUsuario:Int, idCarrera:Int, token:
             }
          }
       }
-
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          callback(null)

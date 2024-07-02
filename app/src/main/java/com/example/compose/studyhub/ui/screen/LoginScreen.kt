@@ -68,10 +68,7 @@ fun LoginScreen(
          Column(modifier = Modifier.fillMaxWidth()) {
             LoggingIn(ci = ci, onLoginSubmitted = onLoginSubmitted, onRegisterSubmitted = onNavigateToRegister, snackbarHostState = snackbarHostState, loginError = loginError)
             Spacer(modifier = Modifier.height(5.dp))
-
          }
-
-
       }
    })
 }
@@ -90,14 +87,15 @@ fun LoggingIn(
    val showSnackbar = remember {mutableStateOf(false)}
    var snackbarMessage = remember {mutableStateOf("")}
 
-
    Column(modifier = Modifier.fillMaxWidth()) {
       val focusRequester = remember { FocusRequester() }
+
       val ciState by rememberSaveable(stateSaver = CIStateSaver) { mutableStateOf(CIState(ci)) }
-      
       CI(ciState = ciState, onImeAction = { focusRequester.requestFocus() })
+
       Spacer(modifier = Modifier.height(16.dp))
       val passwordState = remember { PasswordState() }
+
       val onSubmit = {
          if (ciState.isValid && passwordState.isValid) {
             onLoginSubmitted(ciState.text, passwordState.text)
@@ -109,17 +107,14 @@ fun LoggingIn(
             onRegisterSubmitted(ciState.text)
          }
       }
-      
       Password(label = stringResource(id = R.string.password), passwordState = passwordState, modifier = Modifier.focusRequester(focusRequester), onImeAction = { onSubmit() })
-      Spacer(modifier = Modifier.height(16.dp))
 
+      Spacer(modifier = Modifier.height(16.dp))
       Button(onClick = { onSubmit();
          if(loginError!=null){
             errorSnackbar(loginError, snackbarHostState, scope)
          }
-
          showSnackbar.value = true
-
       }, modifier = Modifier
          .fillMaxWidth()
          .padding(top = 16.dp, bottom = 10.dp), enabled = ciState.isValid && passwordState.isValid) {
@@ -139,21 +134,15 @@ fun LoggingIn(
       ) {
          Text(text = stringResource(id = R.string.create_account))
       }
-
    }
-
    if(showRecoverPassDialog.value){
       RecoverPassBox(onConfirmation = {adviceSnackbar(it, snackbarHostState, scope)}, onDismiss = {showRecoverPassDialog.value = false})
    }
-
-
 }
-
 
 @Composable
 fun RecoverPassBox(onConfirmation: (String) -> Unit, onDismiss: () -> Unit){
    RecoverPassRoute(onConfirmation = {
-
      onConfirmation(it) },
       dialogTitle = "Recuperar contraseña",
       onDismiss = {onDismiss()},
@@ -161,29 +150,6 @@ fun RecoverPassBox(onConfirmation: (String) -> Unit, onDismiss: () -> Unit){
    )
 
 }
-
-
-/*@Composable
-fun ErrorSnackbar(message: String, snackbarHostState: SnackbarHostState, modifier: Modifier = Modifier, onDismiss: () -> Unit = {}) {
-   SnackbarHost(hostState = snackbarHostState, snackbar = { data ->
-      println("Hello")
-      Snackbar(modifier = Modifier.padding(16.dp), content = {
-         Text(text = message, style = MaterialTheme.typography.bodyMedium)
-      }, action = {
-         data.visuals.actionLabel?.let {
-            TextButton(onClick = onDismiss) {
-               Text(text = stringResource(id = R.string.txt_close), color = MaterialTheme.colorScheme.inversePrimary)
-            }
-         }
-      })
-   }, modifier = modifier
-      .fillMaxWidth()
-      .wrapContentHeight(Alignment.Bottom))
-}*/
-
-
-
-
 
 @Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_NO)
 /*@Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_YES)*/

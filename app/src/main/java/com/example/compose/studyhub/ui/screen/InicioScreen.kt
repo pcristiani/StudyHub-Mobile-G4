@@ -42,13 +42,11 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
 
-///
-// ? Pantalla de Bienvenida
+// Pantalla de Bienvenida
 @Composable
 fun InicioScreen(onLoginRegister: (email: String) -> Unit) {
    var showLogoTitle by rememberSaveable { mutableStateOf(true) }
    var context = LocalContext.current
-
    val activity = context as? Activity
 
    Scaffold(modifier = Modifier.supportWideScreen()) { innerPadding ->
@@ -57,21 +55,18 @@ fun InicioScreen(onLoginRegister: (email: String) -> Unit) {
          .fillMaxWidth()
          .verticalScroll(rememberScrollState())) {
          AnimatedVisibility(showLogoTitle, Modifier.fillMaxWidth()) { LogoTitle() }
-
          LoginCreateAccount(onLoginRegister = onLoginRegister, onFocusChange = { focused -> showLogoTitle = !focused }, modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp))
       }
    }
 
-
    BackHandler{
       activity?.moveTaskToBack(true);
    }
 }
 
-///
-// ? Logo y Titulo
+// Logo y Titulo
 @Composable
 private fun LogoTitle(modifier: Modifier = Modifier) {
    Column(modifier = modifier.wrapContentHeight(align = Alignment.CenterVertically)) {
@@ -86,11 +81,7 @@ private fun LogoTitle(modifier: Modifier = Modifier) {
    }
 }
 
-// ? Logo Imagen
-
-
-///
-// ? Crear cuenta
+// Crear cuenta
 @Composable
 private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onFocusChange: (Boolean) -> Unit, modifier: Modifier = Modifier) { // ! Guardar y resturar un estado
    val ciState by rememberSaveable(stateSaver = CIStateSaver) { mutableStateOf(CIState()) }
@@ -121,7 +112,6 @@ private fun LoginCreateAccount(onLoginRegister: (email: String) -> Unit, onFocus
    }
 }
 
-///
 /*@Preview(name = "Inicio light theme", uiMode = UI_MODE_NIGHT_YES)*/
 @Preview(name = "Inicio dark theme", uiMode = UI_MODE_NIGHT_NO)
 @Composable

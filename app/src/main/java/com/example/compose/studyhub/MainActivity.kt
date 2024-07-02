@@ -37,8 +37,6 @@ import com.example.compose.studyhub.ui.screen.estudiante.SolicitudesScreen
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.google.firebase.FirebaseApp
 
-///
-
 class MainActivity: AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
@@ -47,10 +45,7 @@ class MainActivity: AppCompatActivity() {
 
     setContent {
       ThemeStudyHub {
-        StudyHubNavHost() //
-
-        // val navController = rememberNavController()
-        // SetupNavGraph(navController = navController)
+        StudyHubNavHost()
       }
     }
   }

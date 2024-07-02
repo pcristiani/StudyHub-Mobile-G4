@@ -10,7 +10,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-   
    @Headers(
       "Accept: */*", "Content-Type: application/json"
            )
@@ -19,15 +18,13 @@ interface ApiService {
       @Body
       loginRequest: LoginRequest
             ): Call<String>
-   
-   
+
    @POST("/registerUsuario")
    fun signUp(
       @Body
       registerRequest: RegisterRequest
              ): Call<String>
-   
-   
+
    @PUT("/api/usuario/modificarPerfil/{idUsuario}")
    fun modifyProfile(
       @Path("idUsuario")
@@ -37,15 +34,13 @@ interface ApiService {
       @Body
       modifyProfileRequest: ModifyProfileRequest
                     ): Call<String>
-   
-   
+
    @POST("/cerrarSesion")
    fun logout(
       @Body
       token: String
              ): Call<String>
-   
-   
+
    @GET("/api/usuario/getUsuario/{idUsuario}")
    fun getUsuario(
       @Path("idUsuario")
@@ -53,16 +48,13 @@ interface ApiService {
       @Header("Authorization")
       token: String
                  ): Call<UserRequest>
-   
-   
+
    @GET("/api/usuario/getUsuarios")
    fun getUsers(
                ): Call<String>
-   
-   
+
    @GET("/api/carrera/getCarrerasInscripcionesPendientes")
    fun getInscPendientes(): Call<String>
-
 
    @GET("/api/carrera/getCarreras")
    fun getCarreras(@Header("Authorization") token: String): Call<String>
@@ -93,8 +85,7 @@ interface ApiService {
       @Header("Authorization")
       token: String
                                 ): Call<String>
-   
-   
+
    @GET("/api/asignatura/getAsignaturasAprobadas/{idUsuario}")
    fun getAsignaturasAprobadas(
       @Path("idUsuario")

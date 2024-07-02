@@ -27,7 +27,6 @@ fun InscripcionCarreraRoute(
     onNavUp: () -> Unit,
 ) {
     val inscripcionCarreraViewModel: InscripcionCarreraViewModel = viewModel(factory = InscripcionCarreraViewModelFactory())
-
     var inscripcionCarreraError by remember { mutableStateOf<String?>(null) }
     var inscripcionCarreraSuccess by remember { mutableStateOf<String?>(null) }
 

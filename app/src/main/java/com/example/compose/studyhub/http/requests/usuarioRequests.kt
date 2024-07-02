@@ -14,20 +14,14 @@ import retrofit2.Response
 fun loginRequest(ci: String, password: String, callback: (Boolean, String) -> Unit) {
    val loginRequest = LoginRequest(ci, password)
 
-
-   
    RetrofitClient.api.login(loginRequest).enqueue(object: Callback<String> {
-
-
       override fun onResponse(call: Call<String>, response: Response<String>) {
          if (response.isSuccessful) {
             val token = response.body() // Procesar la respuesta del login
 
-            println("I'm here")
-            
             if (token != null) {
                val decodedResponse = decodeJWT(token)
-               
+
                if (decodedResponse != null) {
                   decodedResponse.idUsuario?.let { idUsuario ->
                      decodedResponse.cedula?.let { ci ->
@@ -36,7 +30,6 @@ fun loginRequest(ci: String, password: String, callback: (Boolean, String) -> Un
                            callback(true, "")
                         } else {
                            println("ACA ESTOY" + decodedResponse.rol)
-                           
                            callback(false, "Este usuario no es un estudiante.")
                         }
                      }
@@ -51,13 +44,11 @@ fun loginRequest(ci: String, password: String, callback: (Boolean, String) -> Un
             }
          }
       }
-      
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          callback(false, t.message?:"")
       }
    })
-   
 }
 
 fun cerrarSesionRequest(token: String, callback: (Boolean) -> Unit) { // val completeToken = "Bearer $token"
@@ -77,26 +68,19 @@ fun cerrarSesionRequest(token: String, callback: (Boolean) -> Unit) { // val com
             }
          }
       }
-      
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
       }
-      
    })
 }
 
 fun registerRequest(nombre: String, apellido: String, email: String, fechaNacimiento: String, ci: String, password: String, callback: (Boolean) -> Unit) {
    val registerRequest = RegisterRequest(nombre, apellido, email, fechaNacimiento, ci, password)
-   
-   println(registerRequest)
-   
-   
+
    RetrofitClient.api.signUp(registerRequest).enqueue(object: Callback<String> {
       override fun onResponse(call: Call<String>, response: Response<String>) {
          val responseText = response.body() // Procesar la respuesta del login
-         
-         
-         
+
          if (responseText != null) {
             println(responseText)
          }
@@ -108,7 +92,6 @@ fun registerRequest(nombre: String, apellido: String, email: String, fechaNacimi
             callback(false)
          }
       }
-      
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          callback(false)
@@ -133,7 +116,6 @@ fun getUsuarioRequest(idUsuario: Int, token: String, callback: (UserRequest?) ->
             }
          }
       }
-      
       override fun onFailure(call: Call<UserRequest>, t: Throwable) {
          t.printStackTrace()
          callback(null)
@@ -145,15 +127,11 @@ fun getUsuarioRequest(idUsuario: Int, token: String, callback: (UserRequest?) ->
 fun modifyProfileRequest(token: String, idUsuario: Int, nombre: String, apellido: String, email: String, fechaNacimiento: String, callback: (Boolean) -> Unit) {
    val fullToken = "Bearer $token"
    val modifyProfileRequest = ModifyProfileRequest(nombre, apellido, email, fechaNacimiento)
-   
-   
-   
+
    RetrofitClient.api.modifyProfile(idUsuario, fullToken, modifyProfileRequest).enqueue(object: Callback<String> {
       override fun onResponse(call: Call<String>, response: Response<String>) {
          val responseText = response.body() // Procesar la respuesta del login
-         
-         
-         
+
          if (responseText != null) {
             println(responseText)
          }
@@ -170,7 +148,6 @@ fun modifyProfileRequest(token: String, idUsuario: Int, nombre: String, apellido
             }
          }
       }
-      
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          callback(false)
@@ -180,8 +157,6 @@ fun modifyProfileRequest(token: String, idUsuario: Int, nombre: String, apellido
 }
 
 fun forgotPasswordRequest(email: String, callback: (state: Boolean, response: String) -> Unit){
-
-   println("Email: $email")
    RetrofitClient.api.forgotPassword(email).enqueue(object: Callback<String> {
       override fun onResponse(call: Call<String>, response: Response<String>) {
          val responseText = response.body() // Procesar la respuesta del login
@@ -202,7 +177,6 @@ fun forgotPasswordRequest(email: String, callback: (state: Boolean, response: St
             }
          }
       }
-
       override fun onFailure(call: Call<String>, t: Throwable) {
          println("Error: ${t.message}")
          t.message?.let { callback(false, it) }

@@ -38,7 +38,6 @@ fun AlertDialogBoxWithText(
         text = {
              Email(emailState)
         },
-
         onDismissRequest = {
             onDismissRequest()
         },
@@ -51,7 +50,6 @@ fun AlertDialogBoxWithText(
                 Text("Confirmar")
             }
         },
-
         dismissButton = {
             TextButton(
                 onClick = {
@@ -64,11 +62,9 @@ fun AlertDialogBoxWithText(
     )
 }
 
-
 @Composable
 fun DialogBoxWithTextCreation(onConfirmation: (String) -> Unit, dialogTitle: String, onDismissRequest: () -> Unit) {
     val openAlertDialog = remember { mutableStateOf(true) }
-
 
     when {
         openAlertDialog.value -> {
@@ -84,7 +80,6 @@ fun DialogBoxWithTextCreation(onConfirmation: (String) -> Unit, dialogTitle: Str
         }
     }
 }
-
 
 @Preview
 /*@Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_YES)*/

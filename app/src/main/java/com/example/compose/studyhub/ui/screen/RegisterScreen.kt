@@ -33,7 +33,6 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.ui.theme.stronglyDeemphasizedAlpha
 import com.example.compose.studyhub.util.supportWideScreen
 
-///
 @Composable
 fun RegisterScreen(
    ci: String?,
@@ -57,7 +56,6 @@ fun RegisterScreen(
    })
 }
 
-///
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterContent(
@@ -67,7 +65,6 @@ fun RegisterContent(
    Column(modifier = Modifier.fillMaxWidth()) {
       val passwordFocusRequest = remember { FocusRequester() }
       val confirmationPasswordFocusRequest = remember { FocusRequester() }
-
 
       val nameState = remember { TextFieldState() }
       Name(nameState, onImeAction = { passwordFocusRequest.requestFocus() })
@@ -88,7 +85,6 @@ fun RegisterContent(
       val birthdayState = datePicker()
       Birthday(birthdayState,onImeAction = { passwordFocusRequest.requestFocus()} )
 
-
       Spacer(modifier = Modifier.height(16.dp))
       val passwordState = remember { PasswordState() }
       Password(label = stringResource(id = R.string.password), passwordState = passwordState, imeAction = ImeAction.Next, onImeAction = { confirmationPasswordFocusRequest.requestFocus() }, modifier = Modifier.focusRequester(passwordFocusRequest))
@@ -98,19 +94,13 @@ fun RegisterContent(
       Password(label = stringResource(id = R.string.confirm_password), passwordState = confirmPasswordState, onImeAction = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text, formatDate(birthdayState), ciState.text, passwordState.text) }, modifier = Modifier.focusRequester(confirmationPasswordFocusRequest))
 
       Spacer(modifier = Modifier.height(15.dp))
-
       Text(text = stringResource(id = R.string.terms_and_conditions), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha))
 
       Spacer(modifier = Modifier.height(15.dp))
-
-
       Button(onClick = { onRegisterSubmitted(nameState.text, surNameState.text, emailState.text, formatDate(birthdayState), ciState.text, passwordState.text) }, modifier = Modifier.fillMaxWidth(), enabled = ciState.isValid && passwordState.isValid && confirmPasswordState.isValid) { Text(text = stringResource(id = R.string.create_account)) }
-
    }
 }
 
-
-///
 /*@Preview(widthDp = 1024)*/
 @Preview
 @Composable

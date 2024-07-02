@@ -21,10 +21,3 @@ fun adviceSnackbar(error: String, snackbarHostState: SnackbarHostState, scope: C
         snackbarHostState.showSnackbar(message = error, actionLabel = "Cerrar", duration = SnackbarDuration.Short)
     }
 }
-
-fun successSnackbar(error: String, snackbarHostState: SnackbarHostState, scope: CoroutineScope): Job {
-    return scope.launch{
-        snackbarHostState.showSnackbar(message = error, actionLabel = "Cerrar", duration = SnackbarDuration.Short)
-    }
-}
-

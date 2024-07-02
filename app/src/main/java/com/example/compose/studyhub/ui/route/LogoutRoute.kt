@@ -12,14 +12,13 @@ import com.example.compose.studyhub.viewModel.LogoutViewModelFactory
 @Composable
 fun LogoutRoute(onConfirmation: () -> Unit, dialogTitle: String, dialogText: String, onDismiss: () -> Unit) {
    val logoutViewModel: LogoutViewModel = viewModel(factory = LogoutViewModelFactory())
-
    val token = UserRepository.getToken()
 
-   println(token)
    DialogBoxCreation(
       onDismissRequest = onDismiss,
       onConfirmation = {
       if (token != null) {
          logoutViewModel.logout(token, onLogoffComplete = onConfirmation)
       }
-   }, dialogTitle = dialogTitle, dialogText = dialogText) }
+   }, dialogTitle = dialogTitle, dialogText = dialogText)
+}
