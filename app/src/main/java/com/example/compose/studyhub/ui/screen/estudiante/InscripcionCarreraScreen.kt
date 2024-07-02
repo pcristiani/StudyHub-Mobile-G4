@@ -32,18 +32,15 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun InscripcionCarreraScreen(
-
   onInscripcionCarreraSubmitted: (idCarrera: Int) -> Unit,
   onInscripcionCarreraConfirmed: () -> Unit,
   onNavUp: () -> Unit,
   onError: String? = null,
   onSuccess: String? = null
-
 ): DrawerState {
     val remIdCarrera = remember { mutableStateOf<Int?>(null) }
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    var respone by remember { mutableStateOf<String?>(null) }
     val showConfirmationDialog = remember { mutableStateOf(false) }
     val showErrorDialog = remember { mutableStateOf(false) }
 
@@ -73,8 +70,6 @@ fun InscripcionCarreraScreen(
                     }
 
                 })
-        } else {
-            //CarrerasScreen(carreraId = remIdCarrera.value !!)
         }
         if(showConfirmationDialog.value){
             ConfirmDialogBox(onDismissRequest = { onInscripcionCarreraConfirmed()
@@ -112,8 +107,7 @@ fun Carreras(modifier: Modifier, snackbarHostState: SnackbarHostState, scope: Co
     val isLoading = remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
-    var checked by remember { mutableStateOf(true) }
-    val coroutineScope = rememberCoroutineScope()
+    val checked by remember { mutableStateOf(true) }
 
     carreras = firstLoad2(checked)
     LaunchedEffect(carreras) {
@@ -160,7 +154,6 @@ fun Carreras(modifier: Modifier, snackbarHostState: SnackbarHostState, scope: Co
                                 .fillMaxWidth()
                                 .padding(16.dp)
                         ) {
-                            //CircularProgressIndicator()
                         }
                     }
                 }
@@ -174,7 +167,6 @@ fun Carreras(modifier: Modifier, snackbarHostState: SnackbarHostState, scope: Co
     }
 }
 
-
 fun loadMoreCarrera(carrerasList: MutableList<CarreraRequest>, carreras: List<CarreraRequest>) {
     val currentSize = carrerasList.size
     val listLength = if ((carreras.size - currentSize) < 30) {
@@ -187,12 +179,10 @@ fun loadMoreCarrera(carrerasList: MutableList<CarreraRequest>, carreras: List<Ca
     }
 }
 
-
 @Composable
 fun CarreraItem(user: String, snackbarHostState: SnackbarHostState, scope: CoroutineScope, idC: Int, onSelected: (Int) -> Unit) {
     CarreraCard(nombre = user, onHeaderClicked = { onSelected(idC) })
 }
-
 
 @Preview
 @Composable

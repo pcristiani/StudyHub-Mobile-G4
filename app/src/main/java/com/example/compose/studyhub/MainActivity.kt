@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
@@ -42,6 +43,7 @@ class MainActivity: AppCompatActivity() {
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
     FirebaseApp.initializeApp(this)
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     setContent {
       ThemeStudyHub {
         StudyHubNavHost()
