@@ -43,31 +43,30 @@ fun Solicitudes(modifier: Modifier) {
   val isLoading = remember { mutableStateOf(false) }
   val listState = rememberLazyListState()
   val coroutineScope = rememberCoroutineScope()
-  var asignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
+  var allAsignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
+  var asignaturas by remember { mutableStateOf<List<AsignaturaRequest>>(emptyList()) }
   var checked by remember { mutableStateOf(true) }
   var listaCarreras: List<CarreraRequest>? = null
   val nombresCarrera = remember { mutableStateListOf<String>() }
   val idsCarrera = remember { mutableStateListOf<Int>() }
   var carreraSelected by remember { mutableStateOf<CarreraRequest?>(null) }
 
-  asignaturas = firstLoad(checked)
+  allAsignaturas = firstLoad(checked)
 
-  val combinedState = remember(asignaturas, carreraSelected) {
-    asignaturas to carreraSelected
-  }
+  LaunchedEffect(carreraSelected, checked, allAsignaturas){
+    asignaturas = emptyList()
+    allAsignaturas?.forEach{
+      if(it.idCarrera == carreraSelected?.idCarrera){
+        asignaturas += it
 
-  LaunchedEffect(combinedState) {
-    // This will run only once when both `asignaturas` and `carreraSelected` are updated
-    val (currentAsignaturas, currentCarreraSelected) = combinedState
-    asignaturasList.clear()
-    currentAsignaturas?.let {
-      currentCarreraSelected?.let { it1 ->
-        loadMoreAsignaturas(asignaturasList, it, it1.idCarrera)
       }
     }
   }
 
-
+  LaunchedEffect(asignaturas) {
+    asignaturasList.clear()
+    loadMoreAsignaturas(asignaturasList, asignaturas)
+  }
 
   UserRepository.loggedInUser()?.let {idUsuario -> UserRepository.getToken()
     ?.let {token -> inscripcionesCarreraRequest(idUsuario, token){success->
@@ -115,8 +114,7 @@ fun Solicitudes(modifier: Modifier) {
           style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.padding(start = 8.dp))
-        Switch(colors = SwitchDefaults.colors(), checked = checked, onCheckedChange = { newChecked ->
-          checked = newChecked
+        Switch(colors = SwitchDefaults.colors(), checked = checked, onCheckedChange = { newChecked -> checked = newChecked
         })
         Text(
           text = "Aprobadas",
@@ -125,7 +123,7 @@ fun Solicitudes(modifier: Modifier) {
         )
       }
 
-      if (asignaturas != null && asignaturas!!.isNotEmpty()) {
+      if (asignaturas.isNotEmpty()) {
         LazyColumn(state = listState, modifier = Modifier
           .weight(1f)
           .padding(bottom = 20.dp)) {
@@ -147,11 +145,11 @@ fun Solicitudes(modifier: Modifier) {
         }
         LaunchedEffect(listState) {
           snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
-            if (index == asignaturasList.size - 1 && ! isLoading.value && asignaturasList.size <= asignaturas !!.size) {
+            if (index == asignaturasList.size - 1 && ! isLoading.value && asignaturasList.size <= asignaturas.size) {
               isLoading.value = true
               coroutineScope.launch {
                 delay(3000) // Simulate network delay
-                loadMoreAsignaturas(asignaturasList, asignaturas !!, carreraSelected!!.idCarrera)
+                loadMoreAsignaturas(asignaturasList, asignaturas)
                 isLoading.value = false
               }
             }
@@ -188,17 +186,15 @@ fun firstLoad(checked: Boolean): List<AsignaturaRequest>? {
 }
 
 
-fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<AsignaturaRequest>, carreraSelected: Int) {
+fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<AsignaturaRequest>) {
   val currentSize = asignaturasList.size
-  val listLength = if ((asignaturas.size - currentSize) < 100) {
+  val listLength = if ((asignaturas.size - currentSize) < 30) {
     (asignaturas.size - currentSize)
   } else {
-    100
+    30
   }
   for (i in 0 until listLength) {
-    if(asignaturas[currentSize+i].idCarrera == carreraSelected){
-      asignaturasList.add(asignaturas[currentSize + i].nombre)
-    }
+    asignaturasList.add(asignaturas[currentSize + i].nombre)
   }
 }
 
