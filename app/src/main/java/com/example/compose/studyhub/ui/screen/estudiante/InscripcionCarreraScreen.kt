@@ -49,11 +49,11 @@ fun InscripcionCarreraScreen(
 
     LaunchedEffect(onError){
         if(onError!=null){
-            println("On error: $onError")
             if(onError==""){
                 showConfirmationDialog.value = true
             }
             else{
+                println("On error: $onError")
                 showErrorDialog.value = true
             }
         }
@@ -82,51 +82,12 @@ fun InscripcionCarreraScreen(
         }
         if(showErrorDialog.value){
             ConfirmDialogBox(onDismissRequest = {
-                showErrorDialog.value = false }, dialogTitle = onError?:"")
+                showErrorDialog.value = false; remIdCarrera.value = null }, dialogTitle = onError?:"")
+
         }
     }
     return DrawerState(DrawerValue.Closed)
 }
-
-
-
-/*
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun CarrerasScreen(carreraId: Int) {
-    val scope = rememberCoroutineScope()
-    var checked by remember { mutableStateOf(true) }
-    val snackbarHostState = remember { SnackbarHostState() }
-    var response by remember { mutableStateOf<String?>(null) }
-    val coroutineScope = rememberCoroutineScope()
-    LaunchedEffect(carreraId) {
-        coroutineScope.launch {
-            UserRepository.loggedInUser()?.let { id ->
-                UserRepository.getToken()?.let { token ->
-                    if (checked) {
-                        inscripcionCarreraRequest(
-                            token,
-                            InscripcionCarreraRequest(carreraId, id, true)
-                        ) { success, re ->
-                            if (success) {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("$re")
-                                    response = "$re"
-                                }
-                            } else {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("$re")
-                                    response = "$re"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-*/
 
 @Composable
 fun firstLoad2(checked: Boolean): List<CarreraRequest>? {
@@ -144,7 +105,6 @@ fun firstLoad2(checked: Boolean): List<CarreraRequest>? {
     }
     return carreras
 }
-
 
 @Composable
 fun Carreras(modifier: Modifier, snackbarHostState: SnackbarHostState, scope: CoroutineScope, onHeaderClicked: (Int) -> Unit) {
@@ -205,18 +165,6 @@ fun Carreras(modifier: Modifier, snackbarHostState: SnackbarHostState, scope: Co
                     }
                 }
             }
-           /* LaunchedEffect(listState) {
-                snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
-                    if (index == nombreCarrerasList.size - 1 && !isLoading.value && nombreCarrerasList.size <= carreras!!.size) {
-                        isLoading.value = true
-                        coroutineScope.launch {
-                            delay(3000)
-                            loadMoreCarrera(nombreCarrerasList, carreras!!)
-                            isLoading.value = false
-                        }
-                    }
-                }
-            }*/
         } else {
             Text(
                 text = stringResource(id = R.string.txt_error_solicitudes),

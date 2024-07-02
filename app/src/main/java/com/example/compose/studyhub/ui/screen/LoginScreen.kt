@@ -122,7 +122,8 @@ fun LoggingIn(
          label = stringResource(id = R.string.password),
          passwordState = passwordState,
          modifier = Modifier.focusRequester(focusRequester),
-         onImeAction = { onSubmit() })
+         onImeAction = { onSubmit() }
+      )
 
       Spacer(modifier = Modifier.height(16.dp))
       Button(
@@ -143,7 +144,9 @@ fun LoggingIn(
             showRecoverPassDialog.value = true
          },
          modifier = Modifier.fillMaxWidth()
-      ) { Text(text = stringResource(id = R.string.forgot_password)) }
+      ) {
+         Text(text = stringResource(id = R.string.forgot_password))
+      }
 
       Button(
          onClick = { onSubmitRegister() },
@@ -163,7 +166,8 @@ fun LoggingIn(
    if (showRecoverPassDialog.value) {
       RecoverPassBox(
          onConfirmation = { adviceSnackbar(it, snackbarHostState, scope) },
-         onDismiss = { showRecoverPassDialog.value = false })
+         onDismiss = { showRecoverPassDialog.value = false }
+      )
    }
 
    LaunchedEffect(showSnackbar, loginError) {
@@ -184,8 +188,6 @@ fun LoggingIn(
             }
          }
       }
-
-
    }
 }
 
