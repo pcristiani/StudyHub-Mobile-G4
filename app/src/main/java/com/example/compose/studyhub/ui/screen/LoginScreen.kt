@@ -16,15 +16,18 @@ import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -71,8 +74,9 @@ fun LoginScreen(
          }
       }
    })
-}
 
+
+}
 
 @Composable
 fun LoggingIn(
@@ -81,11 +85,18 @@ fun LoggingIn(
    onRegisterSubmitted: (ci: String) -> Unit,
    snackbarHostState: SnackbarHostState,
    loginError: String?
-             ) {
+   ) {
    val scope = rememberCoroutineScope()
-   val showRecoverPassDialog = remember {mutableStateOf(false)}
-   val showSnackbar = remember {mutableStateOf(false)}
-   var snackbarMessage = remember {mutableStateOf("")}
+   val showRecoverPassDialog = remember { mutableStateOf(false) }
+   var showSnackbar by remember { mutableStateOf(false) }
+   var snackbarMessage = remember { mutableStateOf("") }
+
+   LaunchedEffect(loginError) {
+      if (loginError != "") {
+         println("On error: $loginError")
+         showSnackbar = true
+      }
+   }
 
    Column(modifier = Modifier.fillMaxWidth()) {
       val focusRequester = remember { FocusRequester() }
@@ -107,36 +118,74 @@ fun LoggingIn(
             onRegisterSubmitted(ciState.text)
          }
       }
-      Password(label = stringResource(id = R.string.password), passwordState = passwordState, modifier = Modifier.focusRequester(focusRequester), onImeAction = { onSubmit() })
+      Password(
+         label = stringResource(id = R.string.password),
+         passwordState = passwordState,
+         modifier = Modifier.focusRequester(focusRequester),
+         onImeAction = { onSubmit() })
 
       Spacer(modifier = Modifier.height(16.dp))
-      Button(onClick = { onSubmit();
-         if(loginError!=null){
-            errorSnackbar(loginError, snackbarHostState, scope)
-         }
-         showSnackbar.value = true
-      }, modifier = Modifier
-         .fillMaxWidth()
-         .padding(top = 16.dp, bottom = 10.dp), enabled = ciState.isValid && passwordState.isValid) {
+      Button(
+         onClick = {
+            onSubmit();
+            showSnackbar = true
+         },
+         modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, bottom = 10.dp),
+         enabled = ciState.isValid && passwordState.isValid
+      ) {
          Text(text = stringResource(id = R.string.sign_in))
       }
 
-      TextButton(onClick = {
-         showRecoverPassDialog.value = true
-      }, modifier = Modifier.fillMaxWidth()) { Text(text = stringResource(id = R.string.forgot_password)) }
+      TextButton(
+         onClick = {
+            showRecoverPassDialog.value = true
+         },
+         modifier = Modifier.fillMaxWidth()
+      ) { Text(text = stringResource(id = R.string.forgot_password)) }
 
-      Button(onClick = { onSubmitRegister() }, modifier = Modifier
-         .fillMaxWidth()
-         .padding(vertical = 16.dp), enabled = ciState.isValid, colors = ButtonDefaults.buttonColors(
-         containerColor = Color.Transparent,
-         contentColor = Color.Blue // Text color when the button is enabled
-      ),border = BorderStroke(1.dp, Color.Blue)
+      Button(
+         onClick = { onSubmitRegister() },
+         modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+         enabled = ciState.isValid,
+         colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+            contentColor = Color.Blue // Text color when the button is enabled
+         ),
+         border = BorderStroke(1.dp, Color.Blue)
       ) {
          Text(text = stringResource(id = R.string.create_account))
       }
    }
-   if(showRecoverPassDialog.value){
-      RecoverPassBox(onConfirmation = {adviceSnackbar(it, snackbarHostState, scope)}, onDismiss = {showRecoverPassDialog.value = false})
+   if (showRecoverPassDialog.value) {
+      RecoverPassBox(
+         onConfirmation = { adviceSnackbar(it, snackbarHostState, scope) },
+         onDismiss = { showRecoverPassDialog.value = false })
+   }
+
+   LaunchedEffect(showSnackbar, loginError) {
+      if (showSnackbar) {
+         scope.launch {
+            if (loginError != null && loginError != "") {
+               val result = snackbarHostState.showSnackbar(
+                  message = loginError,
+                  actionLabel = "Cerrar",
+                  duration = SnackbarDuration.Short
+               )
+
+               when (result) {
+                  androidx.compose.material.SnackbarResult.Dismissed, androidx.compose.material.SnackbarResult.ActionPerformed -> {
+                     showSnackbar = false
+                  }
+               }
+            }
+         }
+      }
+
+
    }
 }
 
@@ -148,7 +197,6 @@ fun RecoverPassBox(onConfirmation: (String) -> Unit, onDismiss: () -> Unit){
       onDismiss = {onDismiss()},
       onFail = {onConfirmation("Error: $it")}
    )
-
 }
 
 @Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_NO)

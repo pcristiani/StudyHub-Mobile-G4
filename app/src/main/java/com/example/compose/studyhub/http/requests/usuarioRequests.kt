@@ -27,21 +27,24 @@ fun loginRequest(ci: String, password: String, callback: (Boolean, String) -> Un
                      decodedResponse.cedula?.let { ci ->
                         if (decodedResponse.rol == "E") {
                            UserRepository.login(token, idUsuario, ci)
-                           callback(true, "")
+                           callback(true, "$idUsuario")
                         } else {
-                           println("ACA ESTOY" + decodedResponse.rol)
                            callback(false, "Este usuario no es un estudiante.")
                         }
+                     } ?: run {
+                        callback(false, "CI not found in decoded response")
                      }
+                  } ?: run {
+                     callback(false, "User ID not found in decoded response")
                   }
+               } else {
+                  callback(false, "Failed to decode JWT token")
                }
-               else{
-                  callback(false, token)
-               }
-               
             } else {
-               callback(false, "")
+               callback(false, "Token is null")
             }
+         } else {
+            callback(false, response.body()?:"Credenciales incorrectas")
          }
       }
       override fun onFailure(call: Call<String>, t: Throwable) {

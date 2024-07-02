@@ -11,14 +11,15 @@ class LoginViewModel(private val userRepository: UserRepository): ViewModel() {
   private val _loginError = MutableLiveData<String?>(null)
   val loginError: LiveData<String?> get() = _loginError
 
-  fun login(ci: String, password: String, onLoginComplete: () -> Unit) {
+  fun login(ci: String, password: String, onLoginComplete: () -> Unit, onLoginError: (String) -> Unit) {
     loginRequest(ci, password) { success, response ->
+      println("I'm here")
       if (success) {
         onLoginComplete()
       }
       else{
-
-        _loginError.value = response
+        println(response)
+        onLoginError(response)
       }
     }
 
