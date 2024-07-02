@@ -24,6 +24,7 @@ import com.example.compose.studyhub.http.requests.getAsignaturasAprobadasRequest
 import com.example.compose.studyhub.http.requests.getAsignaturasNoAprobadasRequest
 import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 import com.example.compose.studyhub.ui.component.AsignaturaCard
+import com.example.compose.studyhub.ui.component.DatosAsignaturaBox
 import com.example.compose.studyhub.ui.component.gestion.ExpandableList
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import kotlinx.coroutines.delay
@@ -39,7 +40,7 @@ fun SolicitudesScreen(): DrawerState {
 
 @Composable
 fun Solicitudes(modifier: Modifier) {
-  val asignaturasList = remember { mutableStateListOf<String>() }
+  val asignaturasList = remember { mutableStateListOf<AsignaturaRequest>() }
   val isLoading = remember { mutableStateOf(false) }
   val listState = rememberLazyListState()
   val coroutineScope = rememberCoroutineScope()
@@ -50,9 +51,13 @@ fun Solicitudes(modifier: Modifier) {
   val nombresCarrera = remember { mutableStateListOf<String>() }
   val idsCarrera = remember { mutableStateListOf<Int>() }
   var carreraSelected by remember { mutableStateOf<CarreraRequest?>(null) }
+  var showAsignaturaInfo by remember { mutableStateOf(false) }
+  var idAsignaturaSelected by remember { mutableIntStateOf(0)}
 
+  //Carga todas las asignaturas a las que el usuario está registrado
   allAsignaturas = firstLoad(checked)
 
+  //Genera una lista (asignaturas) a partir de allAsignaturas con únicamente las que pertenecen a la carrera seleccionada en carreraSelected
   LaunchedEffect(carreraSelected, checked, allAsignaturas){
     asignaturas = emptyList()
     allAsignaturas?.forEach{
@@ -63,11 +68,13 @@ fun Solicitudes(modifier: Modifier) {
     }
   }
 
+  //Cuando la lista de asignaturas cargadas se actualiza (debido a que el usuario cambió la selección de carrera), se limpia la lista en pantalla y se carga de nuevo
   LaunchedEffect(asignaturas) {
     asignaturasList.clear()
     loadMoreAsignaturas(asignaturasList, asignaturas)
   }
 
+  //Retornar todas las carreras a las que el usuario está inscripto en las listas listaCarreras, nombresCarrera y idsCarrera
   UserRepository.loggedInUser()?.let {idUsuario -> UserRepository.getToken()
     ?.let {token -> inscripcionesCarreraRequest(idUsuario, token){success->
       if(success!=null){
@@ -94,6 +101,7 @@ fun Solicitudes(modifier: Modifier) {
     Box(modifier = Modifier.padding(20.dp)) {
     }
 
+    //Lista expandible con todas las carreras a las que el usuario está inscripto
     ExpandableList(modifier= Modifier
       .padding(top = 0.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
       .animateContentSize(),
@@ -101,6 +109,7 @@ fun Solicitudes(modifier: Modifier) {
         listaCarreras?.find {it.idCarrera ==selectedId }
       })
 
+    //Todo el resto de la screen carga únicamente si el usuario seleccionó una carrera
     if(carreraSelected!=null){
       Row(modifier = Modifier
         .fillMaxWidth()
@@ -123,12 +132,13 @@ fun Solicitudes(modifier: Modifier) {
         )
       }
 
+      //Si el usuario está isncripto a alguna asignatura de la carrera que eligió, se muestra en pantalla una lista con infinite scrolling de éstas
       if (asignaturas.isNotEmpty()) {
         LazyColumn(state = listState, modifier = Modifier
           .weight(1f)
           .padding(bottom = 20.dp)) {
           items(asignaturasList.size) { index ->
-            UserItem(user = asignaturasList[index])
+            ListItem(nombre = asignaturasList[index].nombre, idAsignatura = asignaturasList[index].idAsignatura, onClick = {idAsignatura -> idAsignaturaSelected = idAsignatura; showAsignaturaInfo = true})
           }
           if (isLoading.value) {
             item {
@@ -143,12 +153,15 @@ fun Solicitudes(modifier: Modifier) {
             }
           }
         }
+        //Cuando la lista de infiniteScrolling se mueve hasta el final
         LaunchedEffect(listState) {
           snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
+            //Y si todavía quedan asignaturas en la lista de asignaturas que no se muestran en pantalla
             if (index == asignaturasList.size - 1 && ! isLoading.value && asignaturasList.size <= asignaturas.size) {
               isLoading.value = true
+              //Se cargan más asignaturas en pantalla
               coroutineScope.launch {
-                delay(3000) // Simulate network delay
+                delay(3000)
                 loadMoreAsignaturas(asignaturasList, asignaturas)
                 isLoading.value = false
               }
@@ -160,9 +173,23 @@ fun Solicitudes(modifier: Modifier) {
       }
     }
 
+    if(showAsignaturaInfo){
+      val asignatura: AsignaturaRequest? = asignaturasList.find{it.idAsignatura == idAsignaturaSelected}
+
+      DatosAsignaturaBox(
+        onDismissRequest = {showAsignaturaInfo=false},
+        asignatura = asignatura!!.nombre,
+        carrera = carreraSelected!!.nombre,
+        descripcion = asignatura.descripcion,
+        departamento = asignatura.departamento,
+        creditos = asignatura.creditos
+      )
+    }
   }
+
 }
 
+//Función de primera carga
 @Composable
 fun firstLoad(checked: Boolean): List<AsignaturaRequest>? {
   var asignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
@@ -185,8 +212,8 @@ fun firstLoad(checked: Boolean): List<AsignaturaRequest>? {
   return asignaturas
 }
 
-
-fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<AsignaturaRequest>) {
+//Se ejecuta cuando se quieren cargar más asignaturas a la lista que se está mostrando en pantalla
+fun loadMoreAsignaturas(asignaturasList: MutableList<AsignaturaRequest>, asignaturas: List<AsignaturaRequest>) {
   val currentSize = asignaturasList.size
   val listLength = if ((asignaturas.size - currentSize) < 30) {
     (asignaturas.size - currentSize)
@@ -194,8 +221,17 @@ fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<
     30
   }
   for (i in 0 until listLength) {
-    asignaturasList.add(asignaturas[currentSize + i].nombre)
+    asignaturasList.add(asignaturas[currentSize + i])
   }
+}
+
+//Cómo se va a mostrar cada item de la lista
+@Composable
+fun ListItem(nombre: String, idAsignatura: Int, onClick: (Int) -> Unit) {
+  AsignaturaCard(
+    nombre = nombre,
+    onClick = { onClick(idAsignatura) }
+  )
 }
 
 @Preview
@@ -204,12 +240,4 @@ fun SolicitudesScreenPreview() {
   ThemeStudyHub {
     SolicitudesScreen()
   }
-}
-
-@Composable
-fun UserItem(user: String) {
-  AsignaturaCard(
-    nombre = user,
-    onClick = {}
-  )
 }
