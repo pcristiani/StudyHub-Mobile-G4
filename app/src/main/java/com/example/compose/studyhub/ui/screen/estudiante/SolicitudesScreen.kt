@@ -51,10 +51,19 @@ fun Solicitudes(modifier: Modifier) {
   var carreraSelected by remember { mutableStateOf<CarreraRequest?>(null) }
 
   asignaturas = firstLoad(checked)
-  LaunchedEffect(asignaturas, carreraSelected) {
+
+  val combinedState = remember(asignaturas, carreraSelected) {
+    asignaturas to carreraSelected
+  }
+
+  LaunchedEffect(combinedState) {
+    // This will run only once when both `asignaturas` and `carreraSelected` are updated
+    val (currentAsignaturas, currentCarreraSelected) = combinedState
     asignaturasList.clear()
-    asignaturas?.let {
-      carreraSelected?.let { it1 -> loadMoreAsignaturas(asignaturasList, it, it1.idCarrera) }
+    currentAsignaturas?.let {
+      currentCarreraSelected?.let { it1 ->
+        loadMoreAsignaturas(asignaturasList, it, it1.idCarrera)
+      }
     }
   }
 
@@ -181,10 +190,10 @@ fun firstLoad(checked: Boolean): List<AsignaturaRequest>? {
 
 fun loadMoreAsignaturas(asignaturasList: MutableList<String>, asignaturas: List<AsignaturaRequest>, carreraSelected: Int) {
   val currentSize = asignaturasList.size
-  val listLength = if ((asignaturas.size - currentSize) < 30) {
+  val listLength = if ((asignaturas.size - currentSize) < 100) {
     (asignaturas.size - currentSize)
   } else {
-    30
+    100
   }
   for (i in 0 until listLength) {
     if(asignaturas[currentSize+i].idCarrera == carreraSelected){
