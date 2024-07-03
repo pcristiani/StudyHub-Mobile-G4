@@ -68,7 +68,6 @@ fun InscripcionCarreraScreen(
                         onInscripcionCarreraSubmitted(remIdCarrera.value!!)
                         println("Este remIdCarrera : ${remIdCarrera.value}")
                     }
-
                 })
         }
         if(showConfirmationDialog.value){
@@ -88,7 +87,7 @@ fun InscripcionCarreraScreen(
 fun firstLoad2(checked: Boolean): List<CarreraRequest>? {
     var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
     LaunchedEffect(checked) {
-        UserRepository.loggedInUser()?.let { user ->
+        UserRepository.loggedInUser()?.let {
             UserRepository.getToken()?.let { token ->
                 if (checked) {
                     getCarrerasRequest(token) { success ->

@@ -37,7 +37,6 @@ fun inscripcionesCarreraRequest(idUsuario: Int, token: String, callback: (List<C
 }
 
 
-
 fun getCarrerasRequest(token: String, callback: (List<CarreraRequest>?) -> Unit) { // val registerRequest = getAsignaturasAprobadas(nombre, apellido, email, fechaNacimiento, ci, password)
     val completeToken = "Bearer $token"
 

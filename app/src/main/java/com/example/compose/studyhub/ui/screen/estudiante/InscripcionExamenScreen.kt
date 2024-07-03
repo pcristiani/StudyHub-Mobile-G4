@@ -1,7 +1,6 @@
 package com.example.compose.studyhub.ui.screen.estudiante
 
 import AsignaturaRequest
-import CarreraRequest
 import ExamenRequest
 import InscripcionExamenRequest
 import android.annotation.SuppressLint
@@ -16,12 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
-import com.example.compose.studyhub.R.string.txt_inscripciones
 import com.example.compose.studyhub.R.string.txt_selectAsignatura
-import com.example.compose.studyhub.R.string.txt_selectCarrera
 import com.example.compose.studyhub.R.string.txt_selectHorario
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getAsignaturasConExamenPendienteRequest
@@ -29,7 +25,7 @@ import com.example.compose.studyhub.http.requests.getExamenesAsignatura
 import com.example.compose.studyhub.http.requests.inscripcionExamenRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.ui.component.HorarioCard
-import kotlinx.coroutines.delay
+import com.example.compose.studyhub.ui.component.inscripciones.CarrerasInscripto
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -42,12 +38,10 @@ fun InscripcionExamenScreen(): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
   val remIdAsignatura= remember { mutableStateOf<Int?>(null) }
   val remIdHorario= remember { mutableStateOf<Int?>(null) }
-  val scope = rememberCoroutineScope()
-  val snackbarHostState = remember { SnackbarHostState() }
 
   Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
     if (remIdCarrera.value == null) {
-      CarrerasInscripto(modifier = Modifier.fillMaxWidth(),snackbarHostState, scope, onHeaderClicked = { idC: Int? ->
+      CarrerasInscripto(modifier = Modifier.fillMaxWidth(), onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdCarrera.value = idC
           println("Este remIdCarrera : ${remIdCarrera.value}")
