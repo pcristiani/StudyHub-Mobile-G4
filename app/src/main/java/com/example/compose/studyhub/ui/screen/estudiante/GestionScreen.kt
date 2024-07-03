@@ -88,7 +88,6 @@ fun Gestion(modifier: Modifier){
 
       //Lista expandible con todas las carreras a las que el usuario está inscripto
       ExpandableList(modifier=Modifier.padding(top = 25.dp, bottom = 10.dp,start = 20.dp, end = 20.dp)
-         .size(300.dp, 300.dp)
           .animateContentSize(),
          headerTitle = carreraSelected.value?.nombre ?: stringResource(id = R.string.txt_selectCarrera), options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
          listaCarreras?.find {it.idCarrera ==selectedId }
@@ -104,7 +103,8 @@ fun Gestion(modifier: Modifier){
 
       if(webView.value==null && carreraSelected.value!=null){
          Row(verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,){
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(top = 250.dp)){
             Text(text = stringResource(id = R.string.empty_carrera))
          }
          
