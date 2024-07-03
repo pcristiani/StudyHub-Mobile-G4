@@ -41,36 +41,51 @@ fun InscripcionAsignaturaScreen(): DrawerState {
       CarrerasInscripto(modifier = Modifier.fillMaxWidth(), onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdCarrera.value = idC
-          println("Este remIdCarrera : ${remIdCarrera.value}")
         }
       })
-    } else if (remIdAsignatura.value == null && remIdCarrera.value != null) {
-      AsigaturaDeCarrera(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
-        if (idC != null) {
+    }
+
+    if (remIdAsignatura.value == null && remIdCarrera.value != null) {
+      AsigaturaDeCarrera(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idA: Int? ->
+        if (idA != null) {
           UserRepository.getToken()?.let { token ->
-            getHorariosAsignaturaRequest(idC, token) { responde ->
-              if(responde!=null){
-                remIdAsignatura.value = idC
+            getHorariosAsignaturaRequest(idA, token) { response ->
+              println(response)
+              if(!response.isNullOrEmpty()){
+                remIdAsignatura.value = idA
+              }
+              else{
+                remIdCarrera.value = null
               }
             }
           }
-
         }
       })
-    } else if (remIdAsignatura.value != null) {
+    }
+
+    if(remIdAsignatura.value!=null && remIdHorario==null) {
       HorariosAsignatura(modifier = Modifier.fillMaxWidth(), asignaturaId = remIdAsignatura.value !!,onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdHorario.value = idC
           println("Este remIdHorario : ${remIdHorario.value}")
         }
+        else {
+          remIdAsignatura.value = null
+        }
       })
     }
+
     if(remIdCarrera.value != null && remIdAsignatura.value != null && remIdHorario.value != null) {
       InscripcionAsignatura(carreraId =remIdCarrera.value!!, horarioId =  remIdHorario.value !!, idAsig=remIdAsignatura.value !!)
     }
   }
   return DrawerState(DrawerValue.Closed)
 }
+
+fun seleccion(idCarrera: Int, idAsignatura: Int, idHorario: Int){
+
+}
+
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
