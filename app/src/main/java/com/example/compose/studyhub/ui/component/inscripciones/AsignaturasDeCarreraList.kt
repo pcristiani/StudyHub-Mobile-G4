@@ -18,6 +18,8 @@ import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.util.InfiniteScrolling.firstLoad
 import com.example.compose.studyhub.util.InfiniteScrolling.loadMoreItems
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -26,6 +28,8 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
     val isLoading = remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     var asignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
+    val coroutineScope = rememberCoroutineScope()
+
 
     asignaturas = firstLoad(carreraId, ::getAsignaturasDeCarreraRequest)
     LaunchedEffect(asignaturas) {
@@ -67,6 +71,21 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
             }
         } else {
             Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
+        }
+    }
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
+            //Y si todavía quedan asignaturas en la lista de asignaturas que no se muestran en pantalla
+            if (index == nombreAsignaturaList.size - 1 && !isLoading.value && nombreAsignaturaList.size <= (asignaturas?.size ?: 0)
+            ) {
+                isLoading.value = true
+                //Se cargan más asignaturas en pantalla
+                coroutineScope.launch {
+                    delay(3000)
+                    loadMoreItems(nombreAsignaturaList, asignaturas!!)
+                    isLoading.value = false
+                }
+            }
         }
     }
 }

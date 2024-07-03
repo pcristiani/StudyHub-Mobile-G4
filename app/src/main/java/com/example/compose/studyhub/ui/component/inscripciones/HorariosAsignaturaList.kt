@@ -16,7 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,23 +29,27 @@ import com.example.compose.studyhub.R.string.txt_selectHorario
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getHorariosAsignaturaRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
+import com.example.compose.studyhub.ui.screen.estudiante.loadMoreAsignaturas
 import com.example.compose.studyhub.util.InfiniteScrolling.firstLoad
 import com.example.compose.studyhub.util.InfiniteScrolling.loadMoreItems
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun HorariosAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (Int) -> Unit) {
-    val nombreCarrerasList = remember { mutableStateListOf<HorariosAsignaturaRequest>() }
+    val horariosAsignaturaList = remember { mutableStateListOf<HorariosAsignaturaRequest>() }
     val isLoading = remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     var horariosAsignatura by remember { mutableStateOf<List<HorariosAsignaturaRequest>?>(null) }
+    val coroutineScope = rememberCoroutineScope()
 
     horariosAsignatura = firstLoad(asignaturaId, ::getHorariosAsignaturaRequest)
     LaunchedEffect(horariosAsignatura) {
         if(horariosAsignatura!=null){
-            nombreCarrerasList.clear()
+            horariosAsignaturaList.clear()
             horariosAsignatura?.let {
-                loadMoreItems(nombreCarrerasList, it)
+                loadMoreItems(horariosAsignaturaList, it)
             }
         }
     }
@@ -63,11 +69,11 @@ fun HorariosAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (I
             LazyColumn(state = listState, modifier = Modifier
                 .weight(1f)
                 .padding(bottom = 20.dp)) {
-                items(nombreCarrerasList.size) { index ->
-                    HorariosAsignaturaItem(user = nombreCarrerasList[index].dtHorarioDias[index].diaSemana + " de " +
-                            nombreCarrerasList[index].dtHorarioDias[index].horaInicio + " a " +
-                            nombreCarrerasList[index].dtHorarioDias[index].horaFin + "hs",
-                        idC = nombreCarrerasList[index].idHorarioAsignatura) {
+                items(horariosAsignaturaList.size) { index ->
+                    HorariosAsignaturaItem(user = horariosAsignaturaList[index].dtHorarioDias[index].diaSemana + " de " +
+                            horariosAsignaturaList[index].dtHorarioDias[index].horaInicio + " a " +
+                            horariosAsignaturaList[index].dtHorarioDias[index].horaFin + "hs",
+                        idC = horariosAsignaturaList[index].idHorarioAsignatura) {
                         onHeaderClicked(it)
                     }
                 }
@@ -79,9 +85,25 @@ fun HorariosAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (I
                         }
                     }
                 }
+
             }
         } else {
             Text(text = stringResource(id = R.string.txt_error_horario), textAlign = TextAlign.Center)
+        }
+    }
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
+            //Y si todavía quedan asignaturas en la lista de asignaturas que no se muestran en pantalla
+            if (index == horariosAsignaturaList.size - 1 && !isLoading.value && horariosAsignaturaList.size <= (horariosAsignatura?.size ?: 0)
+            ) {
+                isLoading.value = true
+                //Se cargan más asignaturas en pantalla
+                coroutineScope.launch {
+                    delay(3000)
+                    loadMoreItems(horariosAsignaturaList, horariosAsignatura!!)
+                    isLoading.value = false
+                }
+            }
         }
     }
 }
