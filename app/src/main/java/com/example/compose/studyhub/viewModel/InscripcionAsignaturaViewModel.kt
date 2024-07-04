@@ -11,39 +11,44 @@ import com.example.compose.studyhub.http.requests.modifyProfileRequest
 import com.example.compose.studyhub.http.requests.registerRequest
 import kotlinx.coroutines.launch
 
-class InscripcionCarreraViewModel(private val userRepository: UserRepository): ViewModel() {
-  private val _inscripcionCarreraError = MutableLiveData<String?>(null)
-  val inscripcionCarreraError: LiveData<String?> get() = _inscripcionCarreraError
+class InscripcionAsignaturaViewModel(private val userRepository: UserRepository): ViewModel() {
+  private val _inscripcionAsignaturaError = MutableLiveData<String?>(null)
+  val inscripcionAsignaturaError: LiveData<String?> get() = _inscripcionAsignaturaError
 
 
   // Considere todos los registros exitosos
-  fun inscripcionCarrera(idCarrera: Int, onInscripcionCarreraSubmitted: (String) -> Unit, onInscripcionCarreraError: (String)->Unit) {
+  fun inscripcionAsignatura(idCarrera: Int, onInscripcionCarreraSubmitted: (String) -> Unit, onInscripcionCarreraError: (String)->Unit) {
     UserRepository.getToken()?.let { token ->
       UserRepository.loggedInUser()?.let { idUsuario ->
+
+
         inscripcionCarreraRequest(
           token,
           InscripcionCarreraRequest(idCarrera, idUsuario, true)
         ) { success, response ->
           if (success) {
             onInscripcionCarreraSubmitted(response?:"")
+
           } else {
             onInscripcionCarreraError(response?:"")
+
           }
         }
       }
     }
+
   }
 
   fun clearError() {
-    _inscripcionCarreraError.value = null
+    _inscripcionAsignaturaError.value = null
   }
 
 }
-class InscripcionCarreraViewModelFactory: ViewModelProvider.Factory {
+class InscripcionAsignaturaViewModelFactory: ViewModelProvider.Factory {
   @Suppress("UNCHECKED_CAST")
   override fun <T: ViewModel> create(modelClass: Class<T>): T {
-    if (modelClass.isAssignableFrom(InscripcionCarreraViewModel::class.java)) {
-      return InscripcionCarreraViewModel(UserRepository) as T
+    if (modelClass.isAssignableFrom(InscripcionAsignaturaViewModel::class.java)) {
+      return InscripcionAsignaturaViewModel(UserRepository) as T
     }
     throw IllegalArgumentException("Unknown ViewModel class")
   }

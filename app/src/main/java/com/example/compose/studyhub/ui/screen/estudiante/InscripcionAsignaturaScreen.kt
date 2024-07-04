@@ -31,50 +31,48 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun InscripcionAsignaturaScreen(): DrawerState {
+fun InscripcionAsignaturaScreen(
+  /*onInscripcionAsignaturaSubmitted: (idCarrera: Int) -> Unit,
+  onInscripcionAsignaturaConfirmed: () -> Unit,
+  onNavUp: () -> Unit,
+  onError: String? = null,
+  onSuccess: String? = null*/
+): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
   val remIdAsignatura= remember { mutableStateOf<Int?>(null) }
   val remIdHorario= remember { mutableStateOf<Int?>(null) }
+  val scope = rememberCoroutineScope()
+  val snackbarHostState = remember { SnackbarHostState() }
 
   Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
     if (remIdCarrera.value == null) {
-      CarrerasInscripto(modifier = Modifier.fillMaxWidth(), onHeaderClicked = { idC: Int? ->
+      CarrerasInscripto(modifier = Modifier.fillMaxWidth(),onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdCarrera.value = idC
+          println("Este remIdCarrera : ${remIdCarrera.value}")
         }
       })
-    }
-
-    if (remIdAsignatura.value == null && remIdCarrera.value != null) {
-      AsigaturaDeCarrera(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idA: Int? ->
-        if (idA != null) {
+    } else if (remIdAsignatura.value == null && remIdCarrera.value != null) {
+      AsigaturaDeCarrera(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
+        if (idC != null) {
           UserRepository.getToken()?.let { token ->
-            getHorariosAsignaturaRequest(idA, token) { response ->
-              println(response)
-              if(!response.isNullOrEmpty()){
-                remIdAsignatura.value = idA
-              }
-              else{
-                remIdCarrera.value = null
+            getHorariosAsignaturaRequest(idC, token) { responde ->
+              if(responde!=null){
+                remIdAsignatura.value = idC
               }
             }
           }
+
         }
       })
-    }
-
-    if(remIdAsignatura.value!=null && remIdHorario==null) {
+    } else if (remIdAsignatura.value != null) {
       HorariosAsignatura(modifier = Modifier.fillMaxWidth(), asignaturaId = remIdAsignatura.value !!,onHeaderClicked = { idC: Int? ->
         if (idC != null) {
           remIdHorario.value = idC
           println("Este remIdHorario : ${remIdHorario.value}")
         }
-        else {
-          remIdAsignatura.value = null
-        }
       })
     }
-
     if(remIdCarrera.value != null && remIdAsignatura.value != null && remIdHorario.value != null) {
       InscripcionAsignatura(carreraId =remIdCarrera.value!!, horarioId =  remIdHorario.value !!, idAsig=remIdAsignatura.value !!)
     }
