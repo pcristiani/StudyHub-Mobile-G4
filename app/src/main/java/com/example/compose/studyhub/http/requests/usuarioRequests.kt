@@ -13,15 +13,17 @@ import retrofit2.Response
 
 fun loginRequest(ci: String, password: String, callback: (Boolean, String) -> Unit) {
    val loginRequest = LoginRequest(ci, password)
-   
-   
+
+
    
    RetrofitClient.api.login(loginRequest).enqueue(object: Callback<String> {
+
+
       override fun onResponse(call: Call<String>, response: Response<String>) {
          if (response.isSuccessful) {
             val token = response.body() // Procesar la respuesta del login
-            
-            
+
+            println("I'm here")
             
             if (token != null) {
                val decodedResponse = decodeJWT(token)

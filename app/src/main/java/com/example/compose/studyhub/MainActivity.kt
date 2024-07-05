@@ -11,6 +11,10 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -22,6 +26,7 @@ import com.example.compose.studyhub.ui.navigation.MenuLateral
 import com.example.compose.studyhub.ui.navigation.NavRoutes
 import com.example.compose.studyhub.ui.navigation.TopBar
 import com.example.compose.studyhub.ui.route.EditarPerfilRoute
+import com.example.compose.studyhub.ui.route.InscripcionCarreraRoute
 import com.example.compose.studyhub.ui.screen.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.screen.estudiante.InscripcionCarreraScreen
 import com.example.compose.studyhub.ui.screen.estudiante.InscripcionAsignaturaScreen
@@ -145,8 +150,13 @@ fun ScreenEditarPerfil(navController: NavHostController, drawerState: DrawerStat
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ScreenInscripciones(drawerState: DrawerState,navController: NavHostController) {
+
+
   TopBar(navController,drawerState)
-  InscripcionCarreraScreen()
+  InscripcionCarreraRoute(
+    onInscripcionCarreraConfirmed = { navController.navigate(NavRoutes.NovedadesScreen) },
+    onNavUp = navController::navigateUp,
+    )
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

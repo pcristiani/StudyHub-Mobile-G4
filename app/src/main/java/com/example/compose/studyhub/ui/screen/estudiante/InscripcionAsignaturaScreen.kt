@@ -250,7 +250,7 @@ fun firstLoad22(checked: Boolean,idC: Int): List<AsignaturaRequest>? {
     UserRepository.loggedInUser()?.let { user ->
       UserRepository.getToken()?.let { token ->
         if (checked) {
-          println("idc " + idC)
+          println("251 - idc " + idC)
           getAsignaturasDeCarreraRequest(idC,token) { success ->
             listAsignaturas = success
           }

@@ -26,7 +26,7 @@ import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AlertDialogBoxWithText(
-    onDismissRequest: () -> Unit,
+    onDismissRequest: (String) -> Unit,
     onConfirmation: (String) -> Unit,
     dialogTitle: String,
 ) {
@@ -40,7 +40,7 @@ fun AlertDialogBoxWithText(
         },
 
         onDismissRequest = {
-            onDismissRequest()
+            onDismissRequest("se")
         },
         confirmButton = {
             TextButton(
@@ -55,7 +55,7 @@ fun AlertDialogBoxWithText(
         dismissButton = {
             TextButton(
                 onClick = {
-                    onDismissRequest()
+                    onDismissRequest("cance")
                 }
             ) {
                 Text("Cancelar")
