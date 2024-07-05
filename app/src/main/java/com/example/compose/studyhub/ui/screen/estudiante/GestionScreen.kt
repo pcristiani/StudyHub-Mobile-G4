@@ -52,7 +52,7 @@ fun GestionScreen(): DrawerState {
       Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
          Gestion(modifier = Modifier
             .weight(1f)
-            .padding(top = 20.dp, start = 20.dp, end = 20.dp))
+            .padding(top = 20.dp, bottom = 30.dp))
       }
    }
    return DrawerState(DrawerValue.Closed)

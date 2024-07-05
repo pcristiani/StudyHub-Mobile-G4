@@ -55,7 +55,7 @@ fun InscripcionAsignaturaScreen(
   }
 
   if(showColumn){
-    Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
+    Column(modifier = Modifier.padding(top = 50.dp, bottom = 30.dp)) {
       if (remIdCarrera.value == null) {
         CarrerasInscripto(modifier = Modifier.fillMaxWidth(),onHeaderClicked = { idC: Int? ->
           if (idC != null) {

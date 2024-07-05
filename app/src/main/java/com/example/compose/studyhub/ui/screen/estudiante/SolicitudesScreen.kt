@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SolicitudesScreen(): DrawerState {
-  Column(modifier = Modifier.padding(top = 110.dp, bottom = 1.dp)) {
+  Column(modifier = Modifier.padding(top = 110.dp, bottom = 30.dp)) {
     Solicitudes(modifier = Modifier.fillMaxWidth())
   }
   return DrawerState(DrawerValue.Closed)
