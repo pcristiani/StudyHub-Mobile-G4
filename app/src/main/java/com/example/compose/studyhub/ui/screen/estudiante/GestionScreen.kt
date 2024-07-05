@@ -6,6 +6,8 @@ import android.webkit.WebViewClient
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -25,8 +28,11 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
@@ -45,6 +51,7 @@ import com.example.compose.studyhub.ui.theme.md_theme_dark_text
 import com.example.compose.studyhub.util.HTMLTemplate
 import com.example.compose.studyhub.util.exportAsPdf
 import com.rajat.pdfviewer.compose.PdfRendererViewCompose
+import kotlinx.coroutines.launch
 
 @Composable
 fun GestionScreen(): DrawerState {
@@ -67,10 +74,12 @@ fun Gestion(modifier: Modifier){
       modifier = modifier.fillMaxWidth(),
       horizontalAlignment = Alignment.CenterHorizontally,
    ) {
+      val focusRequester = remember { FocusRequester() }
       var listaCarreras: List<CarreraRequest>? = null
       val nombresCarrera = remember { mutableStateListOf<String>() }
       val idsCarrera = remember { mutableStateListOf<Int>() }
       val carreraSelected = remember { mutableStateOf<CarreraRequest?>(null) }
+      val scope = rememberCoroutineScope()
 
       //Retornar todas las carreras a las que el usuario está inscripto en las listas listaCarreras, nombresCarrera e idsCarrera
       UserRepository.loggedInUser()?.let {idUsuario -> UserRepository.getToken()
@@ -89,8 +98,9 @@ fun Gestion(modifier: Modifier){
          } } }
 
       //Lista expandible con todas las carreras a las que el usuario está inscripto
-      ExpandableList(modifier=Modifier.padding(top = 25.dp, bottom = 10.dp,start = 20.dp, end = 20.dp)
-          .animateContentSize(),
+      ExpandableList(modifier= Modifier
+         .padding(top = 25.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
+         .animateContentSize(),
          headerTitle = carreraSelected.value?.nombre ?: stringResource(id = R.string.txt_selectCarrera), options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
          listaCarreras?.find {it.idCarrera ==selectedId }
       })
@@ -100,7 +110,12 @@ fun Gestion(modifier: Modifier){
              it,
              modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .padding(start = 20.dp, end = 20.dp)
+                .border(width = 1.dp, color = Color.DarkGray, shape = RoundedCornerShape(5.dp))
+                .clickable { scope.launch {
+                   focusRequester.requestFocus()
+                } },
              )
        }
 
