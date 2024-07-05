@@ -74,12 +74,10 @@ fun Gestion(modifier: Modifier){
       modifier = modifier.fillMaxWidth(),
       horizontalAlignment = Alignment.CenterHorizontally,
    ) {
-      val focusRequester = remember { FocusRequester() }
       var listaCarreras: List<CarreraRequest>? = null
       val nombresCarrera = remember { mutableStateListOf<String>() }
       val idsCarrera = remember { mutableStateListOf<Int>() }
       val carreraSelected = remember { mutableStateOf<CarreraRequest?>(null) }
-      val scope = rememberCoroutineScope()
 
       //Retornar todas las carreras a las que el usuario está inscripto en las listas listaCarreras, nombresCarrera e idsCarrera
       UserRepository.loggedInUser()?.let {idUsuario -> UserRepository.getToken()
@@ -113,9 +111,7 @@ fun Gestion(modifier: Modifier){
                 .weight(1f)
                 .padding(start = 20.dp, end = 20.dp)
                 .border(width = 1.dp, color = Color.DarkGray, shape = RoundedCornerShape(5.dp))
-                .clickable { scope.launch {
-                   focusRequester.requestFocus()
-                } },
+             ,
              )
        }
 

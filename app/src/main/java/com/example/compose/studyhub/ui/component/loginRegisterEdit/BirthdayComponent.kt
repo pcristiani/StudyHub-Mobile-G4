@@ -1,5 +1,7 @@
 package com.example.compose.studyhub.ui.component.loginRegisterEdit
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,22 +37,32 @@ import com.example.compose.studyhub.data.User
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.domain.reformatDate
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
 import java.util.Date
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun Birthday(birthdayState: DatePickerState, imeAction: ImeAction = ImeAction.Next, onImeAction: () -> Unit = {}) {
   Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
     val showDatePicker = remember { mutableStateOf(false) }
-    val selectedDate = remember { mutableStateOf<Date?>(null) } // this will store whatever date the user selects // Button to show the date picker dialog
+    val selectedDate = remember { mutableStateOf<Date?>(null) }
     val sdf = SimpleDateFormat("dd MMM,yyyy", Locale.getDefault())
+    var displayDate: String = ""
 
-    val displayDate: String = if (UserRepository.user == User.NoUserLoggedIn) {
+    displayDate = if (UserRepository.user == User.NoUserLoggedIn) {
       selectedDate.value?.let { sdf.format(it) } ?:""
     } else {
-      UserRepository.getFechaNacimiento()?.let { reformatDate(it) }?:""
+      if(selectedDate.value == null){
+        UserRepository.getFechaNacimiento()?.let { reformatDate(it) }?:""
+      }
+      else{
+        selectedDate.value?.let { sdf.format(it) } ?:""
+      }
     }
+
 
     OutlinedTextField(value = displayDate, onValueChange={}, readOnly= true, label = {
       Text(text = stringResource(id = R.string.birthday), style = MaterialTheme.typography.bodyMedium)
@@ -60,7 +73,13 @@ fun Birthday(birthdayState: DatePickerState, imeAction: ImeAction = ImeAction.Ne
       DatePickerDialog(onDismissRequest = { showDatePicker.value = false }, confirmButton = {
         TextButton(onClick = {
           showDatePicker.value = false
-          selectedDate.value = Date(birthdayState.selectedDateMillis ?: 0)
+          birthdayState.selectedDateMillis?.let {
+            val instant = Instant.ofEpochMilli(it)
+            val zonedDateTime = instant.atZone(ZoneId.systemDefault())
+            selectedDate.value = Date.from(zonedDateTime.toInstant())
+          } ?: run {
+            selectedDate.value = null
+          }
         }, enabled = birthdayState.selectedDateMillis != null) {
           Text(text = "Confirmar")
         }
