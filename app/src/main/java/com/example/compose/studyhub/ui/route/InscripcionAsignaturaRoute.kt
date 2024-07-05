@@ -32,10 +32,10 @@ fun InscripcionAsignaturaRoute(
     val inscripcionAsignaturaViewModel: InscripcionAsignaturaViewModel = viewModel(factory = InscripcionAsignaturaViewModelFactory())
     var inscripcionAsignaturaError by remember { mutableStateOf<String?>(null) }
     var inscripcionAsignaturaSuccess by remember { mutableStateOf<String?>(null) }
-/*
+
     InscripcionAsignaturaScreen(
-        onInscripcionAsignaturaSubmitted = {idAsignatura->
-            inscripcionAsignaturaViewModel.inscripcionAsignatura(idAsignatura, {it->inscripcionAsignaturaSuccess = it; inscripcionAsignaturaError = ""},{it->inscripcionAsignaturaError = it; inscripcionAsignaturaSuccess = ""})
+        onInscripcionAsignaturaSubmitted = {idAsignatura, idHorario ->
+            inscripcionAsignaturaViewModel.inscripcionAsignatura(idAsignatura, idHorario, {it->inscripcionAsignaturaSuccess = it; inscripcionAsignaturaError = ""},{it->inscripcionAsignaturaError = it; inscripcionAsignaturaSuccess = ""})
         },
 
         onInscripcionAsignaturaConfirmed = onInscripcionAsignaturaConfirmed,
@@ -46,5 +46,5 @@ fun InscripcionAsignaturaRoute(
 
         onNavUp = onNavUp,
     )
-*/
+
 }

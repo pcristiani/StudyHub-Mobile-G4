@@ -27,6 +27,7 @@ import com.example.compose.studyhub.ui.navigation.MenuLateral
 import com.example.compose.studyhub.ui.navigation.NavRoutes
 import com.example.compose.studyhub.ui.navigation.TopBar
 import com.example.compose.studyhub.ui.route.EditarPerfilRoute
+import com.example.compose.studyhub.ui.route.InscripcionAsignaturaRoute
 import com.example.compose.studyhub.ui.route.InscripcionCarreraRoute
 import com.example.compose.studyhub.ui.screen.estudiante.GestionScreen
 import com.example.compose.studyhub.ui.screen.estudiante.InscripcionCarreraScreen
@@ -157,7 +158,10 @@ fun ScreenInscripciones(drawerState: DrawerState,navController: NavHostControlle
 @Composable
 fun ScreenInscripcionesAsignaturas(drawerState: DrawerState,navController: NavHostController) {
   TopBar(navController,drawerState)
-  InscripcionAsignaturaScreen()
+  InscripcionAsignaturaRoute(
+    onInscripcionAsignaturaConfirmed = { navController.navigate(NavRoutes.NovedadesScreen) },
+    onNavUp = navController::navigateUp,
+  )
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

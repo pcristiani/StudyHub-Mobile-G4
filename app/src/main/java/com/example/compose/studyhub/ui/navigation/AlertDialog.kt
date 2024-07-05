@@ -50,15 +50,16 @@ fun alertDialogDoc2(title: String, text: String,onHeaderClicked: () -> Unit) {
         }, confirmButton = {
             TextButton(onClick = {
                 openDialog.value = false
+                onHeaderClicked()
             }) {
                 Text("Confirmar")
             }
         }, dismissButton = {
-            TextButton(onClick = {
+            /*TextButton(onClick = {
                 openDialog.value = false
             }) {
                 Text("Cancelar")
-            }
+            }*/
         })
     }
 }

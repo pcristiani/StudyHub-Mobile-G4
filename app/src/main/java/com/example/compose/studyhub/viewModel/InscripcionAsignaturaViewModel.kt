@@ -1,11 +1,13 @@
 package com.example.compose.studyhub.viewModel
 
+import InscripcionAsignaturaRequest
 import InscripcionCarreraRequest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.compose.studyhub.data.UserRepository
+import com.example.compose.studyhub.http.requests.inscripcionAsignaturaRequest
 import com.example.compose.studyhub.http.requests.inscripcionCarreraRequest
 import com.example.compose.studyhub.http.requests.modifyProfileRequest
 import com.example.compose.studyhub.http.requests.registerRequest
@@ -17,21 +19,15 @@ class InscripcionAsignaturaViewModel(private val userRepository: UserRepository)
 
 
   // Considere todos los registros exitosos
-  fun inscripcionAsignatura(idCarrera: Int, onInscripcionCarreraSubmitted: (String) -> Unit, onInscripcionCarreraError: (String)->Unit) {
+  fun inscripcionAsignatura(idAsignatura: Int, idHorario: Int, onInscripcionAsignaturaSubmitted: (String) -> Unit, onInscripcionAsignaturaError: (String)->Unit) {
     UserRepository.getToken()?.let { token ->
       UserRepository.loggedInUser()?.let { idUsuario ->
 
-
-        inscripcionCarreraRequest(
-          token,
-          InscripcionCarreraRequest(idCarrera, idUsuario, true)
-        ) { success, response ->
+        inscripcionAsignaturaRequest(token, InscripcionAsignaturaRequest(idUsuario, idAsignatura, idHorario)) { success, response ->
           if (success) {
-            onInscripcionCarreraSubmitted(response?:"")
-
+            onInscripcionAsignaturaSubmitted(response?:"")
           } else {
-            onInscripcionCarreraError(response?:"")
-
+            onInscripcionAsignaturaError(response?:"")
           }
         }
       }

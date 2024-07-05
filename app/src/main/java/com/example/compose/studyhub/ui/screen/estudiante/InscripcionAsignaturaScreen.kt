@@ -32,11 +32,11 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun InscripcionAsignaturaScreen(
-  /*onInscripcionAsignaturaSubmitted: (idCarrera: Int) -> Unit,
+  onInscripcionAsignaturaSubmitted: (idAsignatura: Int, idHorario: Int) -> Unit,
   onInscripcionAsignaturaConfirmed: () -> Unit,
   onNavUp: () -> Unit,
   onError: String? = null,
-  onSuccess: String? = null*/
+  onSuccess: String? = null
 ): DrawerState {
   val remIdCarrera = remember { mutableStateOf<Int?>(null) }
   val remIdAsignatura= remember { mutableStateOf<Int?>(null) }
@@ -74,59 +74,47 @@ fun InscripcionAsignaturaScreen(
       })
     }
     if(remIdCarrera.value != null && remIdAsignatura.value != null && remIdHorario.value != null) {
-      InscripcionAsignatura(carreraId =remIdCarrera.value!!, horarioId =  remIdHorario.value !!, idAsig=remIdAsignatura.value !!)
+      InscripcionAsignatura(onError = onError, onSuccess = onSuccess, idCarrera =remIdCarrera.value!!, idHorario =  remIdHorario.value !!, idAsignatura=remIdAsignatura.value !!, onInscripcionAsignaturaSubmitted = onInscripcionAsignaturaSubmitted, onInscripcionAsignaturaConfirmed = onInscripcionAsignaturaConfirmed )
     }
   }
   return DrawerState(DrawerValue.Closed)
 }
 
-fun seleccion(idCarrera: Int, idAsignatura: Int, idHorario: Int){
-
-}
-
-
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun InscripcionAsignatura(carreraId: Int, horarioId:Int, idAsig:Int) {
+fun InscripcionAsignatura(onError: String?, onSuccess: String?, idCarrera: Int, idHorario:Int, idAsignatura:Int,onInscripcionAsignaturaSubmitted: (idAsignatura: Int, idHorario: Int) -> Unit, onInscripcionAsignaturaConfirmed: () -> Unit) {
   val coroutineScope = rememberCoroutineScope()
-  var checked by remember { mutableStateOf(true) }
   val snackbarHostState = remember { SnackbarHostState() }
-  val scope = rememberCoroutineScope()
   var responsse by remember { mutableStateOf<String?>(null) }
+  val showConfirmationDialog = remember { mutableStateOf(false) }
+  val showErrorDialog = remember { mutableStateOf(false) }
+  val retry = remember { mutableStateOf(false) }
 
-  LaunchedEffect(horarioId) {
-    coroutineScope.launch {
-      UserRepository.loggedInUser()?.let { id ->
-        UserRepository.getToken()?.let { token ->
-          println("INCRIPCIONS " + id + " " + idAsig + " " + horarioId)
-
-          if (checked) {
-            inscripcionAsignaturaRequest(token, InscripcionAsignaturaRequest(id, idAsig , horarioId)) { success, responde ->
-              if (success) {
-                scope.launch {
-                    snackbarHostState.showSnackbar("$responde")
-                    responsse = "$responde"
-                }
-              } else {
-                scope.launch {
-                    snackbarHostState.showSnackbar("$responde")
-                    responsse = "$responde"
-                }
-              }
-            }
-          }
-        }
+  LaunchedEffect(onError, retry){
+    if(onError!=null){
+      if(onError==""){
+        showConfirmationDialog.value = true
       }
+      else{
+        println("On error: $onError")
+        showErrorDialog.value = true
+      }
+    }
+  }
+
+  LaunchedEffect(idHorario) {
+    coroutineScope.launch {
+      onInscripcionAsignaturaSubmitted(idAsignatura, idHorario)
     }
   }
   Scaffold(
     snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
   ) {
-    if (responsse != null && responsse != "null") {
+    if (showConfirmationDialog.value) {
       println("---------"+responsse)
-      alertDialogDoc2(title = "¡Inscripción exitosa!", text = responsse ?: "",onHeaderClicked = { responsse = null })
-    }else{  //    alertDialogDoc2(title = "¡Advertencia!", text = responsse ?: "",onHeaderClicked = { responsse = null })
+      alertDialogDoc2(title = "¡Inscripción exitosa!", text = onSuccess ?: "",onHeaderClicked = {onInscripcionAsignaturaConfirmed() })
+    }else{
+      alertDialogDoc2(title = "¡Advertencia!", text = onError ?: "",onHeaderClicked = {})
     }
   }
 }
