@@ -1,5 +1,7 @@
 package com.example.compose.studyhub
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -10,6 +12,8 @@ import com.example.compose.studyhub.Destinations.LOGIN_ROUTE
 import com.example.compose.studyhub.Destinations.QUESTION_RESULTS_ROUTE
 import com.example.compose.studyhub.Destinations.QUESTION_ROUTE
 import com.example.compose.studyhub.Destinations.REGISTER_ROUTE
+import com.example.compose.studyhub.data.User
+import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.ui.route.InicioRoute
 import com.example.compose.studyhub.ui.route.LoginRoute
 import com.example.compose.studyhub.ui.route.RegisterRoute
@@ -27,11 +31,22 @@ object Destinations {
 
 
 ///
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun StudyHubNavHost(
    navController: NavHostController = rememberNavController(),
                    ) {
-   NavHost(navController = navController, startDestination = INICIO_ROUTE) {
+   val startDestination: String
+
+   startDestination = if(UserRepository.user == User.NoUserLoggedIn) {
+      INICIO_ROUTE
+   }else{
+      QUESTION_RESULTS_ROUTE
+   }
+
+
+   NavHost(navController = navController, startDestination = startDestination
+      ) {
       composable(INICIO_ROUTE) {
          InicioRoute(
             onNavigateToLogin = {

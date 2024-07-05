@@ -12,4 +12,5 @@
 /.vscode
 notas.md
 /docs
-/src/main/java/com/example/compose/studyhub/ui/pruebas
+/src/main/java/com/example/compose/studyhub/ui/.pruebas/
+/app/src/main/java/com/example/compose/studyhub/.pruebas/
