@@ -43,46 +43,63 @@ fun InscripcionAsignaturaScreen(
   val remIdHorario= remember { mutableStateOf<Int?>(null) }
   val scope = rememberCoroutineScope()
   val snackbarHostState = remember { SnackbarHostState() }
+  var onRepeat by remember { mutableStateOf(false) }
+  var showColumn by remember { mutableStateOf(false) }
 
-  Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
-    if (remIdCarrera.value == null) {
-      CarrerasInscripto(modifier = Modifier.fillMaxWidth(),onHeaderClicked = { idC: Int? ->
-        if (idC != null) {
-          remIdCarrera.value = idC
-          println("Este remIdCarrera : ${remIdCarrera.value}")
-        }
-      })
-    } else if (remIdAsignatura.value == null && remIdCarrera.value != null) {
-      AsigaturaDeCarrera(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
-        if (idC != null) {
-          UserRepository.getToken()?.let { token ->
-            getHorariosAsignaturaRequest(idC, token) { responde ->
-              if(responde!=null){
-                remIdAsignatura.value = idC
+  LaunchedEffect(onRepeat){
+    remIdCarrera.value = null
+    remIdAsignatura.value = null
+    remIdHorario.value = null
+    showColumn = true
+    onRepeat=false
+  }
+
+  if(showColumn){
+    Column(modifier = Modifier.padding(top = 50.dp, bottom = 1.dp)) {
+      if (remIdCarrera.value == null) {
+        CarrerasInscripto(modifier = Modifier.fillMaxWidth(),onHeaderClicked = { idC: Int? ->
+          if (idC != null) {
+            remIdCarrera.value = idC
+            println("Este remIdCarrera : ${remIdCarrera.value}")
+          }
+        })
+      } else if (remIdAsignatura.value == null && remIdCarrera.value != null) {
+        AsigaturaDeCarrera(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
+          if (idC != null) {
+            UserRepository.getToken()?.let { token ->
+              getHorariosAsignaturaRequest(idC, token) { responde ->
+                if(responde!=null){
+                  remIdAsignatura.value = idC
+                }
+                else{
+                  onRepeat = true
+                  showColumn = false
+                }
               }
             }
-          }
 
-        }
-      })
-    } else if (remIdAsignatura.value != null) {
-      HorariosAsignatura(modifier = Modifier.fillMaxWidth(), asignaturaId = remIdAsignatura.value !!,onHeaderClicked = { idC: Int? ->
-        if (idC != null) {
-          remIdHorario.value = idC
-          println("Este remIdHorario : ${remIdHorario.value}")
-        }
-      })
-    }
-    if(remIdCarrera.value != null && remIdAsignatura.value != null && remIdHorario.value != null) {
-      InscripcionAsignatura(onError = onError, onSuccess = onSuccess, idCarrera =remIdCarrera.value!!, idHorario =  remIdHorario.value !!, idAsignatura=remIdAsignatura.value !!, onInscripcionAsignaturaSubmitted = onInscripcionAsignaturaSubmitted, onInscripcionAsignaturaConfirmed = onInscripcionAsignaturaConfirmed )
+          }
+        })
+      } else if (remIdAsignatura.value != null) {
+        HorariosAsignatura(modifier = Modifier.fillMaxWidth(), asignaturaId = remIdAsignatura.value !!,onHeaderClicked = { idC: Int? ->
+          if (idC != null) {
+            remIdHorario.value = idC
+            println("Este remIdHorario : ${remIdHorario.value}")
+          }
+        })
+      }
+      if(remIdCarrera.value != null && remIdAsignatura.value != null && remIdHorario.value != null) {
+        InscripcionAsignatura(onError = onError, onSuccess = onSuccess, idCarrera =remIdCarrera.value!!, idHorario =  remIdHorario.value !!, idAsignatura=remIdAsignatura.value !!, onInscripcionAsignaturaSubmitted = onInscripcionAsignaturaSubmitted, onInscripcionAsignaturaConfirmed = onInscripcionAsignaturaConfirmed, cancelled = {cancelled ->  showColumn = !cancelled; onRepeat=cancelled})
+      }
     }
   }
+
   return DrawerState(DrawerValue.Closed)
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun InscripcionAsignatura(onError: String?, onSuccess: String?, idCarrera: Int, idHorario:Int, idAsignatura:Int,onInscripcionAsignaturaSubmitted: (idAsignatura: Int, idHorario: Int) -> Unit, onInscripcionAsignaturaConfirmed: () -> Unit) {
+fun InscripcionAsignatura(onError: String?, onSuccess: String?, idCarrera: Int, idHorario:Int, idAsignatura:Int,onInscripcionAsignaturaSubmitted: (idAsignatura: Int, idHorario: Int) -> Unit, onInscripcionAsignaturaConfirmed: () -> Unit, cancelled: (Boolean) -> Unit) {
   val coroutineScope = rememberCoroutineScope()
   val snackbarHostState = remember { SnackbarHostState() }
   var responsse by remember { mutableStateOf<String?>(null) }
@@ -114,7 +131,7 @@ fun InscripcionAsignatura(onError: String?, onSuccess: String?, idCarrera: Int, 
       println("---------"+responsse)
       alertDialogDoc2(title = "¡Inscripción exitosa!", text = onSuccess ?: "",onHeaderClicked = {onInscripcionAsignaturaConfirmed() })
     }else{
-      alertDialogDoc2(title = "¡Advertencia!", text = onError ?: "",onHeaderClicked = {})
+      alertDialogDoc2(title = "¡Advertencia!", text = onError ?: "",onHeaderClicked = {cancelled(true)})
     }
   }
 }
