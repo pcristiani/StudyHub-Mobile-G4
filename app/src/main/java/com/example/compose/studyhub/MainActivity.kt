@@ -149,9 +149,7 @@ fun ScreenEditarPerfil(navController: NavHostController, drawerState: DrawerStat
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenInscripciones(drawerState: DrawerState,navController: NavHostController) {
-
-
+fun ScreenInscripciones(drawerState: DrawerState, navController: NavHostController) {
   TopBar(navController,drawerState)
   InscripcionCarreraRoute(
     onInscripcionCarreraConfirmed = { navController.navigate(NavRoutes.NovedadesScreen) },
