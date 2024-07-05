@@ -67,8 +67,9 @@ fun InscripcionAsignaturaScreen(
         AsigaturaDeCarrera(modifier = Modifier.fillMaxWidth(), carreraId = remIdCarrera.value !!,onHeaderClicked = { idC: Int? ->
           if (idC != null) {
             UserRepository.getToken()?.let { token ->
-              getHorariosAsignaturaRequest(idC, token) { responde ->
-                if(responde!=null){
+              getHorariosAsignaturaRequest(idC, token) { response ->
+                println("Response: $response")
+                if(response!=null){
                   remIdAsignatura.value = idC
                 }
                 else{
@@ -128,7 +129,6 @@ fun InscripcionAsignatura(onError: String?, onSuccess: String?, idCarrera: Int, 
     snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
   ) {
     if (showConfirmationDialog.value) {
-      println("---------"+responsse)
       alertDialogDoc2(title = "¡Inscripción exitosa!", text = onSuccess ?: "",onHeaderClicked = {onInscripcionAsignaturaConfirmed() })
     }else{
       alertDialogDoc2(title = "¡Advertencia!", text = onError ?: "",onHeaderClicked = {cancelled(true)})

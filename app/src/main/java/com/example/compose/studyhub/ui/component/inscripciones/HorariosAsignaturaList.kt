@@ -66,15 +66,19 @@ fun HorariosAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (I
             style = MaterialTheme.typography.headlineSmall,
         )
         if (horariosAsignatura != null) {
+            println("I'm here")
             LazyColumn(state = listState, modifier = Modifier
                 .weight(1f)
                 .padding(bottom = 20.dp)) {
                 items(horariosAsignaturaList.size) { index ->
-                    HorariosAsignaturaItem(user = horariosAsignaturaList[index].dtHorarioDias[index].diaSemana + " de " +
-                            horariosAsignaturaList[index].dtHorarioDias[index].horaInicio + " a " +
-                            horariosAsignaturaList[index].dtHorarioDias[index].horaFin + "hs",
-                        idC = horariosAsignaturaList[index].idHorarioAsignatura) {
-                        onHeaderClicked(it)
+                    val horariosAsignaturaItem = horariosAsignaturaList[index]
+                    horariosAsignaturaItem.dtHorarioDias.forEach { horarioDia ->
+                        HorariosAsignaturaItem(
+                            user = "${horarioDia.diaSemana} de ${horarioDia.horaInicio} a ${horarioDia.horaFin}hs",
+                            idC = horariosAsignaturaItem.idHorarioAsignatura
+                        ) {
+                            onHeaderClicked(it)
+                        }
                     }
                 }
                 if (isLoading.value) {

@@ -4,6 +4,7 @@ import CarreraRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -98,7 +100,8 @@ fun Gestion(modifier: Modifier){
              it,
              modifier
                 .fillMaxWidth()
-                .weight(1f))
+                .weight(1f),
+             )
        }
 
       if(webView.value==null && carreraSelected.value!=null){
