@@ -3,6 +3,7 @@ package com.example.compose.studyhub.ui.screen.estudiante
 import AsignaturaRequest
 import ExamenRequest
 import InscripcionExamenRequest
+import alertDialogDoc2
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -66,32 +67,67 @@ fun InscripcionExamenScreen(): DrawerState {
       })
     }
     if(remIdCarrera.value != null && remIdAsignatura.value != null && remIdHorario.value != null) {
-      InscripcionExamen(carreraId =remIdCarrera.value!!, horarioId =  remIdHorario.value !!,idAsig=remIdAsignatura.value !!)
+      InscripcionExamen(carreraId =remIdCarrera.value!!, horarioId =  remIdHorario.value !!,idAsig=remIdAsignatura.value !!,
+          onSuccess = "Inscripción exitosa", onError = "Ya te encuentras inscripto en este examen",
+          onInscripcionAsignaturaConfirmed = {
+              remIdCarrera.value = null
+              remIdAsignatura.value = null
+              remIdHorario.value = null },
+          cancelled = {
+              remIdCarrera.value = null
+              remIdAsignatura.value = null
+              remIdHorario.value = null
+          })
     }
   }
   return DrawerState(DrawerValue.Closed)
 }
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun InscripcionExamen(carreraId: Int, horarioId:Int, idAsig:Int) {
-  val coroutineScope = rememberCoroutineScope()
-  var checked by remember { mutableStateOf(true) }
-  LaunchedEffect(horarioId) {
-    coroutineScope.launch {
-      UserRepository.loggedInUser()?.let { id ->
-        UserRepository.getToken()?.let { token ->
-          println("INCRIPCIONS "+id+" "+idAsig+" "+horarioId)
+fun InscripcionExamen(carreraId: Int, horarioId:Int, idAsig:Int,onSuccess: String?,     onError: String?, onInscripcionAsignaturaConfirmed: () -> Unit = {}, cancelled: (Boolean) -> Unit = {}) {
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-          if (checked) {
-        //  inscripcionExamenRequest(token, inscripcionExamenRequest(1,1)) { responde -> }
-            inscripcionExamenRequest(token, InscripcionExamenRequest(id, horarioId)) { success,responde ->
+    val showConfirmationDialog = remember { mutableStateOf(false) }
+    val showErrorDialog = remember { mutableStateOf(false) }
+    val retry = remember { mutableStateOf(false) }
+
+    var checked by remember { mutableStateOf(true) }
+    LaunchedEffect(horarioId) {
+        coroutineScope.launch {
+            UserRepository.loggedInUser()?.let { id ->
+                UserRepository.getToken()?.let { token ->
+                   // println("INCRIPCIONS " + id + " " + idAsig + " " + horarioId)
+
+                    if (checked) { //  inscripcionExamenRequest(token, inscripcionExamenRequest(1,1)) { responde -> }
+                        inscripcionExamenRequest(token, InscripcionExamenRequest(id, horarioId)) { success, responde ->
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
-}
+    LaunchedEffect(onError, retry){
+        if(onError!=null){
+            if(onError==""){
+                showConfirmationDialog.value = true
+            }
+            else{
+                println("On error: $onError")
+                showErrorDialog.value = true
+            }
+        }
+    }
 
+    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) {
+        if (showConfirmationDialog.value) {
+            alertDialogDoc2(title = "¡Inscripción exitosa!", text = onSuccess ?: "", onHeaderClicked = { onInscripcionAsignaturaConfirmed() })
+        } else {
+            alertDialogDoc2(title = "¡Advertencia!", text = onError ?: "", onHeaderClicked = { cancelled(true) })
+        }
+    }
+
+}
 
