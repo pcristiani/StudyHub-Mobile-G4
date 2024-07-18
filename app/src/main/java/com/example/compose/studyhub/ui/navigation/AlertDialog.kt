@@ -1,9 +1,14 @@
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.studyhub.ui.navigation.NavRoutes
 
@@ -43,11 +48,11 @@ fun alertDialogDoc2(title: String, text: String,onHeaderClicked: () -> Unit) {
     if (openDialog.value) {
         AlertDialog(onDismissRequest = {
            openDialog.value = false
-        }, title = {
-            Text(text = title)
-        }, text = {
-            Text(text)
-        }, confirmButton = {
+        },
+            title = { Text(text
+                = text)},
+          //  text = { Text(text)},
+            confirmButton = {
             TextButton(onClick = {
                 openDialog.value = false
                 onHeaderClicked()

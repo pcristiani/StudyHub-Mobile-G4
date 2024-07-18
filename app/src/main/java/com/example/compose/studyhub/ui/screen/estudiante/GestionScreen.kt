@@ -125,7 +125,7 @@ fun Gestion(modifier: Modifier){
       }else if(webView.value!=null){
             Button(onClick = {exportAsPdf(webView.value, context); println(webView.value)}, modifier = Modifier
                .fillMaxWidth()
-               .padding(vertical = 16.dp)){
+               .padding(vertical = 16.dp, horizontal = 20.dp)){
                Text(text = stringResource(id = R.string.download_resume))
             }
          }

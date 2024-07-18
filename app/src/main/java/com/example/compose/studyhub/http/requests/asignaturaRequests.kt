@@ -127,7 +127,8 @@ fun getHorariosAsignaturaRequest(idAsignatura:Int, token: String, callback: (Lis
 fun inscripcionAsignaturaRequest(
    token: String,
    inscripcionAsignaturaRequest: InscripcionAsignaturaRequest,
-   callback: (Boolean, String?) -> Unit) {
+   callback: (Boolean, String?) -> Unit
+) {
    val completeToken = "Bearer $token"
 
    RetrofitClient.api.inscripcionAsignatura(completeToken, inscripcionAsignaturaRequest).enqueue(object : Callback<String> {
@@ -144,10 +145,23 @@ fun inscripcionAsignaturaRequest(
             callback(false, errorMessage)
          }
       }
-      override fun onFailure(call: Call<String>, t: Throwable) {
-         val errorMessage = "Error: ${t.message}"
+       override fun onFailure(call: Call<String>, t: Throwable) {
+           var retryCount: Int = 3
+
+           if (retryCount > 0) {
+               // Retrying the request
+               retryCount--
+               inscripcionAsignaturaRequest(token, inscripcionAsignaturaRequest, callback)
+           } else {
+               val errorMessage = "Error: ${t.message ?: "unknown error"}"
+               callback(false, errorMessage)
+           }
+       }
+   /*   override fun onFailure(call: Call<String>, t: Throwable) {
+        // val errorMessage = "Error: ${t.message}"
+          val errorMessage = "Error: ${t.message} (cause: ${t.cause})"
          callback(false, errorMessage)
-      }
+      }*/
    })
 }
 

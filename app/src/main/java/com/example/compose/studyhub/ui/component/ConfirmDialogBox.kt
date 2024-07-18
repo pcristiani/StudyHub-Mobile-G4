@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,8 +23,7 @@ fun ConfirmDialogBox(
     AlertDialog(
         title = {
             Box(modifier = Modifier.padding(start=10.dp, top=10.dp)){
-                Text(text = dialogTitle, style= MaterialTheme.typography.body1)
-
+                Text(text = dialogTitle)
             }
         },
         onDismissRequest = {

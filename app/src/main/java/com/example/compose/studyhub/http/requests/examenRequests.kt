@@ -79,11 +79,13 @@ fun inscripcionExamenRequest(token: String, inscripcionExamenRequest: Inscripcio
             if (response.isSuccessful) {
                 callback(true, responseText)
             } else {
+              //  callback(false, responseText)
                 val errorMessage = buildString {
-                    append("Response code: ${response.code()}\n")
-                    append("Response message: ${response.message()}\n")
+                 //   append("Response code: ${response.code()}\n")
+                 //   append("Response message: ${response.message()}\n")
                     response.errorBody()?.let { errorBody ->
-                        append("Error body: ${errorBody.string()}")
+                        append(errorBody.string())
+                     //   append("Error body: ${errorBody.string()}")
                     }
                 }
                 callback(false, errorMessage)
