@@ -391,7 +391,7 @@ fun Carreras(modifier: Modifier, snackbarHostState: SnackbarHostState, scope: Co
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SearchBarScreen(
-            emails = LocalAccountsDataProvider.allUserContactAccounts,
+            emails = LocalAccountsDataProvider.allUserAccounts,
             modifier = Modifier,
             navigateToDetail = { _, _ -> }
         )

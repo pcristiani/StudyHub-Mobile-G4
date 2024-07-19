@@ -11,12 +11,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,7 +52,7 @@ fun DatosAsignaturaBox(
         text = {
             Spacer(modifier = Modifier.height(10.dp))
             Card(modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(5.dp), border = BorderStroke(1.dp, colorResource(R.color.darker_gray))
+                shape = RoundedCornerShape(5.dp), border = BorderStroke(0.8.dp, colorResource(R.color.divider))
             ){
                 Column(modifier = Modifier.padding(5.dp)){
                     Text(modifier = Modifier.padding(start = 5.dp), text = descripcion, style = MaterialTheme.typography.subtitle2)

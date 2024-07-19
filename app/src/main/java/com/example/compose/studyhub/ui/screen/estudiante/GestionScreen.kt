@@ -90,14 +90,14 @@ fun Gestion(modifier: Modifier){
                listaCarreras?.forEach {
                   nombresCarrera.add(it.nombre)
                   idsCarrera.add(it.idCarrera)
-                  println(listaCarreras)
+               //   println(listaCarreras)
                }
             }
          } } }
 
       //Lista expandible con todas las carreras a las que el usuario está inscripto
       ExpandableList(modifier= Modifier
-         .padding(top = 25.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
+         .padding(top = 40.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
          .animateContentSize(),
          headerTitle = carreraSelected.value?.nombre ?: stringResource(id = R.string.txt_selectCarrera), options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={selectedId -> carreraSelected.value =
          listaCarreras?.find {it.idCarrera ==selectedId }
@@ -110,7 +110,7 @@ fun Gestion(modifier: Modifier){
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(start = 20.dp, end = 20.dp)
-                .border(width = 1.dp, color = Color.DarkGray, shape = RoundedCornerShape(5.dp))
+                .border(width = 1.dp, color = Color.DarkGray, shape = RoundedCornerShape(8.dp))
              ,
              )
        }
@@ -125,7 +125,7 @@ fun Gestion(modifier: Modifier){
       }else if(webView.value!=null){
             Button(onClick = {exportAsPdf(webView.value, context); println(webView.value)}, modifier = Modifier
                .fillMaxWidth()
-               .padding(vertical = 16.dp, horizontal = 20.dp)){
+               .padding(vertical = 10.dp, horizontal = 20.dp)){
                Text(text = stringResource(id = R.string.download_resume))
             }
          }

@@ -66,28 +66,28 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavHostController,drawerState: DrawerState) {
-   val scope = rememberCoroutineScope()
-   TasksTopAppBar(
-      navController = navController,
-      openDrawer = {
-         scope.launch {
-            drawerState.open()
-         }
-      },
-      drawerState = drawerState,
-      onClearCompletedTasks = {},
-      onRefresh = {}
-   )
+fun TopBar(navController: NavHostController, drawerState: DrawerState, titulo: String) {
+    val scope = rememberCoroutineScope()
+    TasksTopAppBar(
+        navController = navController,
+        openDrawer = {
+            scope.launch {
+                drawerState.open()
+            }
+        },
+        drawerState = drawerState,
+        titulo = titulo,
+        onClearCompletedTasks = {},
+        onRefresh = {}
+    )
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TasksTopAppBar(navController: NavHostController, drawerState: DrawerState, openDrawer: () -> Unit, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
+fun TasksTopAppBar(navController: NavHostController, drawerState: DrawerState, titulo: String, openDrawer: () -> Unit, onClearCompletedTasks: () -> Unit, onRefresh: () -> Unit) {
     val showLogoutDialog = remember { mutableStateOf(false) }
-
-    TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) }, navigationIcon = {
+    TopAppBar(title = { Text(text = titulo) }, navigationIcon = {
         IconButton(onClick = openDrawer) {
             Icon(Icons.Filled.Menu, contentDescription = stringResource(id = R.string.txt_admin))
         }
@@ -106,12 +106,12 @@ fun TasksTopAppBar(navController: NavHostController, drawerState: DrawerState, o
 
 @Composable
 fun ReplyProfileImage(drawableResource: Int, description: String, modifier: Modifier = Modifier) {
-   Icon(
-      modifier = modifier
-         .size(32.dp),
-      imageVector = Icons.Sharp.AccountCircle,
-      contentDescription = description
-   )
+    Icon(
+        modifier = modifier
+            .size(32.dp),
+        imageVector = Icons.Sharp.AccountCircle,
+        contentDescription = description
+    )
 }
 
 
@@ -152,7 +152,9 @@ fun MoreTasksMenu(
     }
 
 
-}/*
+}
+
+/*
 
 //TopAppBarSample()
 /*  TasksTopAppBar(
@@ -227,106 +229,106 @@ fun MoreTasksMenu(
 
 @Composable
 fun TopAppBarDropdownMenu(iconContent: @Composable () -> Unit, content: @Composable ColumnScope.(() -> Unit) -> Unit) {
-   var expanded by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(false) }
 
-   Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
-      IconButton(onClick = { expanded = !expanded }) {
-         iconContent()
-      }
-      DropdownMenu(
-         expanded = expanded,
-         onDismissRequest = { expanded = false },
-         modifier = Modifier.wrapContentSize(Alignment.TopEnd)
-      ) {
-         content { expanded = false }
-      }
-   }
+    Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
+        IconButton(onClick = { expanded = !expanded }) {
+            iconContent()
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.wrapContentSize(Alignment.TopEnd)
+        ) {
+            content { expanded = false }
+        }
+    }
 }
 
 
 @Preview
 @Composable
 fun MainScreenPreview() {
-   ThemeStudyHub {
-      TopBar(navController = rememberNavController(),drawerState = rememberDrawerState(DrawerValue.Closed))
-      // TopAppBarSample()
-   }
+    ThemeStudyHub {
+        TopBar(navController = rememberNavController(),drawerState = rememberDrawerState(DrawerValue.Closed),titulo = stringResource(id = R.string.app_name))
+        // TopAppBarSample()
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBarSamples() {
-   TopAppBar(
-      navigationIcon = {
-         IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Rounded.Menu, contentDescription = null)
-         }
-      },
-      title = { Text(text = "Sample Title") },
-      actions = {
-         IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-               imageVector = Icons.Rounded.Search,
-               contentDescription = null
-            )
-         }
-         IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-               imageVector = Icons.Outlined.AccountCircle,
-               contentDescription = null
-            )
-         }
-      }
-   )
+    TopAppBar(
+        navigationIcon = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Rounded.Menu, contentDescription = null)
+            }
+        },
+        title = { Text(text = "Sample Title") },
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = null
+                )
+            }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Outlined.AccountCircle,
+                    contentDescription = null
+                )
+            }
+        }
+    )
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBarSample() {
-   val navController = rememberNavController()
-   TopAppBar(
-      navigationIcon = {
-         IconButton( onClick = {
+    val navController = rememberNavController()
+    TopAppBar(
+        navigationIcon = {
+            IconButton( onClick = {
 
-            try {
-               navController.navigate(NavRoutes.EditarPerfilScreen) //  println(item.ruta)
-            } catch (e: Exception) {
-               println("Error al navegar: ${e.message}")
+                try {
+                    navController.navigate(NavRoutes.EditarPerfilScreen) //  println(item.ruta)
+                } catch (e: Exception) {
+                    println("Error al navegar: ${e.message}")
+                }
+            }, modifier = Modifier
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Menu, contentDescription = "Settings", modifier = Modifier.size(60.dp, 60.dp), tint = colorResource(
+                        id = R.color.darker_gray                                                                                                                                                      )
+                )
             }
-         }, modifier = Modifier
-         ) {
-            Icon(
-               imageVector = Icons.Rounded.Menu, contentDescription = "Settings", modifier = Modifier.size(60.dp, 60.dp), tint = colorResource(
-                  id = R.color.darker_gray                                                                                                                                                      )
-            )
-         }
-         //   onClick = { /*TODO*/ })
-         /*    {
-               Icon(imageVector = Icons.Rounded.Menu, contentDescription = null)
-            } */
-      },
-      title = { Text(text = "Sample Title") },
-      actions = {
-         IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-               imageVector = Icons.Rounded.Search,
-               contentDescription = null
-            )
-         }
-         IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-               imageVector = Icons.Outlined.AccountCircle,
-               contentDescription = null
-            )
-         }
-      }
-   )
-   /*   SearchBarComponent(
-        emails = LocalEmailsDataProvider.allEmails,
-        modifier = Modifier,
-        navigateToDetail = { _, _ -> }
-     ) */
+            //   onClick = { /*TODO*/ })
+            /*    {
+                  Icon(imageVector = Icons.Rounded.Menu, contentDescription = null)
+               } */
+        },
+        title = { Text(text = "Sample Title") },
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = null
+                )
+            }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Outlined.AccountCircle,
+                    contentDescription = null
+                )
+            }
+        }
+    )
+    /*   SearchBarComponent(
+         emails = LocalEmailsDataProvider.allEmails,
+         modifier = Modifier,
+         navigateToDetail = { _, _ -> }
+      ) */
 }
 /* @Composable
 fun MainScreen() {

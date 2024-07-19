@@ -94,16 +94,17 @@ fun Solicitudes(modifier: Modifier) {
   Column(
     modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
   ) {
-    Text(
+   /* Text(
       text = stringResource(id = R.string.txt_solicitudes),
       style = MaterialTheme.typography.headlineLarge,
     )
     Box(modifier = Modifier.padding(20.dp)) {
-    }
+    }*/
 
     //Lista expandible con todas las carreras a las que el usuario está inscripto
     ExpandableList(modifier= Modifier
       .padding(top = 0.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
+
       .animateContentSize(),
       headerTitle = carreraSelected?.nombre ?: stringResource(id = R.string.txt_selectCarrera), options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={ selectedId -> carreraSelected =
         listaCarreras?.find {it.idCarrera ==selectedId }
@@ -120,7 +121,7 @@ fun Solicitudes(modifier: Modifier) {
         Text(
           text = "Pendientes",
           modifier = Modifier.padding(top = 15.dp),
-          style = MaterialTheme.typography.bodySmall
+          style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.padding(start = 8.dp))
         Switch(colors = SwitchDefaults.colors(), checked = checked, onCheckedChange = { newChecked -> checked = newChecked
@@ -128,7 +129,7 @@ fun Solicitudes(modifier: Modifier) {
         Text(
           text = "Aprobadas",
           modifier = Modifier.padding(top = 15.dp, start = 6.dp),
-          style = MaterialTheme.typography.bodySmall
+          style = MaterialTheme.typography.bodyMedium
         )
       }
 

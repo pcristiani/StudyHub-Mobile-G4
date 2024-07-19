@@ -1,8 +1,11 @@
 package com.example.compose.studyhub.ui.component.searchBar
 
+import CarrerassRequest
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -23,7 +26,7 @@ fun SearchBarScreen(emails: List<Account>,  modifier: Modifier = Modifier, navig
             },
              modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp, vertical = 6.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp)
         )
     }
 }

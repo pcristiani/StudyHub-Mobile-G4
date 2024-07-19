@@ -12,7 +12,7 @@ import com.example.compose.studyhub.data.Account
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.ui.component.searchBar.LocalAccountsDataProvider.allUserAccounts
-import com.example.compose.studyhub.ui.component.searchBar.LocalAccountsDataProvider.allUserContactAccounts
+//import com.example.compose.studyhub.ui.component.searchBar.LocalAccountsDataProvider.allUserContactAccounts
 
 object LocalAccountsDataProvider {
 
@@ -21,37 +21,25 @@ object LocalAccountsDataProvider {
         Account(
             idCarrera = 1,
             nombre = "Tecnologo Mecanica",
-            descripcion = "Carrera terciaria de mecánica.",
-            requisitos = "Bachillerato completo.",
-            duracion = 3,
-            activa = true
+            descripcion = "Carrera terciaria de mecánica."
         ),
         Account(
-           idCarrera = 2,
-           nombre = "Tecnologo Biologia",
-           descripcion = "Carrera terciaria de biología.",
-           requisitos = "Bachillerato completo.",
-           duracion = 2,
-           activa = true
+            idCarrera = 2,
+            nombre = "Tecnologo Biologia",
+            descripcion = "Carrera terciaria de biología."
         ),
         Account(
             idCarrera = 3,
             nombre = "Tecnologo Informatica",
-            descripcion = "Carrera terciaria de informática.",
-            requisitos = "Bachillerato completo.",
-            duracion = 3,
-            activa = true
+            descripcion = "Carrera terciaria de informática."
         ),
         Account(
             idCarrera = 4,
             nombre = "Tecnologo Quimica",
-            descripcion = "Carrera terciaria de química.",
-            requisitos = "Bachillerato completo.",
-            duracion = 3,
-            activa = true
+            descripcion = "Carrera terciaria de química."
         ),
     )
-
+/*
     val allUserContactAccounts = listOf(
         Account(
             idCarrera = 5,
@@ -70,19 +58,19 @@ object LocalAccountsDataProvider {
             activa = true
         )
 
-    )
+    )*/
 
 
     // Obtenga la cuenta predeterminada del usuario actual.
-    fun getDefaultUserAccount() = allUserAccounts.first()
+  //  fun getDefaultUserAccount() = allUserAccounts.first()
 
 
     // Si el uid dado [Account.id] es o no una cuenta propiedad del usuario actual.
-    fun isUserAccount(nameC: String): Boolean = allUserAccounts.any { it.nombre == nameC }
+ //   fun isUserAccount(nameC: String): Boolean = allUserAccounts.any { it.nombre == nameC }
 
 
     // Obtener el contacto del usuario actual con el dado [accountId].
-    fun getContactAccountByUid(idC: Int): Account {
+ /*   fun getContactAccountByUid(idC: Int): Account {
         return allUserContactAccounts.first { it.idCarrera == idC }
-    }
+    }*/
 }

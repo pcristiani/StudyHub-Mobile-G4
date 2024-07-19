@@ -13,8 +13,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.R.string.txt_selectCarrera
+import com.example.compose.studyhub.data.Account
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
+
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.ui.component.searchBar.LocalAccountsDataProvider
 import com.example.compose.studyhub.ui.component.searchBar.SearchBarScreen
@@ -35,6 +37,7 @@ fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
     LaunchedEffect(carreras) {
         nombreCarrerasList.clear()
         carreras?.let {
+            nombreCarrerasList.clear()
             loadMoreItems(nombreCarrerasList, it)
         }
     }
@@ -47,7 +50,7 @@ fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SearchBarScreen(
-            emails = LocalAccountsDataProvider.allUserAccounts,
+            emails = datosCarreras.allUserAccountss,
             modifier = Modifier,
             navigateToDetail = { _, _ -> }
         )
@@ -78,6 +81,7 @@ fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
             Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
         }
     }
+
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
             //Y si todavía quedan asignaturas en la lista de asignaturas que no se muestran en pantalla
@@ -93,6 +97,25 @@ fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
             }
         }
     }
+}
+
+object datosCarreras {
+
+    val allUserAccountss = listOf(
+
+        Account(
+            idCarrera = 1, nombre = "aTecnologo Mecanica", descripcion = "Carrera terciaria de mecánica."
+        ),
+        Account(
+            idCarrera = 2, nombre = "aTecnologo Biologia", descripcion = "Carrera terciaria de biología."
+        ),
+        Account(
+            idCarrera = 3, nombre = "Tecnologo Informatica", descripcion = "Carrera terciaria de informática."
+        ),
+        Account(
+            idCarrera = 4, nombre = "Tecnologo Quimica", descripcion = "Carrera terciaria de química."
+        ),
+    )
 }
 
 @Composable

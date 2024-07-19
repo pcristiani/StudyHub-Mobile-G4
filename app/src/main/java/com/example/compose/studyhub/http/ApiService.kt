@@ -157,3 +157,6 @@ data class HorariosAsignaturaRequest(val idHorarioAsignatura: Int, val idAsignat
 data class HorariosDias(val diaSemana: String, val horaInicio: String, val horaFin: String)
 
 data class ExamenRequest(val idExamen: Int, val asignatura: String, val periodoExamen: String, val fechaHora: String)
+
+
+data class CarrerassRequest(val idCarrera: Int, val nombre: String, val descripcion: String)

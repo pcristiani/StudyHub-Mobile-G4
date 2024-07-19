@@ -1,6 +1,7 @@
 package com.example.compose.studyhub.ui.component.searchBar
 
 import CarreraRequest
+import CarrerassRequest
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -68,8 +69,7 @@ fun SearchList(
 
     DockedSearchBar(
         modifier = modifier,
-
-            query = query,
+        query = query,
         onQueryChange = {
             query = it
         },
@@ -99,7 +99,6 @@ fun SearchList(
                     modifier = Modifier.padding(start = 16.dp),
                 )
             }
-
         },
          /*trailingIcon = {
             ReplyProfileImage(
@@ -114,7 +113,6 @@ fun SearchList(
         if (searchResults.isNotEmpty()) {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)
-
             ) {
                 items(items = searchResults, key = { it.idCarrera }) { email ->
                     ListItem(headlineContent = { Text(email.fullName) }, supportingContent = { Text(email.descripcion) }, leadingContent = {
@@ -154,6 +152,33 @@ fun firstLoad21(checked: Boolean): List<CarreraRequest>? {
     return carreras
 }
 
+@Preview
+@Composable
+fun SearchListPreview() {
+/*    val emails = listOf(
+        Account(
+            idCarrera = 1,
+            nombre = "Tecnologo Mecanica",
+            descripcion = "Carrera terciaria de mecánica."
+        ),
+        Account(
+            idCarrera = 2,
+            nombre = "Tecnologo Biologia",
+            descripcion = "Carrera terciaria de biología."
+        ),
+        Account(
+            idCarrera = 3,
+            nombre = "Tecnologo Informatica",
+            descripcion = "Carrera terciaria de informática."
+        ),
+        Account(
+            idCarrera = 4,
+            nombre = "Tecnologo Quimica",
+            descripcion = "Carrera terciaria de química."
+        ),
+    )
+    SearchList(emails = emails, onSearchItemSelected = { })*/
+}
 
 /*
 @OptIn(ExperimentalMaterial3Api::class)

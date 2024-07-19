@@ -124,4 +124,13 @@
     <string name="search_emails">Buscar...</string>
     <string name="no_item_found">No se encontró ningún artículo</string>
     <string name="no_search_history">Sin historial de búsqueda</string>
+
+    <string name="title_inicio">StudyHub</string>
+    <string name="title_horarios">Horarios</string>
+    <string name="title_carreras">Inscripción carrera</string>
+    <string name="title_asignatura">Inscripción asignatura</string>
+    <string name="title_examen">Inscripción examen</string>
+    <string name="title_inscripciones">Inscripciones</string>
+    <string name="title_escolaridad">Escolaridad</string>
+    <string name="title_solicitudes">Asignaturas</string>
 </resources>
