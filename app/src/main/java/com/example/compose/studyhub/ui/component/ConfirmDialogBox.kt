@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 
-//@OptIn(ExperimentalMaterialApi::class)
+
 @Composable
 fun ConfirmDialogBox(
     onDismissRequest: () -> Unit,

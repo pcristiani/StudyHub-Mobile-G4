@@ -8,16 +8,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.text.font.FontWeight
 
-
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-
-@Composable
-fun RallyTheme(content: @Composable () -> Unit) {
-
-    MaterialTheme(colors = ColorPalette, typography = Typography, content = content)
-
-}
 
 
 @Composable

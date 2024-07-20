@@ -79,7 +79,6 @@ fun inscripcionCarreraRequest(token: String, inscripcionCarrera: InscripcionCarr
             val responseText = response.body()
             if (response.isSuccessful) {
                 callback(true,responseText)
-              //  println(responseText)
             } else {
                 callback(false, response.errorBody()?.string())
               //  println("Response code: ${response.code()}")

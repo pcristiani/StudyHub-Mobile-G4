@@ -1,24 +1,17 @@
 package com.example.compose.studyhub.ui.component.inscripciones
 
 import AsignaturaRequest
-import CarreraRequest
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.compose.studyhub.R
 import com.example.compose.studyhub.R.string.txt_selectAsignatura
-import com.example.compose.studyhub.R.string.txt_selectCarrera
-import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
-import com.example.compose.studyhub.ui.component.searchBar.SearchList
 import com.example.compose.studyhub.ui.component.searchBar.SearchListAsignaturas
 import com.example.compose.studyhub.util.InfiniteScrolling.firstLoad
 import com.example.compose.studyhub.util.InfiniteScrolling.loadMoreItems

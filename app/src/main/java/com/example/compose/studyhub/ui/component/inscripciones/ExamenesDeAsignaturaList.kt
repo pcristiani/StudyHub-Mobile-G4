@@ -37,10 +37,9 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (Int) -> Unit) {
+fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId: Int, onHeaderClicked: (Int) -> Unit) {
     val examenesList = remember { mutableStateListOf<ExamenRequest>() }
     val isLoading = remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
@@ -58,7 +57,8 @@ fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 70.dp, bottom = 1.dp), verticalArrangement = Arrangement.spacedBy(18.dp), horizontalAlignment = Alignment.CenterHorizontally,
+            .padding(top = 70.dp, bottom = 1.dp),
+        verticalArrangement = Arrangement.spacedBy(18.dp), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(id = txt_selectHorario),
@@ -66,32 +66,34 @@ fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: 
         )
 
         if (examenes != null) {
-            LazyColumn(state = listState, modifier = Modifier
-                .weight(1f)
-                .padding(bottom = 20.dp)) {
+            LazyColumn(
+                state = listState, modifier = Modifier
+                    .weight(1f)
+                    .padding(bottom = 20.dp)
+            ) {
                 items(examenesList.size) { index ->
-                    ExamenesDeAsignaturaItem(user =  "Periodo " + examenesList[index].periodoExamen + "   -   " + format(
-                        examenesList[index].fechaHora),
-                        idC = examenesList[index].idExamen) {
+                    ExamenesDeAsignaturaItem(
+                        user = "Periodo " + examenesList[index].periodoExamen + "   -   " + format(
+                            examenesList[index].fechaHora
+                        ), idC = examenesList[index].idExamen
+                    ) {
                         onHeaderClicked(it)
                     }
                 }
                 if (isLoading.value) {
                     item {
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)) { //   CircularProgressIndicator()
-                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {}
                     }
                 }
             }
             LaunchedEffect(listState) {
                 snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
-                    //Y si todavía quedan asignaturas en la lista de asignaturas que no se muestran en pantalla
-                    if (index == examenesList.size - 1 && !isLoading.value && examenesList.size <= (examenes?.size ?: 0)
-                    ) {
+                    if (index == examenesList.size - 1 && !isLoading.value && examenesList.size <= (examenes?.size ?: 0)) {
                         isLoading.value = true
-                        //Se cargan más asignaturas en pantalla
                         coroutineScope.launch {
                             delay(3000)
                             loadMoreItems(examenesList, examenes!!)
@@ -110,11 +112,11 @@ fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: 
 }
 
 @Composable
-private fun firstLoad(asignaturaId:Int): List<ExamenRequest>? {
+private fun firstLoad(asignaturaId: Int): List<ExamenRequest>? {
     var carreras by remember { mutableStateOf<List<ExamenRequest>?>(null) }
     UserRepository.loggedInUser()?.let { id ->
         UserRepository.getToken()?.let { token ->
-            getExamenesAsignatura(asignaturaId,token) { responde ->
+            getExamenesAsignatura(asignaturaId, token) { responde ->
                 carreras = responde
             }
         }
@@ -128,7 +130,6 @@ fun format(fechaStr: String): String {
     val fecha = LocalDateTime.parse(fechaStr, formatterEntrada)
     val formatterSalida = DateTimeFormatter.ofPattern("dd/MM/yyyy'  'HH:mm")
     val fechaFormateada = fecha.format(formatterSalida)
-  //  println(fechaFormateada)
     return fechaFormateada + "hs"
 }
 

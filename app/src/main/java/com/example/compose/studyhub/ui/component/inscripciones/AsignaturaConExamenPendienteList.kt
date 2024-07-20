@@ -21,7 +21,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun AsigaturaConExamenPendiente(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int) -> Unit) {
+fun AsigaturaConExamenPendiente(modifier: Modifier, carreraId: Int, onHeaderClicked: (Int) -> Unit) {
     val nombreAsignaturaList = remember { mutableStateListOf<AsignaturaRequest>() }
     val isLoading = remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
@@ -50,9 +50,11 @@ fun AsigaturaConExamenPendiente(modifier: Modifier, carreraId:Int, onHeaderClick
         )
 
         if (asignaturas != null) {
-            LazyColumn(state = listState, modifier = Modifier
-                .weight(1f)
-                .padding(bottom = 20.dp)) {
+            LazyColumn(
+                state = listState, modifier = Modifier
+                    .weight(1f)
+                    .padding(bottom = 20.dp)
+            ) {
                 items(nombreAsignaturaList.size) { index ->
                     AsignaturaExamPendienteItem(user = nombreAsignaturaList[index].nombre, idC = nombreAsignaturaList[index].idAsignatura) {
                         onHeaderClicked(it)
@@ -60,20 +62,18 @@ fun AsigaturaConExamenPendiente(modifier: Modifier, carreraId:Int, onHeaderClick
                 }
                 if (isLoading.value) {
                     item {
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)) {
-                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {}
                     }
                 }
             }
             LaunchedEffect(listState) {
                 snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
-                    //Y si todavía quedan asignaturas en la lista de asignaturas que no se muestran en pantalla
-                    if (index == nombreAsignaturaList.size - 1 && !isLoading.value && nombreAsignaturaList.size <= (asignaturas?.size ?: 0)
-                    ) {
+                    if (index == nombreAsignaturaList.size - 1 && !isLoading.value && nombreAsignaturaList.size <= (asignaturas?.size ?: 0)) {
                         isLoading.value = true
-                        //Se cargan más asignaturas en pantalla
                         coroutineScope.launch {
                             delay(3000)
                             loadMoreItems(nombreAsignaturaList, asignaturas!!)
@@ -89,13 +89,13 @@ fun AsigaturaConExamenPendiente(modifier: Modifier, carreraId:Int, onHeaderClick
 }
 
 @Composable
-private fun firstLoad(checked: Boolean,idC: Int): List<AsignaturaRequest>? {
+private fun firstLoad(checked: Boolean, idC: Int): List<AsignaturaRequest>? {
     var listAsignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
     LaunchedEffect(checked) {
         UserRepository.loggedInUser()?.let { id ->
             UserRepository.getToken()?.let { token ->
                 if (checked) {
-                    getAsignaturasConExamenPendienteRequest(id,idC,token) { success ->
+                    getAsignaturasConExamenPendienteRequest(id, idC, token) { success ->
                         listAsignaturas = success
                     }
                 }

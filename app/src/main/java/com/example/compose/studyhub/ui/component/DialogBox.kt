@@ -1,7 +1,6 @@
 package com.example.compose.studyhub.ui.component
 
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -9,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
+
 
 @Composable
 fun AlertDialogBox(
@@ -69,7 +69,6 @@ fun DialogBoxCreation(onConfirmation: () -> Unit, dialogTitle: String, dialogTex
 }
 
 @Preview
-/*@Preview(name = "Sign in dark theme", uiMode = UI_MODE_NIGHT_YES)*/
 @Composable
 fun AlertDialogueBoxPreview() {
     ThemeStudyHub {

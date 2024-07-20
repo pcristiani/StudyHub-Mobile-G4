@@ -2,32 +2,22 @@ package com.example.compose.studyhub.ui.component.inscripciones
 
 import CarreraRequest
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.compose.studyhub.R
 import com.example.compose.studyhub.R.string.txt_selectCarrera
-import com.example.compose.studyhub.data.Account
 import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest //import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
-
+import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.ui.component.searchBar.SearchList
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import com.example.compose.studyhub.ui.screen.estudiante.CarreraItem
 import com.example.compose.studyhub.util.InfiniteScrolling.firstLoad
 import com.example.compose.studyhub.util.InfiniteScrolling.loadMoreItems
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.checkerframework.checker.units.qual.s
 
 @Composable
 fun CarrerasInscripto(modifier: Modifier,onHeaderClicked: (Int) -> Unit) {
@@ -36,11 +26,10 @@ fun CarrerasInscripto(modifier: Modifier,onHeaderClicked: (Int) -> Unit) {
     val listState = rememberLazyListState()
     var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
     val coroutineScope = rememberCoroutineScope()
-    val scarreras = listOf("Ingeniería", "Medicina", "Arquitectura")
-    //var selectedItem by remember { mutableStateOf<String?>(null) }
     var selectedItem by remember { mutableStateOf<CarreraRequest?>(null) }
 
     carreras = firstLoad(UserRepository.loggedInUser()?:0,::inscripcionesCarreraRequest)
+
     LaunchedEffect(carreras) {
         nombreCarrerasList.clear()
         carreras?.let {
@@ -68,10 +57,8 @@ fun CarrerasInscripto(modifier: Modifier,onHeaderClicked: (Int) -> Unit) {
                     .fillMaxWidth()
                     .padding(top = 1.dp, bottom = 10.dp),
                 onItemSelected = { itemSelected ->
-                    // Actualiza el estado con el ítem seleccionado
                    selectedItem = itemSelected
                     onHeaderClicked(itemSelected.idCarrera)
-                    println("Este es el item Selected: $itemSelected")
                 }
             )
 
@@ -100,11 +87,9 @@ fun CarrerasInscripto(modifier: Modifier,onHeaderClicked: (Int) -> Unit) {
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
-            //Y si todavía quedan asignaturas en la lista de asignaturas que no se muestran en pantalla
             if (index == nombreCarrerasList.size - 1 && !isLoading.value && nombreCarrerasList.size <= (carreras?.size ?: 0)
             ) {
                 isLoading.value = true
-                //Se cargan más asignaturas en pantalla
                 coroutineScope.launch {
                     delay(3000)
                     loadMoreItems(nombreCarrerasList, carreras!!)
