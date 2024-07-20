@@ -1,9 +1,11 @@
 package com.example.compose.studyhub.ui.screen.estudiante
 
+import CarreraRequest
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +20,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.runtime.Composable
@@ -32,6 +34,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
+import com.example.compose.studyhub.ui.theme.md_theme_List
 
 import java.text.DecimalFormat
 
@@ -43,25 +46,30 @@ fun AccountRow(
     amount: Float,
     color: Color
 ) {
-    BaseRow(
+  /*  BaseRow(
         modifier = modifier,
         color = color,
         title = name,
         subtitle = stringResource(R.string.txt_selectHorario) + AccountDecimalFormat.format(number),
         amount = amount,
         negative = false
-    )
+    )*/
 }
 
 @Composable
-fun BillRow(name: String, due: String, amount: Float, color: Color) {
-    BaseRow(
+fun BillRow(name: String, due: String, amount: Float, color: Color, background: Color) {
+  /*  BaseRow(
         color = color,
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .border(BorderStroke(1.dp, Color.DarkGray), shape = RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colors.surface , RoundedCornerShape(8.dp)),
         title = name,
         subtitle = "Due $due",
         amount = amount,
-        negative = true
-    )
+        negative = false
+    )*/
 }
 
 @Composable
@@ -131,14 +139,16 @@ private fun BaseRow(
 private fun AccountIndicator(color: Color, modifier: Modifier = Modifier) {
     Spacer(
         modifier
-            .size(4.dp, 36.dp)
-            .background(color = color)
+            .padding(4.dp)
+            .size(2.dp, 40.dp)
+            .background(color = MaterialTheme.colors.primary, shape = RoundedCornerShape(1.dp))
     )
 }
 
 @Composable
 fun RallyDivider(modifier: Modifier = Modifier) {
-    Divider(color = MaterialTheme.colors.background, thickness = 1.dp, modifier = modifier)
+    Divider(color = MaterialTheme.colors.background, thickness = 1.dp,
+        modifier = modifier)
 }
 
 fun formatAmount(amount: Float): String {
@@ -155,30 +165,101 @@ fun <E> List<E>.extractProportions(selector: (E) -> Float): List<Float> {
 }
 
 
+
+@Composable
+fun RowCarrera(
+    modifier: Modifier = Modifier,
+    title: String,
+    subtitle: String,
+    color: Color,
+) {
+    Row(
+        modifier = modifier
+            .height(80.dp)
+            .fillMaxWidth()
+            .padding(8.dp)
+            .border(BorderStroke(0.8.dp, Color.Gray), shape = RoundedCornerShape(8.dp))
+
+            .background(Color.Transparent, RoundedCornerShape(8.dp))
+            .clearAndSetSemantics {
+            },
+
+
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val typography = MaterialTheme.typography
+        AccountIndicator(
+            color = color,
+            modifier = Modifier
+        )
+        Spacer(Modifier.width(12.dp))
+
+        Column(Modifier) {
+            Column(Modifier) {
+                Text(text = title, style = typography.body1)
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                    Text(text = subtitle, style = typography.subtitle1)
+                }
+            }
+        }
+        Spacer(Modifier.weight(1f))
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Icon(
+                imageVector = Icons.Filled.ChevronRight,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = 15.dp)
+                    .size(25.dp)
+            )
+        }
+    }
+  //  RallyDivider()
+}
+
+
+
+
 @Preview
 @Composable
 fun PreviewAccountRow() {
     Column {
-        AccountRow(
+    /*    AccountRow(
             name = "Checking",
             number = 1234,
             amount = 4321.98f,
-            color = androidx.compose.material.MaterialTheme.colors.primary,
+            color = MaterialTheme.colors.primary,
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
                 .border(BorderStroke(1.dp, Color.DarkGray), shape = RoundedCornerShape(8.dp))
+                .background(MaterialTheme.colors.surface , RoundedCornerShape(8.dp))
+        )*/
+        RowCarrera(
+            title = "Ingeniería de Sistemas",
+            subtitle = "La duracion de la carrera es de 3 años",
+            color = MaterialTheme.colors.primary,
+        )
+        RowCarrera(
+            title = "Ingeniería de Sistemas",
+            subtitle = "La duracion de la carrera es de 3 años",
+
+            color = MaterialTheme.colors.primary,
         )
 
-
-        BillRow(
-            name = "Redwood City Utility",
-            due = "Jan 31",
-            amount = 76.43f,
-            color = androidx.compose.material.MaterialTheme.colors.secondary
-        )
+/*
+        BaseRow(
+            title = "Checking",
+            subtitle = "1234",
+            amount = 4321.98f,
+            color = MaterialTheme.colors.primary,
+            negative = false
+        )*/
     }
-
-
-
+/*            name = "Ingeniería de Sistemas",
+            due = "Jan 31",
+            amount = 0.0f,
+            color = MaterialTheme.colors.primary,
+            background = MaterialTheme.colors.surface
+    */   // )
+// }
 }

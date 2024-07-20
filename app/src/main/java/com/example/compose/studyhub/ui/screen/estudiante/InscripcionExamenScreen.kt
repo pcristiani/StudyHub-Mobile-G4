@@ -92,21 +92,19 @@ fun InscripcionExamen(carreraId: Int, horarioId: Int, idAsig: Int, onSuccess: St
     val showConfirmationDialog = remember { mutableStateOf(false) }
     val showErrorDialog = remember { mutableStateOf(false) }
     val retry = remember { mutableStateOf(false) }
-   // var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
     var responseExamen by remember { mutableStateOf<String?>(null) }
 
     var checked by remember { mutableStateOf(true) }
     LaunchedEffect(horarioId) {
         coroutineScope.launch {
             UserRepository.loggedInUser()?.let { id ->
-                UserRepository.getToken()?.let { token -> // println("INCRIPCIONS " + id + " " + idAsig + " " + horarioId)
+                UserRepository.getToken()?.let { token ->
 
-                    if (checked) { //  inscripcionExamenRequest(token, inscripcionExamenRequest(1,1)) { responde -> }
+                    if (checked) {
                         inscripcionExamenRequest(token, InscripcionExamenRequest(id, horarioId)) { success, responde ->
                             if (success) {
                                 if (responde != null) {
-                                    println("Inscripcion exitosa")
-                                    println("exitosa: $responde")
+                                    println("Inscripcion exitosa: $responde")
                                     responseExamen = responde
                                 }
                                 showConfirmationDialog.value = true

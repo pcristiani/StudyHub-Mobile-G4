@@ -15,23 +15,30 @@ import com.example.compose.studyhub.R
 import com.example.compose.studyhub.R.string.txt_selectCarrera
 import com.example.compose.studyhub.data.Account
 import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
+import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest //import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 
 import com.example.compose.studyhub.ui.component.CarreraCard
-import com.example.compose.studyhub.ui.component.searchBar.LocalAccountsDataProvider
-import com.example.compose.studyhub.ui.component.searchBar.SearchBarScreen
+import com.example.compose.studyhub.ui.component.searchBar.SearchList
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import com.example.compose.studyhub.ui.screen.estudiante.CarreraItem
 import com.example.compose.studyhub.util.InfiniteScrolling.firstLoad
 import com.example.compose.studyhub.util.InfiniteScrolling.loadMoreItems
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.checkerframework.checker.units.qual.s
 
 @Composable
-fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
+fun CarrerasInscripto(modifier: Modifier,onHeaderClicked: (Int) -> Unit) {
     val nombreCarrerasList = remember { mutableStateListOf<CarreraRequest>() }
     val isLoading = remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
     val coroutineScope = rememberCoroutineScope()
+    val scarreras = listOf("Ingeniería", "Medicina", "Arquitectura")
+    //var selectedItem by remember { mutableStateOf<String?>(null) }
+    var selectedItem by remember { mutableStateOf<CarreraRequest?>(null) }
 
     carreras = firstLoad(UserRepository.loggedInUser()?:0,::inscripcionesCarreraRequest)
     LaunchedEffect(carreras) {
@@ -43,26 +50,35 @@ fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
     }
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 60.dp, bottom = 1.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        SearchBarScreen(
-            emails = datosCarreras.allUserAccountss,
-            modifier = Modifier,
-            navigateToDetail = { _, _ -> }
-        )
+             modifier = modifier
+                 .padding(top = 70.dp, bottom = 1.dp),
+             verticalArrangement = Arrangement.spacedBy(18.dp),
+             horizontalAlignment = Alignment.CenterHorizontally,
+         ) {
         Text(
             text = stringResource(id = txt_selectCarrera),
             style = MaterialTheme.typography.headlineSmall,
         )
-
         if (carreras != null) {
-            LazyColumn(state = listState, modifier = Modifier
+
+            SearchList(
+                items = nombreCarrerasList,
+                selectedItem = selectedItem,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(top = 1.dp, bottom = 10.dp),
+                onItemSelected = { itemSelected ->
+                    // Actualiza el estado con el ítem seleccionado
+                   selectedItem = itemSelected
+                    onHeaderClicked(itemSelected.idCarrera)
+                    println("Este es el item Selected: $itemSelected")
+                }
+            )
+
+    /*    if (carreras != null) {
+          LazyColumn(state = listState, modifier = Modifier
                 .weight(1f)
-                .padding(bottom = 20.dp)) {
+                .padding(top = 20.dp)) {
                 items(nombreCarrerasList.size) { index ->
                     CarreraItem(user = nombreCarrerasList[index].nombre, idC = nombreCarrerasList[index].idCarrera) {
                         onHeaderClicked(it)
@@ -77,9 +93,9 @@ fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
                     }
                 }
             }
-        } else {
-            Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
-        }
+      } else {
+            Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)*/
+      }
     }
 
     LaunchedEffect(listState) {
@@ -99,24 +115,6 @@ fun CarrerasInscripto(modifier: Modifier, onHeaderClicked: (Int) -> Unit) {
     }
 }
 
-object datosCarreras {
-
-    val allUserAccountss = listOf(
-
-        Account(
-            idCarrera = 1, nombre = "aTecnologo Mecanica", descripcion = "Carrera terciaria de mecánica."
-        ),
-        Account(
-            idCarrera = 2, nombre = "aTecnologo Biologia", descripcion = "Carrera terciaria de biología."
-        ),
-        Account(
-            idCarrera = 3, nombre = "Tecnologo Informatica", descripcion = "Carrera terciaria de informática."
-        ),
-        Account(
-            idCarrera = 4, nombre = "Tecnologo Quimica", descripcion = "Carrera terciaria de química."
-        ),
-    )
-}
 
 @Composable
 fun CarreraItem(user: String, idC: Int, onSelected: (Int) -> Unit) {

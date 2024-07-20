@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -37,9 +38,9 @@ import com.example.compose.studyhub.http.requests.inscripcionCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
 import com.example.compose.studyhub.ui.component.ConfirmDialogBox
 import com.example.compose.studyhub.ui.component.RallyAlertDialog
-import com.example.compose.studyhub.ui.component.searchBar.LocalAccountsDataProvider
-import com.example.compose.studyhub.ui.component.searchBar.SearchBarScreen
-import com.example.compose.studyhub.ui.component.searchBar.*
+import com.example.compose.studyhub.ui.component.inscripciones.CarreraItem
+
+import com.example.compose.studyhub.ui.component.searchBar.SearchList
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -68,7 +69,6 @@ fun InscripcionCarreraScreen(
 
     LaunchedEffect(onError){
         if(onError!=null){
-            println("71On error: $onError")
             if(onError==""){
                 showConfirmationDialog.value = true
             }
@@ -89,7 +89,7 @@ fun InscripcionCarreraScreen(
                     if (idC != null) {
                         remIdCarrera.value = idC
                         onInscripcionCarreraSubmitted(remIdCarrera.value!!)
-                        println("Este remIdCarrera : ${remIdCarrera.value}")
+                     //   println("Este remIdCarrera : ${remIdCarrera.value}")
                     }
 
                 })
@@ -106,8 +106,6 @@ fun InscripcionCarreraScreen(
         } else {
             //CarrerasScreen(carreraId = remIdCarrera.value !!)
         }
-
-
      /*   if (showConfirmationDialog.value) {
             ConfirmDialogBox(
                 onDismissRequest = {
@@ -128,10 +126,7 @@ fun InscripcionCarreraScreen(
     }
     return DrawerState(DrawerValue.Closed)
 }*/
-
-
-
-   /*     if(showErrorDialog.value){
+        /*     if(showErrorDialog.value){
             ConfirmDialogBox(onDismissRequest = {
                 showConfirmationDialog.value = false }, dialogTitle = "ERROR")
         }
@@ -296,7 +291,7 @@ private fun <T> OverviewScreenCard(
                 androidx.compose.material.Text(text = amountText, style = androidx.compose.material.MaterialTheme.typography.h2)
             }
             OverViewDivider(data, values, colors)
-            Column(Modifier.padding(start = 16.dp, top = 4.dp, end = 8.dp)) {
+            Column(Modifier.padding(start = 16.dp, top = 2.dp, end = 8.dp)) {
                 data.take(SHOWN_ITEMS).forEach { row(it) }
                 SeeAllButton(
                     modifier = Modifier.clearAndSetSemantics {
@@ -374,6 +369,7 @@ fun Carreras(modifier: Modifier, snackbarHostState: SnackbarHostState, scope: Co
     var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
     var checked by remember { mutableStateOf(true) }
     val coroutineScope = rememberCoroutineScope()
+    var strCantidad = ""
 
     carreras = firstLoad2(checked)
     LaunchedEffect(carreras) {
@@ -386,15 +382,12 @@ fun Carreras(modifier: Modifier, snackbarHostState: SnackbarHostState, scope: Co
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 60.dp, bottom = 1.dp),
+            .padding(top = 70.dp, bottom = 1.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        SearchBarScreen(
-            emails = LocalAccountsDataProvider.allUserAccounts,
-            modifier = Modifier,
-            navigateToDetail = { _, _ -> }
-        )
+
+        println("strCantidad " + strCantidad + "${strCantidad}")
         Text(
             text = stringResource(id = txt_selectCarrera),
             style = MaterialTheme.typography.headlineSmall,

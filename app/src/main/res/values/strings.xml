@@ -121,7 +121,7 @@
     <string name="back_button">Atras</string>
     <string name="profile">Profile</string>
     <string name="search">Buscar</string>
-    <string name="search_emails">Buscar...</string>
+    <string name="search_bus">Buscar...</string>
     <string name="no_item_found">No se encontró ningún artículo</string>
     <string name="no_search_history">Sin historial de búsqueda</string>
 

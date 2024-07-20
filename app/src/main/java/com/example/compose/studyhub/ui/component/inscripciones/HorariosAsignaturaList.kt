@@ -66,8 +66,7 @@ fun HorariosAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: (I
             style = MaterialTheme.typography.headlineSmall,
         )
         if (horariosAsignatura != null) {
-            println("I'm here")
-            LazyColumn(state = listState, modifier = Modifier
+           LazyColumn(state = listState, modifier = Modifier
                 .weight(1f)
                 .padding(bottom = 20.dp)) {
                 items(horariosAsignaturaList.size) { index ->

@@ -58,7 +58,7 @@ fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 60.dp, bottom = 1.dp), verticalArrangement = Arrangement.spacedBy(20.dp), horizontalAlignment = Alignment.CenterHorizontally,
+            .padding(top = 70.dp, bottom = 1.dp), verticalArrangement = Arrangement.spacedBy(18.dp), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(id = txt_selectHorario),
@@ -101,6 +101,9 @@ fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId:Int, onHeaderClicked: 
                 }
             }
         } else {
+            Text(
+                text = stringResource(id = R.string.no_item_found), modifier = Modifier.padding(16.dp)
+            )
             Text(text = stringResource(id = R.string.txt_error_horario), textAlign = TextAlign.Center)
         }
     }
@@ -112,7 +115,6 @@ private fun firstLoad(asignaturaId:Int): List<ExamenRequest>? {
     UserRepository.loggedInUser()?.let { id ->
         UserRepository.getToken()?.let { token ->
             getExamenesAsignatura(asignaturaId,token) { responde ->
-                println(responde)
                 carreras = responde
             }
         }
@@ -126,8 +128,7 @@ fun format(fechaStr: String): String {
     val fecha = LocalDateTime.parse(fechaStr, formatterEntrada)
     val formatterSalida = DateTimeFormatter.ofPattern("dd/MM/yyyy'  'HH:mm")
     val fechaFormateada = fecha.format(formatterSalida)
-
-    println(fechaFormateada)
+  //  println(fechaFormateada)
     return fechaFormateada + "hs"
 }
 

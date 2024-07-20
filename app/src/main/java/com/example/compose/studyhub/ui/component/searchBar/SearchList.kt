@@ -31,6 +31,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -42,26 +43,30 @@ import com.example.compose.studyhub.data.Email
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getCarrerasRequest
 import com.example.compose.studyhub.ui.navigation.ReplyProfileImage
+import okhttp3.internal.ignoreIoExceptions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchList(
-    emails: List<Account>,
+fun SearchLists(
+    emails: List<CarreraRequest>,
   //  carreras: List<CarreraRequest>,
-    onSearchItemSelected: (Account) -> Unit,
+    onSearchItemSelected: (CarreraRequest) -> Unit,
     modifier: Modifier = Modifier
-) {
+): List<CarreraRequest> {
     var query by remember { mutableStateOf("") }
     var active by remember { mutableStateOf(false) }
-    val searchResults = remember { mutableStateListOf<Account>() }
+    val searchResults = remember { mutableStateListOf<CarreraRequest>() }
+    val nombreCarreras = remember { mutableStateListOf<CarreraRequest>() }
+
+   /* // Ejemplo para agregar una nueva carrera a la lista
+    nombreCarrerasList.add(CarreraRequest(nombre = "Ingeniería en Sistemas", descripcion = "Descripción de la carrera"))*/
 
     LaunchedEffect(query) {
         searchResults.clear()
         if (query.isNotEmpty()) {
             searchResults.addAll(
                 emails.filter {
-                    it.nombre.startsWith(query, ignoreCase = true) ||
-                        it.fullName.startsWith(query, ignoreCase = true)
+                    it.nombre.startsWith(query, ignoreCase = true)
                 }
             )
         }
@@ -78,12 +83,12 @@ fun SearchList(
         onActiveChange = {
             active = it
         },
-        placeholder = { Text(text = stringResource(id = R.string.search_emails)) },
+        placeholder = { Text(text = stringResource(id = R.string.search_bus)) },
 
         leadingIcon = {
             if (active) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.Default.Search,
                     contentDescription = stringResource(id = R.string.back_button),
                     modifier = Modifier
                         .padding(start = 16.dp)
@@ -112,16 +117,22 @@ fun SearchList(
     ) {
         if (searchResults.isNotEmpty()) {
             LazyColumn(
-                modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)
+                modifier = Modifier , contentPadding = PaddingValues(4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                items(items = searchResults, key = { it.idCarrera }) { email ->
-                    ListItem(headlineContent = { Text(email.fullName) }, supportingContent = { Text(email.descripcion) }, leadingContent = {
+                items(items = searchResults, key = { it.idCarrera }) { selCarrera ->
+                  //  ListItem(headlineContent = { Text(email.fullName) }, supportingContent = { Text(email.descripcion) }, leadingContent = {
+                    ListItem(headlineContent = { Text(selCarrera.nombre) }, supportingContent = { Text(selCarrera.descripcion) }, leadingContent = {
                       /*  ReplyProfileImage(drawableResource = email.avatar, description = stringResource(id = R.string.profile), modifier = Modifier.size(32.dp)                        )*/
                     }, modifier = Modifier.clickable {
-                        onSearchItemSelected.invoke(email)
+                        onSearchItemSelected.invoke(selCarrera)
                         query = ""
                         active = false
-                        println("${email.fullName}")
+                        nombreCarreras += mutableListOf(selCarrera)
+                        /*    selCarrera.idCarrera,selCarrera.nombre,selCarrera.descripcion,selCarrera.requisitos,selCarrera.duracion,
+                            selCarrera.activa*/
+
+                        println("s "+"${nombreCarreras[0]}")
+                        println("invo " + nombreCarreras[0].idCarrera)
                     })
                 }
             }
@@ -133,6 +144,10 @@ fun SearchList(
             text = stringResource(id = R.string.no_search_history), modifier = Modifier.padding(16.dp)
         )
     }
+   // println("nombreCarreras: " + nombreCarreras[0])
+
+
+    return nombreCarreras
 }
 
 @Composable

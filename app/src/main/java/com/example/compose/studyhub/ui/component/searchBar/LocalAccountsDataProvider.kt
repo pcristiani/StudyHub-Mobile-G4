@@ -10,10 +10,8 @@ import androidx.compose.runtime.setValue
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.data.Account
 import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.requests.getCarrerasRequest
-import com.example.compose.studyhub.ui.component.searchBar.LocalAccountsDataProvider.allUserAccounts
 //import com.example.compose.studyhub.ui.component.searchBar.LocalAccountsDataProvider.allUserContactAccounts
-
+/*
 object LocalAccountsDataProvider {
 
     val allUserAccounts = listOf(
@@ -21,24 +19,36 @@ object LocalAccountsDataProvider {
         Account(
             idCarrera = 1,
             nombre = "Tecnologo Mecanica",
-            descripcion = "Carrera terciaria de mecánica."
+            descripcion = "Carrera terciaria de mecánica.",
+            requisitos = "Bachillerato completo.",
+            duracion = 3,
+            activa = true
         ),
         Account(
             idCarrera = 2,
             nombre = "Tecnologo Biologia",
-            descripcion = "Carrera terciaria de biología."
+            descripcion = "Carrera terciaria de biología.",
+            requisitos = "Bachillerato completo.",
+            duracion = 3,
+            activa = true
         ),
         Account(
             idCarrera = 3,
             nombre = "Tecnologo Informatica",
-            descripcion = "Carrera terciaria de informática."
+            descripcion = "Carrera terciaria de informática.",
+            requisitos = "Bachillerato completo.",
+            duracion = 3,
+            activa = true
         ),
         Account(
             idCarrera = 4,
             nombre = "Tecnologo Quimica",
-            descripcion = "Carrera terciaria de química."
+            descripcion = "Carrera terciaria de química.",
+            requisitos = "Bachillerato completo.",
+            duracion = 3,
+            activa = true
         ),
-    )
+    )*/
 /*
     val allUserContactAccounts = listOf(
         Account(
@@ -72,5 +82,5 @@ object LocalAccountsDataProvider {
     // Obtener el contacto del usuario actual con el dado [accountId].
  /*   fun getContactAccountByUid(idC: Int): Account {
         return allUserContactAccounts.first { it.idCarrera == idC }
-    }*/
-}
+    }
+}*/

@@ -12,9 +12,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
-/**
- * A [MaterialTheme] for Rally.
- */
 @Composable
 fun RallyTheme(content: @Composable () -> Unit) {
 
@@ -22,19 +19,15 @@ fun RallyTheme(content: @Composable () -> Unit) {
 
 }
 
-/**
- * A theme overlay used for dialogs.
- */
+
 @Composable
 fun RallyDialogThemeOverlay(content: @Composable () -> Unit) {
-    // Rally is always dark themed.
     val dialogColors = darkColors(
         primary = Color.White,
         surface = Color.White.copy(alpha = 0.12f).compositeOver(Color.Black),
         onSurface = Color.White
     )
 
-    // Copy the current [Typography] and replace some text styles for this theme.
     val currentTypography = MaterialTheme.typography
     val dialogTypography = currentTypography.copy(
         body2 = currentTypography.body1.copy(

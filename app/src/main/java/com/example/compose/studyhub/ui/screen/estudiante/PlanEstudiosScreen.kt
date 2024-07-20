@@ -134,7 +134,7 @@ fun DropdownMenuExamples() {
                                              ),
          modifier = Modifier
             .fillMaxWidth()
-            .height(44.dp)
+            .height(54.dp)
             ) {
          Text(
             text = selectedOption,

@@ -2,7 +2,7 @@ package com.example.compose.studyhub.data
 
 import androidx.annotation.DrawableRes
 
-data class Account(val idCarrera: Int, val nombre: String, val descripcion: String){
+data class Account(val idCarrera: Int, val nombre: String, val descripcion: String, val requisitos: String, val duracion: Int, val activa: Boolean){
 
     val fullName: String = "$nombre"
 }

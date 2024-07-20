@@ -35,12 +35,12 @@ fun CarreraCard(nombre: String, selected: Boolean = false, onHeaderClicked: () -
         )
       } */
      }
-    .padding(horizontal = 15.dp, vertical = 3.dp),
+    .padding(horizontal = 20.dp, vertical = 6.dp),
     border = BorderStroke(1.dp, md_theme_List.copy(alpha = 0.5f)), shape = RoundedCornerShape(8.dp)) {
     Box(modifier = Modifier.padding(18.dp)) {
      Text(text = nombre, style = MaterialTheme.typography.labelLarge )
     }
-  }
+  }//modifier = Modifier.padding(top = 100.dp, bottom = 6.dp))
 }
 // Text(text = nombre, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha), textAlign = TextAlign.Center, modifier = Modifier.padding(top = 100.dp, bottom = 6.dp))
 

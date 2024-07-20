@@ -1,6 +1,7 @@
 package com.example.compose.studyhub.ui.component.inscripciones
 
 import AsignaturaRequest
+import CarreraRequest
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -13,9 +14,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.R.string.txt_selectAsignatura
+import com.example.compose.studyhub.R.string.txt_selectCarrera
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
 import com.example.compose.studyhub.ui.component.CarreraCard
+import com.example.compose.studyhub.ui.component.searchBar.SearchList
+import com.example.compose.studyhub.ui.component.searchBar.SearchListAsignaturas
 import com.example.compose.studyhub.util.InfiniteScrolling.firstLoad
 import com.example.compose.studyhub.util.InfiniteScrolling.loadMoreItems
 import kotlinx.coroutines.delay
@@ -29,7 +33,7 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
     val listState = rememberLazyListState()
     var asignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
     val coroutineScope = rememberCoroutineScope()
-
+    var selectedItem by remember { mutableStateOf<AsignaturaRequest?>(null) }
 
     asignaturas = firstLoad(carreraId, ::getAsignaturasDeCarreraRequest)
     LaunchedEffect(asignaturas) {
@@ -42,15 +46,15 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 60.dp, bottom = 1.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+            .padding(top = 70.dp, bottom = 1.dp),
+        verticalArrangement = Arrangement.spacedBy(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(id = txt_selectAsignatura),
             style = MaterialTheme.typography.headlineSmall,
         )
-
+/*
         if (asignaturas != null) {
             LazyColumn(state = listState, modifier = Modifier
                 .weight(1f)
@@ -69,9 +73,28 @@ fun AsigaturaDeCarrera(modifier: Modifier, carreraId:Int, onHeaderClicked: (Int)
                     }
                 }
             }
-        } else {
+
+            } else {
             Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
-        }
+        }*/
+            if (asignaturas != null) {
+                SearchListAsignaturas(
+                    items = nombreAsignaturaList,
+                    selectedItem = selectedItem,
+                    carreraId=carreraId,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(top = 1.dp, bottom = 10.dp),
+                    onItemSelected = { itemSelected ->
+                        selectedItem = itemSelected
+                        onHeaderClicked(itemSelected.idAsignatura)
+                        println("Este es el item Selected: $itemSelected")
+                    }
+                )
+            }
+         /*   else {
+                Text(text = stringResource(id = R.string.txt_error_solicitudes), textAlign = TextAlign.Center)
+            }*/
     }
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }.collect { index ->
