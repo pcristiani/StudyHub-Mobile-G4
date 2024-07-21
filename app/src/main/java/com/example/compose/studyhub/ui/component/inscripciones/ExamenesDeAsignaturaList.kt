@@ -58,7 +58,8 @@ fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId: Int, onHeaderClicked:
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 70.dp, bottom = 1.dp),
-        verticalArrangement = Arrangement.spacedBy(18.dp), horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(id = txt_selectHorario),
@@ -103,9 +104,7 @@ fun ExamenesDeAsignatura(modifier: Modifier, asignaturaId: Int, onHeaderClicked:
                 }
             }
         } else {
-            Text(
-                text = stringResource(id = R.string.no_item_found), modifier = Modifier.padding(16.dp)
-            )
+            Text(text = stringResource(id = R.string.no_item_found), modifier = Modifier.padding(16.dp))
             Text(text = stringResource(id = R.string.txt_error_horario), textAlign = TextAlign.Center)
         }
     }

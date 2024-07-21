@@ -34,10 +34,12 @@ import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.http.requests.getAsignaturasDeCarreraRequest
 import com.example.compose.studyhub.http.requests.inscripcionesCarreraRequest
 import com.example.compose.studyhub.ui.component.inscripciones.AsignaturaItem
+import com.example.compose.studyhub.ui.component.inscripciones.firstLoadExamPendiente
+import com.example.compose.studyhub.ui.screen.estudiante.firstLoad2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchList(
+fun SearchListCarrerasInscripto(
     items: List<CarreraRequest>, selectedItem: CarreraRequest?, modifier: Modifier = Modifier, onItemSelected: (CarreraRequest) -> Unit) {
     var query by remember { mutableStateOf("") }
     var active by remember { mutableStateOf(false) }
@@ -74,7 +76,78 @@ fun SearchList(
             onSearch = { active = false },
             active = active,
             onActiveChange = { active = it },
+            placeholder = { Text(text = stringResource(id = R.string.search_bus)) },
+            leadingIcon = {
+                if (active) {
+                    Icon(imageVector = (Icons.Default.Clear), contentDescription = stringResource(id = R.string.back_button), modifier = Modifier
+                        .padding(start = 1.dp)
+                        .padding(16.dp)
+                        .clickable {
+                            active = false
+                            query = ""
+                        })
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = stringResource(id = R.string.search),
+                        modifier = Modifier.padding(start = 2.dp),
+                    )
+                }
+            },
+        ) {}
 
+        LazyColumn(state = listState, modifier = Modifier) {
+            items(if (query.isEmpty()) nombreCarreras else searchResults) { carrera ->
+                AsignaturaItem(
+                    user = carrera.nombre, idC = carrera.idCarrera
+                ) {
+                    onItemSelected(carrera)
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchListCarreras(
+    items: List<CarreraRequest>, selectedItem: CarreraRequest?, modifier: Modifier = Modifier, onItemSelected: (CarreraRequest) -> Unit) {
+    var query by remember { mutableStateOf("") }
+    var active by remember { mutableStateOf(false) }
+    val searchResults = remember { mutableStateListOf<CarreraRequest>() }
+    val nombreCarreras = remember { mutableStateListOf<CarreraRequest>() }
+    var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
+    val listState = rememberLazyListState()
+    var checked by remember { mutableStateOf(true) }
+
+    carreras = firstLoad2(checked)
+    LaunchedEffect(query) {
+        searchResults.clear()
+        if (query.isNotEmpty()) {
+            searchResults.addAll(items.filter {
+                it.nombre.startsWith(query, ignoreCase = true)
+            })
+        }
+    }
+
+    LaunchedEffect(carreras) {
+        nombreCarreras.clear()
+        carreras?.let {
+            loadMoreItems(nombreCarreras, it)
+        }
+    }
+
+    Column(modifier = Modifier) {
+        DockedSearchBar(
+            modifier = modifier
+                .height(75.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            query = query,
+            onQueryChange = { query = it },
+            onSearch = { active = false },
+            active = active,
+            onActiveChange = { active = it },
             placeholder = { Text(text = stringResource(id = R.string.search_bus)) },
             leadingIcon = {
                 if (active) {
@@ -119,7 +192,6 @@ fun SearchListAsignaturas(
     val listState = rememberLazyListState()
 
     asignaturas = firstLoad(carreraId, ::getAsignaturasDeCarreraRequest)
-
     LaunchedEffect(query) {
         searchResults.clear()
         if (query.isNotEmpty()) {
@@ -147,7 +219,78 @@ fun SearchListAsignaturas(
             onSearch = { active = false },
             active = active,
             onActiveChange = { active = it },
+            placeholder = { Text(text = stringResource(id = R.string.search_bus)) },
+            leadingIcon = {
+                if (active) {
+                    Icon(imageVector = (Icons.Default.Clear), contentDescription = stringResource(id = R.string.back_button), modifier = Modifier
+                        .padding(start = 1.dp)
+                        .padding(16.dp)
+                        .clickable {
+                            active = false
+                            query = ""
+                        })
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = stringResource(id = R.string.search),
+                        modifier = Modifier.padding(start = 2.dp),
+                    )
+                }
+            },
+        ) {}
 
+        LazyColumn(state = listState, modifier = Modifier) {
+            items(if (query.isEmpty()) nombreAsignaturas else searchResults) { asignaturas ->
+                AsignaturaItem(
+                    user = asignaturas.nombre, idC = asignaturas.idAsignatura
+                ) {
+                    onItemSelected(asignaturas)
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchListAsignaturasConExamenPendiente(
+    items: List<AsignaturaRequest>, selectedItem: AsignaturaRequest?, carreraId: Int, modifier: Modifier = Modifier, onItemSelected: (AsignaturaRequest) -> Unit) {
+    var query by remember { mutableStateOf("") }
+    var active by remember { mutableStateOf(false) }
+    val searchResults = remember { mutableStateListOf<AsignaturaRequest>() }
+    val nombreAsignaturas = remember { mutableStateListOf<AsignaturaRequest>() }
+    var asignaturas by remember { mutableStateOf<List<AsignaturaRequest>?>(null) }
+    val listState = rememberLazyListState()
+    var checked by remember { mutableStateOf(true) }
+
+    asignaturas = firstLoadExamPendiente(checked, carreraId)
+    LaunchedEffect(query) {
+        searchResults.clear()
+        if (query.isNotEmpty()) {
+            searchResults.addAll(items.filter {
+                it.nombre.startsWith(query, ignoreCase = true)
+            })
+        }
+    }
+
+    LaunchedEffect(asignaturas) {
+        nombreAsignaturas.clear()
+        asignaturas?.let {
+            loadMoreItems(nombreAsignaturas, it)
+        }
+    }
+
+    Column(modifier = Modifier) {
+        DockedSearchBar(
+            modifier = modifier
+                .height(75.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            query = query,
+            onQueryChange = { query = it },
+            onSearch = { active = false },
+            active = active,
+            onActiveChange = { active = it },
             placeholder = { Text(text = stringResource(id = R.string.search_bus)) },
             leadingIcon = {
                 if (active) {

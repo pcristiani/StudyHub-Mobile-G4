@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 
-
 @Composable
 fun DatosAsignaturaBox(
     onDismissRequest: () -> Unit,
@@ -32,44 +31,37 @@ fun DatosAsignaturaBox(
     departamento: String,
     creditos: Int,
 ) {
-    AlertDialog(
-        title = {
-            Column(){
-                Text(text = asignatura, style = MaterialTheme.typography.h5)
-                Spacer(modifier = Modifier.height(3.dp))
-                Text(text = "Carrera: $carrera", style = MaterialTheme.typography.subtitle2)
-            }
-                },
-        text = {
-            Spacer(modifier = Modifier.height(10.dp))
-            Card(modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(5.dp), border = BorderStroke(0.8.dp, colorResource(R.color.divider))
-            ){
-                Column(modifier = Modifier.padding(5.dp)){
-                    Text(modifier = Modifier.padding(start = 5.dp), text = descripcion, style = MaterialTheme.typography.subtitle2)
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(modifier = Modifier.padding(start = 5.dp),text = "Departamento: $departamento", style = MaterialTheme.typography.subtitle2)
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(modifier = Modifier.padding(start = 5.dp),text = "Créditos: $creditos", style = MaterialTheme.typography.subtitle2)
-                }
-            }
-        },
-        onDismissRequest = {
-            onDismissRequest()
-        },
-        confirmButton = {},
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    onDismissRequest()
-                },
-            ) {
-                Text("Cerrar")
+    AlertDialog(title = {
+        Column() {
+            Text(text = asignatura, style = MaterialTheme.typography.h5)
+            Spacer(modifier = Modifier.height(3.dp))
+            Text(text = "Carrera: $carrera", style = MaterialTheme.typography.subtitle2)
+        }
+    }, text = {
+        Spacer(modifier = Modifier.height(10.dp))
+        Card(
+            modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(5.dp), border = BorderStroke(0.8.dp, colorResource(R.color.divider))
+        ) {
+            Column(modifier = Modifier.padding(5.dp)) {
+                Text(modifier = Modifier.padding(start = 5.dp), text = descripcion, style = MaterialTheme.typography.subtitle2)
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(modifier = Modifier.padding(start = 5.dp), text = "Departamento: $departamento", style = MaterialTheme.typography.subtitle2)
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(modifier = Modifier.padding(start = 5.dp), text = "Créditos: $creditos", style = MaterialTheme.typography.subtitle2)
             }
         }
-    )
+    }, onDismissRequest = {
+        onDismissRequest()
+    }, confirmButton = {}, dismissButton = {
+        TextButton(
+            onClick = {
+                onDismissRequest()
+            },
+        ) {
+            Text("Cerrar")
+        }
+    })
 }
-
 
 @Preview
 @Composable

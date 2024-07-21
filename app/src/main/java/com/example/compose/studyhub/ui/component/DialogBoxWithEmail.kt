@@ -1,7 +1,6 @@
 package com.example.compose.studyhub.ui.component
 
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -18,36 +17,26 @@ fun AlertDialogBoxWithText(
     onConfirmation: (String) -> Unit,
     dialogTitle: String,
 ) {
-    val emailState = remember{ EmailState() }
-    AlertDialog(
-        title = {
-            Text(text = dialogTitle)
-        },
-        text = {
-             Email(emailState)
-        },
-        onDismissRequest = {
-            onDismissRequest("se")
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onConfirmation(emailState.text)
-                }
-            ) {
-                Text("Confirmar")
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    onDismissRequest("cance")
-                }
-            ) {
-                Text("Cancelar")
-            }
+    val emailState = remember { EmailState() }
+    AlertDialog(title = {
+        Text(text = dialogTitle)
+    }, text = {
+        Email(emailState)
+    }, onDismissRequest = {
+        onDismissRequest("se")
+    }, confirmButton = {
+        TextButton(onClick = {
+            onConfirmation(emailState.text)
+        }) {
+            Text("Confirmar")
         }
-    )
+    }, dismissButton = {
+        TextButton(onClick = {
+            onDismissRequest("cance")
+        }) {
+            Text("Cancelar")
+        }
+    })
 }
 
 @Composable
@@ -56,14 +45,11 @@ fun DialogBoxWithTextCreation(onConfirmation: (String) -> Unit, dialogTitle: Str
 
     when {
         openAlertDialog.value -> {
-            AlertDialogBoxWithText(
-                onDismissRequest = { onDismissRequest()},
-                onConfirmation = {
-                    openAlertDialog.value = false
-                    onConfirmation(it)
-                    onDismissRequest()
-                },
-                dialogTitle = dialogTitle
+            AlertDialogBoxWithText(onDismissRequest = { onDismissRequest() }, onConfirmation = {
+                openAlertDialog.value = false
+                onConfirmation(it)
+                onDismissRequest()
+            }, dialogTitle = dialogTitle
             )
         }
     }

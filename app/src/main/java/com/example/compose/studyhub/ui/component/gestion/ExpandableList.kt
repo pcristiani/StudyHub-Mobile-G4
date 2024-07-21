@@ -6,7 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 
@@ -41,7 +44,8 @@ fun ExpandableList(modifier:Modifier, headerTitle: String, options: List<String>
     val isExpandedMap = remember { mutableStateOf(false) }
 
     LazyColumn(
-        modifier = modifier,
+        modifier = Modifier
+        .padding(vertical = 10.dp, horizontal = 16.dp),
         content = {
             Section(
                 sectionData = data,
@@ -64,9 +68,11 @@ fun SectionItem(text: String, id: Int, onOptionClicked: (id: Int) -> Unit) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
+            overflow = TextOverflow.Ellipsis,
+
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 16.dp)
+                .padding(vertical = 8.dp, horizontal = 6.dp)
         )
     }
 }
@@ -79,12 +85,14 @@ fun SectionHeader(text: String, isExpanded: Boolean, onHeaderClicked: () -> Unit
             style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1.0f)
+            modifier = Modifier
+                .weight(0.8f)
+                .padding(horizontal = 8.dp, vertical = 6.dp)
         )
         Icon(
             imageVector = Icons.Filled.ArrowDropDown,
             contentDescription = null,
-            modifier = Modifier.weight(0.2f)
+            modifier = Modifier.weight(0.1f)
         )
     }
 }
@@ -112,3 +120,16 @@ fun LazyListScope.Section(
 }
 
 data class SectionData(val headerText: String, val items: List<String>, val ids: List<Int>)
+
+
+@Preview
+@Composable
+fun ExpandableListPreview() {
+    ExpandableList(
+        modifier = Modifier.padding(10.dp),
+        headerTitle = "Lista",
+        options = listOf("Carrera 1", "Carrera 2", "Carrera 3"),
+        optionIds = listOf(1, 2, 3),
+        onOptionSelected = {}
+    )
+}

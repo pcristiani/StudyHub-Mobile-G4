@@ -1,3 +1,4 @@
+/*
 package com.example.compose.studyhub.util
 
 import java.util.Calendar
@@ -12,3 +13,4 @@ fun getDefaultDateInMillis(): Long {
     cal.set(year, month, date)
     return cal.timeInMillis
 }
+*/

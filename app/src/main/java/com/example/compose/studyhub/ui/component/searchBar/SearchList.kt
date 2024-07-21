@@ -27,8 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 
-import com.example.compose.studyhub.data.UserRepository
-import com.example.compose.studyhub.http.requests.getCarrerasRequest
+// no se usa
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -126,27 +125,9 @@ fun SearchLists(
         )
     }
    // println("nombreCarreras: " + nombreCarreras[0])
-
-
     return nombreCarreras
 }
 
-@Composable
-fun firstLoad21(checked: Boolean): List<CarreraRequest>? {
-    var carreras by remember { mutableStateOf<List<CarreraRequest>?>(null) }
-    LaunchedEffect(checked) {
-        UserRepository.loggedInUser()?.let { user ->
-            UserRepository.getToken()?.let { token ->
-                if (checked) {
-                    getCarrerasRequest(token) { success ->
-                        carreras = success
-                    }
-                }
-            }
-        }
-    }
-    return carreras
-}
 
 @Preview
 @Composable

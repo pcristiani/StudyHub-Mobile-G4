@@ -70,6 +70,6 @@ fun ConfirmDialogBoxCreation(onConfirmation: () -> Unit, dialogTitle: String, di
 @Composable
 fun ConfirmDialogueBoxPreview() {
     ThemeStudyHub {
-        ConfirmDialogBox({}, "Hello")
+    //    ConfirmDialogBox({}, "Hello")
     }
 }

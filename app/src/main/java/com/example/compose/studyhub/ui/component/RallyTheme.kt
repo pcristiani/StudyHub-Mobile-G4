@@ -1,13 +1,11 @@
 package com.example.compose.studyhub.ui.component
 
 import androidx.compose.material.MaterialTheme
-
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.text.font.FontWeight
-
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 

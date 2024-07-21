@@ -33,7 +33,6 @@
     <string name="close">Salir</string>
     <string name="show_password">Mostrar contraseña</string>
     <string name="hide_password">Contraseña oculta</string>
-    <string name="strprueba">Prueba</string>
     <string name="select_null"></string>
 
     <!-- questionLogin -->
@@ -49,7 +48,6 @@
     <string name="txt_funcionario">Funcionario</string>
     <string name="txt_coordinador">Coordinador</string>
 
-    <!-- Pregunta 2 -->
     <string name="txt_question2">Avatar de perfil</string>
     <string name="txt_steve">Steve</string>
     <string name="txt_camila">Camila</string>
@@ -58,28 +56,16 @@
     <string name="txt_harry">Harry Potter</string>
     <string name="txt_robot">Robot</string>
     <string name="txt_genia">Genia académica</string>
-    <string name="txt_genio">Genio académico</string>
-    <string name="txt_experto_soft">Experto en software</string>
-    <string name="txt_experta_soft">Experta en software</string>
-    <string name="txt_studente">Estudiante</string>
-    <string name="txt_estudia">Estudiando</string>
     <string name="txt_cat">Gato</string>
     <string name="txt_perro">Perro</string>
     <string name="txt_payaso">Payaso</string>
     <string name="txt_alien">Alien</string>
 
-    <!-- Pregunta 3  -->
     <string name="txt_question3">Fecha de nacimiento</string>
-
-    <!-- Pregunta 4-->
-    <!-- <string name="txt_question4">Pregunta 4</string> -->
-
-    <!-- Pregunta 5-->
     <string name="txt_question4">Foto de perfil</string>
     <string name="add_photo">Agregar foto</string>
     <string name="retake_photo">Sacar otra foto</string>
 
-    <string name="txt_pruebaqa">Prueba</string>
     <string name="result_login">Acceso correcto</string>
     <string name="survey_result_description">Usuario:</string>
     <string name="strongly_dislike">Izquierda\nPreg4</string>
@@ -90,14 +76,17 @@
     <string name="txt_inscripciones">Inscripciones</string>
     <string name="txt_solicitudes">Asignaturas</string>>
     <string name="txt_error_solicitudes">No se encontraron asignaturas</string>
+    <string name="txt_error_solicitudes_asig">No se encontraron asignaturas para la carrera</string>
+    <string name="txt_error_solicitudes_exam">No se encontraron examenes pendientes</string>
+
     <string name="txt_error_horario">No se encontraron horarios asignatura</string>
     <string name="txt_error_inscripcion">No se pudo inscribir</string>
     <string name="txt_error_solicitud">No se pudo solicitar</string>
+
     <string name="txt_tipo_inscripcion">Seleccionar tipo de inscripción</string>
     <string name="txt_tipo_solicitud">Seleccionar tipo de solicitud</string>
     <string name="txt_selectCarrera">Seleccionar carrera</string>
     <string name="txt_selectHorario">Seleccionar horario</string>
-
     <string name="txt_selectAsignatura">Seleccionar asignatura</string>
 
     <string name="channel_name">Push Notifications Channel</string>
@@ -109,14 +98,8 @@
     <string name="Logout_question">¿Estás seguro?</string>
 
     <string name="txt_error_login">Credenciales incorrectas</string>
-    <string name="seleccionar_carrera">Seleccionar Carrera</string>
     <string name="empty_carrera">No hay datos de esta carrera</string>
 
-    <string name="asignatura1">Programacion I</string>
-    <string name="asignatura2">Programacion II</string>
-    <string name="asignatura3">Programacion III</string>
-    <string name="asignatura4">Programacion Avanzada</string>
-    <string name="asignatura5">Programacion Aplicaciones</string>
 
     <string name="back_button">Atras</string>
     <string name="profile">Profile</string>

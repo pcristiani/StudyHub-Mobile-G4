@@ -10,7 +10,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.Destinations.INICIO_ROUTE
 import com.example.compose.studyhub.Destinations.LOGIN_ROUTE
 import com.example.compose.studyhub.Destinations.QUESTION_RESULTS_ROUTE
-import com.example.compose.studyhub.Destinations.QUESTION_ROUTE
 import com.example.compose.studyhub.Destinations.REGISTER_ROUTE
 import com.example.compose.studyhub.data.User
 import com.example.compose.studyhub.data.UserRepository
@@ -89,7 +88,5 @@ fun StudyHubNavHost(
       }
 
    }
-
-
 
 } // QuestionResultScreen2 { navController.navigate(INICIO_ROUTE) }

@@ -22,7 +22,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.compose.studyhub.R
 import com.example.compose.studyhub.R.string.txt_selectHorario
@@ -54,15 +53,16 @@ fun HorariosAsignatura(modifier: Modifier, asignaturaId: Int, onHeaderClicked: (
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 60.dp, bottom = 1.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+            .padding(top = 70.dp, bottom = 1.dp),
+        verticalArrangement = Arrangement.spacedBy(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = stringResource(id = txt_selectHorario),
-            style = MaterialTheme.typography.headlineSmall,
-        )
+
         if (horariosAsignatura != null) {
+            Text(
+                text = stringResource(id = txt_selectHorario),
+                style = MaterialTheme.typography.headlineSmall,
+            )
             LazyColumn(
                 state = listState, modifier = Modifier
                     .weight(1f)
@@ -83,14 +83,13 @@ fun HorariosAsignatura(modifier: Modifier, asignaturaId: Int, onHeaderClicked: (
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp)
+                                .padding(18.dp)
                         ) {}
                     }
                 }
-
             }
         } else {
-            Text(text = stringResource(id = R.string.txt_error_horario), textAlign = TextAlign.Center)
+            Text(text = stringResource(id = R.string.txt_error_horario), modifier = Modifier.padding(top = 15.dp, start = 6.dp), style = MaterialTheme.typography.bodyMedium)
         }
     }
     LaunchedEffect(listState) {

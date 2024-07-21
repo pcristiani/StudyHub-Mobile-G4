@@ -9,7 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 
-
 @Composable
 fun AlertDialogBox(
     onDismissRequest: () -> Unit,
@@ -17,35 +16,25 @@ fun AlertDialogBox(
     dialogTitle: String,
     dialogText: String,
 ) {
-    AlertDialog(
-        title = {
-            Text(text = dialogTitle)
-        },
-        text = {
-            Text(text = dialogText)
-        },
-        onDismissRequest = {
-            onDismissRequest()
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onConfirmation()
-                }
-            ) {
-                Text("Confirmar")
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    onDismissRequest()
-                }
-            ) {
-                Text("Cancelar")
-            }
+    AlertDialog(title = {
+        Text(text = dialogTitle)
+    }, text = {
+        Text(text = dialogText)
+    }, onDismissRequest = {
+        onDismissRequest()
+    }, confirmButton = {
+        TextButton(onClick = {
+            onConfirmation()
+        }) {
+            Text("Confirmar")
         }
-    )
+    }, dismissButton = {
+        TextButton(onClick = {
+            onDismissRequest()
+        }) {
+            Text("Cancelar")
+        }
+    })
 }
 
 @Composable
@@ -55,7 +44,7 @@ fun DialogBoxCreation(onConfirmation: () -> Unit, dialogTitle: String, dialogTex
     when {
         openAlertDialog.value -> {
             AlertDialogBox(
-                onDismissRequest = { onDismissRequest()},
+                onDismissRequest = { onDismissRequest() },
                 onConfirmation = {
                     openAlertDialog.value = false
                     onConfirmation()

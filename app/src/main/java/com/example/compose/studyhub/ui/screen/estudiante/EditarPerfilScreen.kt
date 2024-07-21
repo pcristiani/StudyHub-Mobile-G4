@@ -29,11 +29,9 @@ import com.example.compose.studyhub.ui.component.loginRegisterEdit.Email
 import com.example.compose.studyhub.ui.screen.LoginRegisterScreen
 import com.example.compose.studyhub.ui.screen.LoginRegisterTopAppBar
 import com.example.compose.studyhub.ui.screen.Name
-import com.example.compose.studyhub.ui.screen.RecoverPassBox
 import com.example.compose.studyhub.ui.screen.SurName
 import com.example.compose.studyhub.ui.theme.ThemeStudyHub
 import com.example.compose.studyhub.util.supportWideScreen
-import kotlinx.coroutines.launch
 
 @Composable
 fun EditarPerfilScreen(

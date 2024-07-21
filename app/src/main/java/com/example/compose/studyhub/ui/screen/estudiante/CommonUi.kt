@@ -38,6 +38,7 @@ import com.example.compose.studyhub.ui.theme.md_theme_List
 
 import java.text.DecimalFormat
 
+// no se usa
 @Composable
 fun AccountRow(
     modifier: Modifier = Modifier,

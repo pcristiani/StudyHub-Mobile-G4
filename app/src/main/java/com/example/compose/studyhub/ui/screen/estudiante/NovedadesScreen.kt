@@ -38,105 +38,96 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.studyhub.data.UserRepository
 import com.example.compose.studyhub.ui.component.Logo
 import com.example.compose.studyhub.ui.navigation.LogoutBox
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun NovedadesScreen(navController: NavHostController): DrawerState {
-   val showLogoutDialog = remember { mutableStateOf(false) }
-   val nombre = UserRepository.getNombre() ?: ""
-   val greetings = "Bienvenido/a, $nombre"
-   var displayText by remember { mutableStateOf("") }
-   val scope = rememberCoroutineScope()
-   var done by remember { mutableStateOf(false) }
-   var writingBar by remember { mutableStateOf("|") }
+    val showLogoutDialog = remember { mutableStateOf(false) }
+    val nombre = UserRepository.getNombre() ?: ""
+    val greetings = "Bienvenido/a, $nombre"
+    var displayText by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
+    var done by remember { mutableStateOf(false) }
+    var writingBar by remember { mutableStateOf("|") }
 
-   Column(
-      modifier = Modifier.fillMaxSize().padding(bottom = 200.dp, start = 0.dp),
-      verticalArrangement = Arrangement.Center,
-      horizontalAlignment = Alignment.CenterHorizontally
-   ) {
-      //Efecto para el logo
-      val transition = rememberInfiniteTransition(label = "")
-      val animatedScale by transition.animateFloat(
-         initialValue = 1f,
-         targetValue = 1.1f,
-         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 2000, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-         ), label = ""
-      )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 200.dp, start = 0.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        //Efecto para el logo
+        val transition = rememberInfiniteTransition(label = "")
+        val animatedScale by transition.animateFloat(
+            initialValue = 1f, targetValue = 1.1f, animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 2000, easing = LinearEasing), repeatMode = RepeatMode.Reverse
+            ), label = ""
+        )
 
-      LaunchedEffect(greetings) {
-         if (nombre != "") {
-            scope.launch {
-               val stringBuilder = StringBuilder()
-               for (letter in greetings) {
-                  stringBuilder.append(letter)
-                  delay(70)
-                  displayText = stringBuilder.toString()
-               }
-               done = true
+        LaunchedEffect(greetings) {
+            if (nombre != "") {
+                scope.launch {
+                    val stringBuilder = StringBuilder()
+                    for (letter in greetings) {
+                        stringBuilder.append(letter)
+                        delay(70)
+                        displayText = stringBuilder.toString()
+                    }
+                    done = true
+                }
             }
-         }
-      }
+        }
 
-      LaunchedEffect(done) {
-         val fullText = writingBar
-         while (true) {
-            delay(150)
-            writingBar = " "
-            delay(150)
-            writingBar = fullText
-         }
-      }
+        LaunchedEffect(done) {
+            val fullText = writingBar
+            while (true) {
+                delay(150)
+                writingBar = " "
+                delay(150)
+                writingBar = fullText
+            }
+        }
 
-      Column(modifier = Modifier.wrapContentHeight(align = Alignment.CenterVertically)) {
-         Logo(
-            modifier = Modifier
-              .align(Alignment.CenterHorizontally)
-              .size(240.dp)
-              .scale(animatedScale)
-              .padding(top = 76.dp)
-         )
-
-         Row(verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-               .fillMaxWidth()
-               .padding(top = 30.dp)) {
-            Text(
-               text = displayText,
-               style = MaterialTheme.typography.headlineLarge,
-               textAlign = TextAlign.Center,
+        Column(modifier = Modifier.wrapContentHeight(align = Alignment.CenterVertically)) {
+            Logo(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .size(240.dp)
+                    .scale(animatedScale)
+                    .padding(top = 76.dp)
             )
-            Text(
-               text = writingBar,
-               style = MaterialTheme.typography.headlineLarge,
-               textAlign = TextAlign.Center,
-               modifier = Modifier.width(13.dp)
-            )
-         }
 
-         BackHandler {
-            showLogoutDialog.value = true
-         }
+            Row(
+                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 30.dp)
+            ) {
+                Text(
+                    text = displayText,
+                    style = MaterialTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center,
+                )
+                Text(
+                    text = writingBar, style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Center, modifier = Modifier.width(13.dp)
+                )
+            }
 
-         if (showLogoutDialog.value) {
-            LogoutBox(navController = navController, onDismiss = { showLogoutDialog.value = false })
-         }
-      }
-   }
-   return DrawerState(DrawerValue.Closed)
+            BackHandler {
+                showLogoutDialog.value = true
+            }
+
+            if (showLogoutDialog.value) {
+                LogoutBox(navController = navController, onDismiss = { showLogoutDialog.value = false })
+            }
+        }
+    }
+    return DrawerState(DrawerValue.Closed)
 }
 
 @Preview
 @Composable
 fun NovedadesScreenPreview() {
-   NovedadesScreen(navController = rememberNavController())
+    NovedadesScreen(navController = rememberNavController())
 }
 
 

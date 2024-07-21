@@ -6,9 +6,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -79,7 +76,7 @@ fun Solicitudes(modifier: Modifier) {
     ?.let {token -> inscripcionesCarreraRequest(idUsuario, token){success->
       if(success!=null){
         listaCarreras = success
-        println(success)
+   //     println(success)
         nombresCarrera.clear()
         idsCarrera.clear()
         listaCarreras?.forEach {
@@ -103,8 +100,7 @@ fun Solicitudes(modifier: Modifier) {
 
     //Lista expandible con todas las carreras a las que el usuario está inscripto
     ExpandableList(modifier= Modifier
-      .padding(top = 0.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
-
+      .padding(top = 10.dp, bottom = 10.dp, start = 20.dp, end = 20.dp)
       .animateContentSize(),
       headerTitle = carreraSelected?.nombre ?: stringResource(id = R.string.txt_selectCarrera), options = nombresCarrera, optionIds = idsCarrera, onOptionSelected={ selectedId -> carreraSelected =
         listaCarreras?.find {it.idCarrera ==selectedId }
@@ -113,8 +109,8 @@ fun Solicitudes(modifier: Modifier) {
     //Todo el resto de la screen carga únicamente si el usuario seleccionó una carrera
     if(carreraSelected!=null){
       Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(start = 0.dp)
+        //.fillMaxWidth()
+        .padding(10.dp)
         .zIndex(0f),
         horizontalArrangement = Arrangement.Center) {
 
